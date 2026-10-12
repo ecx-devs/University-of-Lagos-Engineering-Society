@@ -13,6 +13,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/admin/error",
   },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        if (user.image) token.picture = user.image;
+        if (user.name) token.name = user.name;
+        if (user.email) token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token) {
+        if (token.picture) session.user.image = token.picture as string;
+        if (token.name) session.user.name = token.name as string;
+        if (token.email) session.user.email = token.email as string;
+      }
+      return session;
+    },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnAdmin = nextUrl.pathname.startsWith("/admin");

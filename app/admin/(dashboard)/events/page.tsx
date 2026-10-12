@@ -344,7 +344,7 @@ export default function EventsAdminPage() {
   const galleryCount = events.filter((e) => (e.galleryImages?.length || e._count?.galleryImages || 0) > 0).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-['Neue_Machina']">
       {/* Toast Alert */}
       {toastMessage && (
         <div
@@ -361,13 +361,13 @@ export default function EventsAdminPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">Events & Gallery Management</h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-1 text-sm text-gray-500">
             Create, manage and publish ULES events and their associated gallery photo collections.
           </p>
         </div>
         <Button
           onClick={handleOpenCreateModal}
-          className="bg-[#C85B15] text-white hover:bg-[#a6480e] shadow-sm flex items-center gap-2 font-medium"
+          className="bg-[#170A51] hover:bg-[#22203E] text-white shadow-xs flex items-center gap-2 font-medium px-4 py-2 rounded-lg transition-colors"
         >
           <Plus className="h-4 w-4" />
           Create New Event
@@ -376,28 +376,59 @@ export default function EventsAdminPage() {
 
       {/* Overview Metric Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-xl border border-white/10 bg-[#1E1C38] p-4">
-          <p className="text-xs font-medium text-gray-400">Total Events</p>
-          <p className="mt-2 text-2xl font-bold text-white">{events.length}</p>
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/30">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Events</span>
+            <div className="size-8 rounded-lg bg-[#170A51]/10 flex items-center justify-center text-[#170A51]">
+              <CalendarIcon className="size-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <span className="text-3xl font-['Anton'] text-[#170A51]">{events.length}</span>
+          </div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-[#1E1C38] p-4">
-          <p className="text-xs font-medium text-emerald-400">Upcoming Events</p>
-          <p className="mt-2 text-2xl font-bold text-emerald-300">{upcomingCount}</p>
+
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-[#106333]/30">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Upcoming Events</span>
+            <div className="size-8 rounded-lg bg-[#106333]/10 flex items-center justify-center text-[#106333]">
+              <Sparkles className="size-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <span className="text-3xl font-['Anton'] text-[#106333]">{upcomingCount}</span>
+          </div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-[#1E1C38] p-4">
-          <p className="text-xs font-medium text-blue-400">Past Events</p>
-          <p className="mt-2 text-2xl font-bold text-blue-300">{pastCount}</p>
+
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-gray-300">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Past Events</span>
+            <div className="size-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600">
+              <Clock className="size-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <span className="text-3xl font-['Anton'] text-gray-700">{pastCount}</span>
+          </div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-[#1E1C38] p-4">
-          <p className="text-xs font-medium text-[#C85B15]">Active Galleries</p>
-          <p className="mt-2 text-2xl font-bold text-[#C85B15]">{galleryCount}</p>
+
+        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-[#C85B15]/30">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Active Galleries</span>
+            <div className="size-8 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15]">
+              <ImageIcon className="size-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <span className="text-3xl font-['Anton'] text-[#C85B15]">{galleryCount}</span>
+          </div>
         </div>
       </div>
 
       {/* Controls: Search & Filter Tabs */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             placeholder="Search by title, venue, or slug..."
             value={searchQuery}
@@ -405,18 +436,18 @@ export default function EventsAdminPage() {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            className="pl-9 bg-[#1E1C38] border-white/10 text-white placeholder:text-gray-500 focus-visible:ring-[#C85B15]"
+            className="pl-10 bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-lg shadow-2xs focus-visible:ring-[#170A51]"
           />
         </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto rounded-lg border border-white/10 bg-[#1E1C38] p-1 text-xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto rounded-xl border border-gray-200 bg-white p-1 text-xs shadow-2xs">
           <button
             onClick={() => {
               setStatusFilter('all');
               setCurrentPage(1);
             }}
-            className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'all' ? 'bg-[#C85B15] text-white' : 'text-gray-400 hover:text-white'
+            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
+              statusFilter === 'all' ? 'bg-[#170A51] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             All ({events.length})
@@ -426,8 +457,8 @@ export default function EventsAdminPage() {
               setStatusFilter('upcoming');
               setCurrentPage(1);
             }}
-            className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'upcoming' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'
+            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
+              statusFilter === 'upcoming' ? 'bg-[#106333] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             Upcoming ({upcomingCount})
@@ -437,8 +468,8 @@ export default function EventsAdminPage() {
               setStatusFilter('past');
               setCurrentPage(1);
             }}
-            className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'past' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
+            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
+              statusFilter === 'past' ? 'bg-gray-800 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             Past ({pastCount})
@@ -448,8 +479,8 @@ export default function EventsAdminPage() {
               setStatusFilter('gallery');
               setCurrentPage(1);
             }}
-            className={`rounded-md px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'gallery' ? 'bg-[#C85B15] text-white' : 'text-gray-400 hover:text-white'
+            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
+              statusFilter === 'gallery' ? 'bg-[#C85B15] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             Has Gallery ({galleryCount})
@@ -458,23 +489,23 @@ export default function EventsAdminPage() {
       </div>
 
       {/* Events Table */}
-      <div className="overflow-hidden rounded-xl border border-white/10 bg-[#1E1C38]">
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xs">
         <Table>
-          <TableHeader className="bg-black/20">
-            <TableRow className="border-white/10 hover:bg-transparent">
-              <TableHead className="w-16 text-gray-400">Cover</TableHead>
-              <TableHead className="text-gray-400">Event Details</TableHead>
-              <TableHead className="text-gray-400">Date & Time</TableHead>
-              <TableHead className="text-gray-400">Venue</TableHead>
-              <TableHead className="text-gray-400">Status</TableHead>
-              <TableHead className="text-gray-400">Gallery</TableHead>
-              <TableHead className="text-right text-gray-400">Actions</TableHead>
+          <TableHeader className="bg-gray-50">
+            <TableRow className="border-b border-gray-200 hover:bg-transparent">
+              <TableHead className="w-16 text-gray-500 font-semibold text-xs uppercase tracking-wider">Cover</TableHead>
+              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Event Details</TableHead>
+              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Date & Time</TableHead>
+              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Venue</TableHead>
+              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Status</TableHead>
+              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Gallery</TableHead>
+              <TableHead className="text-right text-gray-500 font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedEvents.length === 0 ? (
-              <TableRow className="border-white/10">
-                <TableCell colSpan={7} className="h-32 text-center text-gray-400">
+              <TableRow className="border-b border-gray-100">
+                <TableCell colSpan={7} className="h-32 text-center text-gray-500">
                   No events found matching your criteria.
                 </TableCell>
               </TableRow>
@@ -485,9 +516,9 @@ export default function EventsAdminPage() {
                 const photoCount = event.galleryImages?.length || event._count?.galleryImages || 0;
 
                 return (
-                  <TableRow key={event.id} className="border-white/10 hover:bg-white/5 transition-colors">
+                  <TableRow key={event.id} className="border-b border-gray-100 hover:bg-gray-50/70 transition-colors">
                     <TableCell>
-                      <div className="relative h-12 w-16 overflow-hidden rounded-md border border-white/10 bg-black/40">
+                      <div className="relative h-12 w-16 overflow-hidden rounded-md border border-gray-200 bg-gray-100">
                         {event.coverImageUrl ? (
                           <img
                             src={event.coverImageUrl}
@@ -495,7 +526,7 @@ export default function EventsAdminPage() {
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center text-gray-500">
+                          <div className="flex h-full w-full items-center justify-center text-gray-400">
                             <ImageIcon className="h-5 w-5" />
                           </div>
                         )}
@@ -505,8 +536,8 @@ export default function EventsAdminPage() {
                     <TableCell>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-white">{event.title}</span>
-                          <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-gray-300">
+                          <span className="font-semibold text-gray-900">{event.title}</span>
+                          <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 border border-gray-200">
                             {event.frequency}
                           </span>
                         </div>
@@ -516,13 +547,13 @@ export default function EventsAdminPage() {
 
                     <TableCell>
                       <div className="space-y-0.5 text-xs">
-                        <div className="flex items-center gap-1.5 text-gray-300">
+                        <div className="flex items-center gap-1.5 text-gray-700">
                           <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                           <span>{eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                         </div>
                         {event.time && (
-                          <div className="flex items-center gap-1.5 text-gray-400">
-                            <Clock className="h-3.5 w-3.5" />
+                          <div className="flex items-center gap-1.5 text-gray-500">
+                            <Clock className="h-3.5 w-3.5 text-gray-400" />
                             <span>{event.time}</span>
                           </div>
                         )}
@@ -530,7 +561,7 @@ export default function EventsAdminPage() {
                     </TableCell>
 
                     <TableCell>
-                      <div className="flex items-center gap-1.5 text-xs text-gray-300">
+                      <div className="flex items-center gap-1.5 text-xs text-gray-700">
                         <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                         <span className="truncate max-w-[150px]">{event.venue}</span>
                       </div>
@@ -538,11 +569,11 @@ export default function EventsAdminPage() {
 
                     <TableCell>
                       {isUpcoming ? (
-                        <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/30">
+                        <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
                           Upcoming
                         </span>
                       ) : (
-                        <span className="inline-flex items-center rounded-full bg-slate-500/15 px-2.5 py-1 text-xs font-medium text-slate-300 border border-slate-500/30">
+                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600 border border-gray-200">
                           Past Event
                         </span>
                       )}
@@ -552,7 +583,7 @@ export default function EventsAdminPage() {
                       {photoCount > 0 ? (
                         <button
                           onClick={() => handleOpenEditModal(event, 'gallery')}
-                          className="inline-flex items-center gap-1.5 rounded-full bg-[#C85B15]/20 px-2.5 py-1 text-xs font-medium text-[#C85B15] border border-[#C85B15]/40 hover:bg-[#C85B15]/30 transition-colors"
+                          className="inline-flex items-center gap-1.5 rounded-full bg-[#C85B15]/10 px-2.5 py-1 text-xs font-semibold text-[#C85B15] border border-[#C85B15]/20 hover:bg-[#C85B15]/20 transition-colors"
                         >
                           <ImageIcon className="h-3.5 w-3.5" />
                           <span>{photoCount} photos</span>
@@ -560,7 +591,7 @@ export default function EventsAdminPage() {
                       ) : (
                         <button
                           onClick={() => handleOpenEditModal(event, 'gallery')}
-                          className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-xs text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                          className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900 border border-gray-200 transition-colors"
                         >
                           <Plus className="h-3 w-3" />
                           <span>Add photos</span>
@@ -573,21 +604,21 @@ export default function EventsAdminPage() {
                         <Link
                           href={`/activities/events/${event.slug}`}
                           target="_blank"
-                          className="rounded p-1.5 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                          className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
                           title="View Live Page"
                         >
                           <ExternalLink className="h-4 w-4" />
                         </Link>
                         <button
                           onClick={() => handleOpenEditModal(event, 'details')}
-                          className="rounded p-1.5 text-blue-400 hover:bg-blue-500/15 transition-colors"
+                          className="rounded p-1.5 text-blue-600 hover:bg-blue-50 transition-colors"
                           title="Edit Event"
                         >
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteEvent(event.id, event.title)}
-                          className="rounded p-1.5 text-red-400 hover:bg-red-500/15 transition-colors"
+                          className="rounded p-1.5 text-red-600 hover:bg-red-50 transition-colors"
                           title="Delete Event"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -603,7 +634,7 @@ export default function EventsAdminPage() {
 
         {/* Pagination Footer */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-white/10 px-4 py-3 text-xs text-gray-400">
+          <div className="flex items-center justify-between border-t border-gray-200 bg-gray-50/60 px-4 py-3 text-xs text-gray-500">
             <span>
               Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to{' '}
               {Math.min(currentPage * ITEMS_PER_PAGE, filteredEvents.length)} of {filteredEvents.length} events
@@ -614,11 +645,11 @@ export default function EventsAdminPage() {
                 size="sm"
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className="h-7 w-7 p-0 border-white/10 bg-transparent text-white disabled:opacity-30"
+                className="h-7 w-7 p-0 border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 shadow-2xs"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <span className="text-white font-medium">
+              <span className="text-gray-700 font-semibold">
                 {currentPage} / {totalPages}
               </span>
               <Button
@@ -626,7 +657,7 @@ export default function EventsAdminPage() {
                 size="sm"
                 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="h-7 w-7 p-0 border-white/10 bg-transparent text-white disabled:opacity-30"
+                className="h-7 w-7 p-0 border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-40 shadow-2xs"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -637,34 +668,34 @@ export default function EventsAdminPage() {
 
       {/* CREATE / EDIT MODAL */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm overflow-y-auto">
-          <div className="relative w-full max-w-3xl rounded-2xl border border-white/15 bg-[#170A51] shadow-2xl my-8 overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-3xl rounded-2xl border border-gray-200 bg-white shadow-2xl my-8 overflow-hidden">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+            <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/70 px-6 py-4">
               <div>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-xl font-['Anton'] text-[#170A51] tracking-wide">
                   {editingEvent ? `Edit: ${editingEvent.title}` : 'Create New Event'}
                 </h2>
-                <p className="text-xs text-gray-300">
+                <p className="text-xs text-gray-500 mt-0.5">
                   {editingEvent ? 'Manage event details and gallery photos' : 'Fill in the information to publish a new event'}
                 </p>
               </div>
               <button
                 onClick={handleCloseModal}
-                className="rounded-full p-1.5 text-gray-400 hover:bg-white/10 hover:text-white"
+                className="rounded-full p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Modal Navigation Tabs */}
-            <div className="flex border-b border-white/10 bg-black/20 px-6">
+            <div className="flex border-b border-gray-200 bg-gray-50/40 px-6">
               <button
                 onClick={() => setActiveTab('details')}
                 className={`flex items-center gap-2 border-b-2 py-3 px-4 text-sm font-medium transition-colors ${
                   activeTab === 'details'
-                    ? 'border-[#C85B15] text-[#C85B15]'
-                    : 'border-transparent text-gray-400 hover:text-white'
+                    ? 'border-[#C85B15] text-[#C85B15] font-semibold'
+                    : 'border-transparent text-gray-500 hover:text-gray-900'
                 }`}
               >
                 <CalendarIcon className="h-4 w-4" />
@@ -680,14 +711,14 @@ export default function EventsAdminPage() {
                 }}
                 className={`flex items-center gap-2 border-b-2 py-3 px-4 text-sm font-medium transition-colors ${
                   activeTab === 'gallery'
-                    ? 'border-[#C85B15] text-[#C85B15]'
-                    : 'border-transparent text-gray-400 hover:text-white'
+                    ? 'border-[#C85B15] text-[#C85B15] font-semibold'
+                    : 'border-transparent text-gray-500 hover:text-gray-900'
                 } ${!editingEvent ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <ImageIcon className="h-4 w-4" />
                 Gallery Management
                 {editingEvent?.galleryImages?.length ? (
-                  <span className="rounded-full bg-[#C85B15]/30 px-2 py-0.5 text-xs text-[#C85B15] font-bold">
+                  <span className="rounded-full bg-[#C85B15]/10 border border-[#C85B15]/20 px-2 py-0.5 text-xs text-[#C85B15] font-bold">
                     {editingEvent.galleryImages.length}
                   </span>
                 ) : null}
@@ -701,13 +732,13 @@ export default function EventsAdminPage() {
                   {/* Title & Frequency */}
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div className="sm:col-span-2 space-y-1">
-                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                         Event Title *
                       </label>
                       <Input
                         {...form.register('title')}
                         placeholder="e.g. ULES Dinner & Awards 2026"
-                        className="bg-black/30 border-white/15 text-white focus-visible:ring-[#C85B15]"
+                        className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus-visible:ring-[#170A51]"
                         onChange={(e) => {
                           form.setValue('title', e.target.value);
                           if (!editingEvent) {
@@ -716,20 +747,20 @@ export default function EventsAdminPage() {
                         }}
                       />
                       {form.formState.errors.title && (
-                        <p className="text-xs text-red-400">{form.formState.errors.title.message}</p>
+                        <p className="text-xs text-red-500">{form.formState.errors.title.message}</p>
                       )}
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                         Frequency *
                       </label>
                       <select
                         {...form.register('frequency')}
-                        className="w-full rounded-md border border-white/15 bg-black/30 px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#C85B15]"
+                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-[#170A51]"
                       >
                         {FREQUENCY_OPTIONS.map((opt) => (
-                          <option key={opt} value={opt} className="bg-[#170A51] text-white">
+                          <option key={opt} value={opt} className="bg-white text-gray-900">
                             {opt}
                           </option>
                         ))}
@@ -739,15 +770,15 @@ export default function EventsAdminPage() {
 
                   {/* Slug */}
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                       URL Slug
                     </label>
-                    <div className="flex items-center rounded-md border border-white/15 bg-black/30 px-3">
+                    <div className="flex items-center rounded-md border border-gray-300 bg-gray-50 px-3">
                       <span className="text-xs text-gray-500 font-mono">/activities/events/</span>
                       <input
                         {...form.register('slug')}
                         placeholder="dinner-awards-2026"
-                        className="w-full bg-transparent py-2 pl-1 text-sm text-white font-mono focus:outline-none"
+                        className="w-full bg-transparent py-2 pl-1 text-sm text-gray-900 font-mono focus:outline-none"
                       />
                     </div>
                   </div>
@@ -755,48 +786,48 @@ export default function EventsAdminPage() {
                   {/* Date, Time, Venue */}
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                         Date *
                       </label>
                       <Input
                         type="date"
                         {...form.register('date')}
-                        className="bg-black/30 border-white/15 text-white focus-visible:ring-[#C85B15]"
+                        className="bg-white border-gray-300 text-gray-900 focus-visible:ring-[#170A51]"
                       />
                       {form.formState.errors.date && (
-                        <p className="text-xs text-red-400">{form.formState.errors.date.message}</p>
+                        <p className="text-xs text-red-500">{form.formState.errors.date.message}</p>
                       )}
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                         Time
                       </label>
                       <Input
                         {...form.register('time')}
                         placeholder="e.g. 10:00 AM"
-                        className="bg-black/30 border-white/15 text-white focus-visible:ring-[#C85B15]"
+                        className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus-visible:ring-[#170A51]"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                         Venue *
                       </label>
                       <Input
                         {...form.register('venue')}
                         placeholder="e.g. Jelili Omotola Hall, UNILAG"
-                        className="bg-black/30 border-white/15 text-white focus-visible:ring-[#C85B15]"
+                        className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus-visible:ring-[#170A51]"
                       />
                       {form.formState.errors.venue && (
-                        <p className="text-xs text-red-400">{form.formState.errors.venue.message}</p>
+                        <p className="text-xs text-red-500">{form.formState.errors.venue.message}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Cover Image Upload (Cloudinary Dropzone) */}
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                       Cover Image (Cloudinary Dropzone) *
                     </label>
                     <input
@@ -808,7 +839,7 @@ export default function EventsAdminPage() {
                     />
 
                     {form.watch('coverImageUrl') ? (
-                      <div className="relative aspect-16/7 w-full overflow-hidden rounded-xl border border-white/15 bg-black/40">
+                      <div className="relative aspect-16/7 w-full overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
                         <img
                           src={form.watch('coverImageUrl')}
                           alt="Cover preview"
@@ -837,59 +868,59 @@ export default function EventsAdminPage() {
                     ) : (
                       <div
                         onClick={() => coverInputRef.current?.click()}
-                        className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 bg-black/20 p-8 text-center transition-colors hover:border-[#C85B15] hover:bg-black/30"
+                        className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-8 text-center transition-colors hover:border-[#170A51] hover:bg-gray-100/60"
                       >
                         {uploadingCover ? (
                           <div className="flex flex-col items-center gap-2">
-                            <Loader2 className="h-8 w-8 animate-spin text-[#C85B15]" />
-                            <p className="text-sm font-medium text-white">Uploading to Cloudinary...</p>
+                            <Loader2 className="h-8 w-8 animate-spin text-[#170A51]" />
+                            <p className="text-sm font-medium text-gray-900">Uploading to Cloudinary...</p>
                           </div>
                         ) : (
                           <>
                             <UploadCloud className="h-10 w-10 text-gray-400" />
-                            <p className="mt-2 text-sm font-medium text-white">
+                            <p className="mt-2 text-sm font-medium text-gray-800">
                               Click or drop image to upload to Cloudinary
                             </p>
-                            <p className="mt-1 text-xs text-gray-400">PNG, JPG, WebP up to 5MB</p>
+                            <p className="mt-1 text-xs text-gray-500">PNG, JPG, WebP up to 5MB</p>
                           </>
                         )}
                       </div>
                     )}
                     {form.formState.errors.coverImageUrl && (
-                      <p className="text-xs text-red-400">{form.formState.errors.coverImageUrl.message}</p>
+                      <p className="text-xs text-red-500">{form.formState.errors.coverImageUrl.message}</p>
                     )}
                   </div>
 
                   {/* Description */}
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                       Description & Details *
                     </label>
                     <Textarea
                       {...form.register('description')}
                       rows={5}
                       placeholder="Detailed event information, theme, highlights, agenda, dress code..."
-                      className="bg-black/30 border-white/15 text-white focus-visible:ring-[#C85B15]"
+                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus-visible:ring-[#170A51]"
                     />
                     {form.formState.errors.description && (
-                      <p className="text-xs text-red-400">{form.formState.errors.description.message}</p>
+                      <p className="text-xs text-red-500">{form.formState.errors.description.message}</p>
                     )}
                   </div>
 
                   {/* Action buttons */}
-                  <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                     <Button
                       type="button"
-                      variant="ghost"
+                      variant="outline"
                       onClick={handleCloseModal}
-                      className="text-gray-400 hover:text-white"
+                      className="border-gray-300 text-gray-700 hover:bg-gray-100"
                     >
                       Cancel
                     </Button>
                     <Button
                       type="submit"
                       disabled={isPending || uploadingCover}
-                      className="bg-[#C85B15] text-white hover:bg-[#a6480e] font-semibold"
+                      className="bg-[#170A51] hover:bg-[#22203E] text-white font-semibold shadow-xs"
                     >
                       {isPending ? (
                         <>
@@ -907,10 +938,10 @@ export default function EventsAdminPage() {
               ) : (
                 /* GALLERY MANAGEMENT SECTION */
                 <div className="space-y-6">
-                  <div className="flex flex-col gap-2 rounded-xl border border-white/10 bg-black/20 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-2 rounded-xl border border-gray-200 bg-gray-50/60 p-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <h3 className="font-semibold text-white">Upload Gallery Photos</h3>
-                      <p className="text-xs text-gray-400">
+                      <h3 className="font-semibold text-gray-900">Upload Gallery Photos</h3>
+                      <p className="text-xs text-gray-500">
                         Upload multiple photos at once. They will immediately link to this event and appear on the public Gallery pages.
                       </p>
                     </div>
@@ -928,7 +959,7 @@ export default function EventsAdminPage() {
                       type="button"
                       onClick={() => galleryInputRef.current?.click()}
                       disabled={uploadingGallery}
-                      className="bg-[#106333] hover:bg-[#0c4e28] text-white flex items-center gap-2 font-medium shrink-0"
+                      className="bg-[#106333] hover:bg-[#0c4e28] text-white flex items-center gap-2 font-medium shrink-0 shadow-xs"
                     >
                       {uploadingGallery ? (
                         <>
@@ -947,13 +978,13 @@ export default function EventsAdminPage() {
                   {/* Multi-upload dropzone box */}
                   <div
                     onClick={() => galleryInputRef.current?.click()}
-                    className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/20 bg-black/20 p-6 text-center transition-colors hover:border-[#106333] hover:bg-black/30"
+                    className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-6 text-center transition-colors hover:border-[#106333] hover:bg-gray-100/60"
                   >
                     <ImageIcon className="h-8 w-8 text-gray-400" />
-                    <p className="mt-2 text-sm font-medium text-white">
+                    <p className="mt-2 text-sm font-medium text-gray-800">
                       Drop multiple photos here or click to browse
                     </p>
-                    <p className="mt-1 text-xs text-gray-400">
+                    <p className="mt-1 text-xs text-gray-500">
                       You can select multiple images simultaneously for batch upload to Cloudinary.
                     </p>
                   </div>
@@ -961,14 +992,14 @@ export default function EventsAdminPage() {
                   {/* Photos Grid */}
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-300">
+                      <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-700">
                         Attached Photos ({editingEvent?.galleryImages?.length || 0})
                       </h4>
                       {editingEvent && (
                         <Link
                           href={`/activities/gallery/${editingEvent.slug}`}
                           target="_blank"
-                          className="text-xs text-[#C85B15] hover:underline flex items-center gap-1"
+                          className="text-xs text-[#C85B15] hover:underline flex items-center gap-1 font-medium"
                         >
                           View public gallery album
                           <ExternalLink className="h-3 w-3" />
@@ -977,10 +1008,10 @@ export default function EventsAdminPage() {
                     </div>
 
                     {!editingEvent?.galleryImages || editingEvent.galleryImages.length === 0 ? (
-                      <div className="rounded-xl border border-white/10 bg-black/20 p-8 text-center text-gray-400">
-                        <ImageIcon className="mx-auto h-8 w-8 opacity-40" />
-                        <p className="mt-2 text-sm">No photos attached to this event yet.</p>
-                        <p className="text-xs text-gray-500">
+                      <div className="rounded-xl border border-gray-200 bg-gray-50/60 p-8 text-center text-gray-500">
+                        <ImageIcon className="mx-auto h-8 w-8 opacity-40 text-gray-400" />
+                        <p className="mt-2 text-sm font-medium">No photos attached to this event yet.</p>
+                        <p className="text-xs text-gray-400">
                           Use the upload button above to add photos at any time.
                         </p>
                       </div>
@@ -989,7 +1020,7 @@ export default function EventsAdminPage() {
                         {editingEvent.galleryImages.map((img: any) => (
                           <div
                             key={img.id}
-                            className="group relative aspect-square overflow-hidden rounded-lg border border-white/15 bg-black/40"
+                            className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-gray-100 shadow-2xs"
                           >
                             <img
                               src={img.imageUrl}
@@ -1013,11 +1044,11 @@ export default function EventsAdminPage() {
                   </div>
 
                   {/* Close / Done button */}
-                  <div className="flex items-center justify-end pt-3 border-t border-white/10">
+                  <div className="flex items-center justify-end pt-4 border-t border-gray-200">
                     <Button
                       type="button"
                       onClick={handleCloseModal}
-                      className="bg-[#C85B15] text-white hover:bg-[#a6480e]"
+                      className="bg-[#170A51] hover:bg-[#22203E] text-white shadow-xs font-semibold"
                     >
                       Done Managing Gallery
                     </Button>

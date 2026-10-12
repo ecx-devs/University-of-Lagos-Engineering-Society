@@ -27,6 +27,17 @@ const formSchema = z.object({
 
 type SpotlightType = 'volunteer' | 'lecturer';
 
+const INITIAL_FORM_VALUES = {
+  id: undefined,
+  type: 'volunteer' as SpotlightType,
+  monthYear: '',
+  name: '',
+  departmentOrRole: '',
+  story: '',
+  imageUrl: '',
+  isPublished: false,
+};
+
 export default function SpotlightsAdminPage() {
   const [spotlights, setSpotlights] = useState<any[]>([]);
   const [isPending, startTransition] = useTransition();
@@ -36,15 +47,7 @@ export default function SpotlightsAdminPage() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      type: 'volunteer',
-      monthYear: '',
-      name: '',
-      departmentOrRole: '',
-      story: '',
-      imageUrl: '',
-      isPublished: false,
-    },
+    defaultValues: INITIAL_FORM_VALUES,
   });
 
   useEffect(() => {
@@ -56,11 +59,17 @@ export default function SpotlightsAdminPage() {
     setSpotlights(data);
   };
 
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    form.reset(INITIAL_FORM_VALUES);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     startTransition(async () => {
-      await createOrUpdateSpotlight(values);
-      form.reset();
-      setEditingId(null);
+      const payload = editingId ? { ...values, id: editingId } : { ...values, id: undefined };
+      await createOrUpdateSpotlight(payload);
+      handleCancelEdit();
       loadSpotlights();
     });
   };
@@ -236,7 +245,12 @@ export default function SpotlightsAdminPage() {
               </Button>
               
               {editingId && (
-                <Button type="button" variant="ghost" onClick={() => { setEditingId(null); form.reset(); }} className="w-full mt-2 text-gray-500">
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  onClick={handleCancelEdit} 
+                  className="w-full mt-2 text-gray-500 hover:text-gray-700"
+                >
                   Cancel Edit
                 </Button>
               )}

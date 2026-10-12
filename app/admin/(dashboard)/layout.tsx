@@ -1,5 +1,5 @@
 import { auth, signOut } from "@/auth";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { SidebarNav } from "./SidebarNav";
 
 export default async function AdminLayout({
@@ -44,11 +44,18 @@ export default async function AdminLayout({
               {session?.user?.image ? (
                 <img 
                   src={session.user.image} 
-                  alt="Profile" 
-                  className="w-8 h-8 rounded-full border border-gray-200"
+                  alt={session.user.name || "Profile"} 
+                  referrerPolicy="no-referrer"
+                  className="w-8 h-8 rounded-full border border-gray-200 object-cover shrink-0"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gray-200" />
+                <div className="w-8 h-8 rounded-full bg-[#170A51]/10 text-[#170A51] border border-gray-200 flex items-center justify-center font-bold text-xs shrink-0">
+                  {session?.user?.name ? (
+                    session.user.name.charAt(0).toUpperCase()
+                  ) : (
+                    <User className="w-4 h-4 text-gray-500" />
+                  )}
+                </div>
               )}
               <span className="text-sm font-medium text-gray-700">
                 {session?.user?.name || "Administrator"}
