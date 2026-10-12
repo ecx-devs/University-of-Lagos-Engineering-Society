@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL_POOLED") // Neon recommends using the pooled connection string
+  directUrl = env("DATABASE_URL")        // Needed for migrations
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum SpotlightType {
+  volunteer
+  lecturer
+}
+
+model Spotlight {
+  id                 String        @id @default(cuid())
+  type               SpotlightType
+  monthYear          String        // e.g., "October 2026"
+  name               String
+  departmentOrRole   String
+  story              String        @db.Text
+  imageUrl           String
+  isPublished        Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model GlobalSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model AssociationLeader {
+  slug      String   @id
+  name      String
+  title     String
+  session   String
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id            String              @id @default(cuid())
+  slug          String              @unique
+  title         String
+  frequency     String              @default("Annual Event")
+  date          DateTime
+  time          String?
+  venue         String
+  description   String              @db.Text
+  coverImageUrl String              @map("cover_image_url")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+  galleryImages EventGalleryImage[]
+
+  @@map("events")
+}
+
+model EventGalleryImage {
+  id        String   @id @default(cuid())
+  eventId   String   @map("event_id")
+  imageUrl  String   @map("image_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@map("event_gallery_images")
+}
+
