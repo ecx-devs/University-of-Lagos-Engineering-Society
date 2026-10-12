@@ -235,7 +235,7 @@ export default function EventsAdminPage() {
         // Refresh event data in state
         const updatedList = await getEvents();
         setEvents(updatedList);
-        const refreshedCurrent = updatedList.find((ev) => ev.id === editingEvent.id);
+        const refreshedCurrent = updatedList.find((ev: any) => ev.id === editingEvent.id);
         if (refreshedCurrent) setEditingEvent(refreshedCurrent);
       } catch (err: any) {
         showToast('Failed to attach images to event', 'error');
@@ -256,7 +256,7 @@ export default function EventsAdminPage() {
       const updatedList = await getEvents();
       setEvents(updatedList);
       if (editingEvent) {
-        const refreshedCurrent = updatedList.find((ev) => ev.id === editingEvent.id);
+        const refreshedCurrent = updatedList.find((ev: any) => ev.id === editingEvent.id);
         if (refreshedCurrent) setEditingEvent(refreshedCurrent);
       }
     } catch (err: any) {

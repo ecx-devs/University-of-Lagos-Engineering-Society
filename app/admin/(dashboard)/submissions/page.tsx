@@ -6,13 +6,13 @@ export const revalidate = 0;
 export default async function SubmissionsPage() {
   const rawFeedbacks = await prisma.feedback.findMany({
     orderBy: { createdAt: 'desc' },
-  }).catch((err) => {
+  }).catch((err: any) => {
     console.error('Failed to load feedbacks:', err);
     return [];
   });
 
 
-  const feedbacks = rawFeedbacks.map((fb) => ({
+  const feedbacks = rawFeedbacks.map((fb: any) => ({
     id: fb.id,
     name: fb.name || null,
     email: fb.email || null,

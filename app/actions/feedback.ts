@@ -25,8 +25,8 @@ export async function submitFeedbackAction(payload: any) {
 
     const admins = await prisma.admin.findMany();
     const adminEmails = admins
-      .map((a) => a.email)
-      .filter((email) => email !== null && email !== undefined && email !== '');
+      .map((a: any) => a.email)
+      .filter((email: any) => email !== null && email !== undefined && email !== '');
 
     const superAdminEmail = process.env.SUPERADMIN_EMAIL;
     if (superAdminEmail && !adminEmails.includes(superAdminEmail)) {
@@ -144,7 +144,7 @@ export async function generateFeedbackSummary(filterTopic: string = 'all'): Prom
 
   let targetFeedbacks = allFeedbacks;
   if (filterTopic && filterTopic !== 'all') {
-    targetFeedbacks = allFeedbacks.filter((fb) => {
+    targetFeedbacks = allFeedbacks.filter((fb: any) => {
       const a = analyzeFeedbackItem(fb.subject, fb.message);
       return a.topic.toLowerCase() === filterTopic.toLowerCase();
     });
@@ -176,7 +176,7 @@ export async function generateFeedbackSummary(filterTopic: string = 'all'): Prom
     try {
       const feedbackSnippets = targetFeedbacks
         .slice(0, 30)
-        .map((f, i) => `Submission #${i + 1} (${f.subject}): ${f.message}`)
+        .map((f: any, i: number) => `Submission #${i + 1} (${f.subject}): ${f.message}`)
         .join('\n---\n');
 
       const prompt = `You are the Student Affairs Advisor for the University of Lagos Engineering Society (ULES).
