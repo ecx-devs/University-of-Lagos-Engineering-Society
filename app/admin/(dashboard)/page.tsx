@@ -5,6 +5,7 @@ import {
   Sparkles,
   Building2,
   Users,
+  Newspaper,
 } from 'lucide-react';
 import { getBodyBySlug } from '@/components/constants';
 import RecentActivityFeed, { type SerializableActivityItem } from './RecentActivityFeed';
@@ -17,8 +18,10 @@ export default async function AdminDashboardHome() {
     unreadSubmissions,
     activeAdmins,
     spotlightsCount,
+    newsCount,
     feedbacks,
     spotlights,
+    newsList,
     leaders,
     settings,
     admins,
@@ -27,8 +30,10 @@ export default async function AdminDashboardHome() {
     prisma.feedback.count({ where: { read: false } }).catch(() => 0),
     prisma.admin.count().catch(() => 0),
     prisma.spotlight.count().catch(() => 0),
+    prisma.news.count().catch(() => 0),
     prisma.feedback.findMany({ take: 25, orderBy: { createdAt: 'desc' } }).catch(() => []),
     prisma.spotlight.findMany({ take: 25, orderBy: { updatedAt: 'desc' } }).catch(() => []),
+    prisma.news.findMany({ take: 25, orderBy: { updatedAt: 'desc' } }).catch(() => []),
     prisma
       .$queryRaw<Array<{ slug: string; name: string; title: string; session: string; updatedAt: Date }>>`
         SELECT "slug", "name", "title", "session", "updatedAt" FROM "AssociationLeader" ORDER BY "updatedAt" DESC LIMIT 25
@@ -80,7 +85,25 @@ export default async function AdminDashboardHome() {
     });
   }
 
-  // 3. Association Leadership Updates
+  // 3. News Articles & Digest Issues
+  for (const n of newsList) {
+    rawActivities.push({
+      id: `news-${n.id}`,
+      type: 'news',
+      title: n.title,
+      description: `Digest (${n.date}) • ${n.description.slice(0, 70)}...`,
+      timestamp: new Date(n.updatedAt).toISOString(),
+      link: '/admin/news',
+      badge: n.isPublished
+        ? { text: 'Live', className: 'bg-emerald-100 text-emerald-800 font-semibold' }
+        : { text: 'Draft', className: 'bg-amber-100 text-amber-800' },
+      iconType: 'news',
+      iconBg: 'bg-blue-50',
+      iconColor: 'text-blue-700',
+    });
+  }
+
+  // 4. Association Leadership Updates
   for (const l of leaders) {
     const body = getBodyBySlug(l.slug);
     rawActivities.push({
@@ -144,7 +167,7 @@ export default async function AdminDashboardHome() {
       </div>
 
       {/* Metric Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {/* Card 1: Submissions */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/30">
           <div className="flex items-center justify-between">
@@ -193,7 +216,30 @@ export default async function AdminDashboardHome() {
           </div>
         </div>
 
-        {/* Card 3: Associations */}
+        {/* Card 3: News & Digest */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#185A48]/30">
+          <div className="flex items-center justify-between">
+            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
+              News & Digest
+            </h3>
+            <div className="size-9 rounded-lg bg-[#185A48]/10 flex items-center justify-center text-[#185A48]">
+              <Newspaper className="size-4.5" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <span className="text-4xl font-['Anton'] text-[#185A48]">
+              {newsCount.toLocaleString()}
+            </span>
+          </div>
+          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+            <span className="text-gray-500">Digest Issues & News</span>
+            <Link href="/admin/news" className="text-[#185A48] hover:underline font-semibold flex items-center gap-1">
+              Manage &rarr;
+            </Link>
+          </div>
+        </div>
+
+        {/* Card 4: Associations */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#106333]/30">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
@@ -216,7 +262,7 @@ export default async function AdminDashboardHome() {
           </div>
         </div>
 
-        {/* Card 4: Admins */}
+        {/* Card 5: Admins */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#22203E]/30">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
