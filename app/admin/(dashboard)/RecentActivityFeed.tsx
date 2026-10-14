@@ -17,11 +17,12 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Newspaper,
 } from 'lucide-react';
 
 export interface SerializableActivityItem {
   id: string;
-  type: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin';
+  type: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news';
   title: string;
   description: string;
   timestamp: string; // ISO string
@@ -30,7 +31,7 @@ export interface SerializableActivityItem {
     text: string;
     className: string;
   };
-  iconType: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin';
+  iconType: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news';
   iconBg: string;
   iconColor: string;
 }
@@ -42,7 +43,7 @@ export default function RecentActivityFeed({
 }: {
   activities: SerializableActivityItem[];
 }) {
-  const [typeFilter, setTypeFilter] = useState<'all' | 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin'>('all');
+  const [typeFilter, setTypeFilter] = useState<'all' | 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news'>('all');
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | '7days' | '30days'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -102,6 +103,8 @@ export default function RecentActivityFeed({
         return <Calendar className="size-5" />;
       case 'admin':
         return <Shield className="size-5" />;
+      case 'news':
+        return <Newspaper className="size-5" />;
       default:
         return <Clock className="size-5" />;
     }
@@ -284,6 +287,19 @@ export default function RecentActivityFeed({
               }`}
             >
               Associations
+            </button>
+            <button
+              onClick={() => {
+                setTypeFilter('news');
+                setCurrentPage(1);
+              }}
+              className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors ${
+                typeFilter === 'news'
+                  ? 'bg-[#170A51] text-white font-semibold'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              News
             </button>
           </div>
         </div>

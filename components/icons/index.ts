@@ -17,6 +17,7 @@ import { ChartIcon } from './chart';
 import { ExcellenceIcon } from './excellence';
 import { IntegrityIcon } from './integrity';
 import { PhoneIcon } from './phone';
+import { WhatsAppIcon } from './whatsapp';
 
 export {
   AdvocacyIcon,
@@ -37,5 +38,6 @@ export {
   TargetIcon,
   TikTokIcon,
   TwitterIcon,
+  WhatsAppIcon,
   YoutubeIcon,
 };

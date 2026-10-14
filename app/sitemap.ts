@@ -9,15 +9,16 @@ import {
 } from '@/components/constants';
 import { SITE } from '@/lib/seo';
 
+import { getAllNewsSlugs } from '@/app/actions/news';
+
 /**
- * Generated from the same constants the pages render from, so a new post or
- * album is in the sitemap the moment it's in the data — no separate list to
- * forget to update.
+ * Generated dynamically with database entries, so a new post or
+ * digest is in the sitemap the moment it's published.
  *
  * `priority` is a hint, not a ranking lever: it only tells a crawler which of
  * *our own* pages matter most when it can't fetch everything.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // `as const` so `changeFrequency` keeps its literal type through the `.map`
@@ -35,11 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: '/student-aids/feedback', priority: 0.5, changeFrequency: 'yearly' },
   ] as const).map((route) => ({ ...route, url: `${SITE.url}${route.url}`, lastModified: now }));
 
-  const news: MetadataRoute.Sitemap = NEWS_ITEMS.map((item) => ({
-    url: `${SITE.url}/stories/news/${item.slug}`,
+  const newsSlugs = await getAllNewsSlugs();
+  const news: MetadataRoute.Sitemap = newsSlugs.map((slug) => ({
+    url: `${SITE.url}/stories/news/${slug}`,
     lastModified: now,
-    changeFrequency: 'yearly',
-    priority: 0.6,
+    changeFrequency: 'weekly',
+    priority: 0.7,
   }));
 
   const blog: MetadataRoute.Sitemap = BLOG_ITEMS.map((item) => ({

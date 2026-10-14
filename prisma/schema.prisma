@@ -92,3 +92,22 @@ model EventGalleryImage {
   @@map("event_gallery_images")
 }
 
+model News {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String   @db.Text
+  date        String
+  body        String   @db.Text
+  imageUrl    String   @default("/news/default.png")
+  imageAlt    String?
+  category    String   @default("Digest")
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, createdAt])
+  @@index([category])
+  @@map("news")
+}
+

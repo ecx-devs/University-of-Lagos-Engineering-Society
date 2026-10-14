@@ -24,7 +24,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     trigger: 'Stories',
     items: [
-      { label: 'News', href: '/stories/news' },
+      { label: 'ULES News', href: '/stories/news' },
       { label: 'Blog', href: '/stories/blog' },
       { label: 'Newsletters', href: 'https://ulesblog.substack.com' },
     ],
@@ -69,5 +69,5 @@ export const ACTIVITIES: NavItem[] = [
   { trigger: 'Gallery', href: '/activities/gallery' },
   { trigger: 'Events', href: '/activities/events' },
   { trigger: 'Blog', href: '/stories/blog' },
-  { trigger: 'News', href: '/stories/news' },
+  { trigger: 'ULES News', href: '/stories/news' },
 ];

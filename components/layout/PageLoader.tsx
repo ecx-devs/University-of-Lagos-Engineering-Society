@@ -154,7 +154,7 @@ export function PageLoader() {
               width={160}
               height={160}
               priority
-              className="relative z-10 h-auto w-32 drop-shadow-2xl md:w-44"
+              className="relative z-10 h-auto w-32 md:w-44"
             />
           </div>
 
