@@ -26,7 +26,7 @@ export const NAV_ITEMS: NavItem[] = [
     items: [
       { label: 'ULES News', href: '/stories/news' },
       { label: 'Blog', href: '/stories/blog' },
-      { label: 'Newsletters', href: 'https://ulesblog.substack.com' },
+      { label: 'Newsletters', href: '/stories/newsletter' },
     ],
   },
   {

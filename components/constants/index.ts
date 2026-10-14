@@ -1,4 +1,4 @@
-import { SITE_URL, SUBSTACK_URL, CURRENT_ACADEMIC_SESSION } from './sites';
+import { SITE_URL, CURRENT_ACADEMIC_SESSION } from './sites';
 import { ACTIVITIES, NAV_ITEMS, QUICK_LINKS, RESOURCES } from './site-map';
 import { SOCIALS } from './socials-map';
 import { HIGHLIGHTED_NEWS_ITEMS, NEWS_ITEMS } from './news';
@@ -46,7 +46,6 @@ export {
   QUICK_LINKS,
   RESOURCES,
   SITE_URL,
-  SUBSTACK_URL,
   CURRENT_ACADEMIC_SESSION,
   SOCIALS,
 };
