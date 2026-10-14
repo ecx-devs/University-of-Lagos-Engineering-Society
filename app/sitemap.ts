@@ -10,6 +10,7 @@ import {
 import { SITE } from '@/lib/seo';
 
 import { getAllNewsSlugs } from '@/app/actions/news';
+import { getAllBlogSlugs } from '@/app/actions/blogs';
 
 /**
  * Generated dynamically with database entries, so a new post or
@@ -32,6 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: '/activities/gallery', priority: 0.7, changeFrequency: 'weekly' },
     { url: '/stories/news', priority: 0.9, changeFrequency: 'weekly' },
     { url: '/stories/blog', priority: 0.8, changeFrequency: 'weekly' },
+    { url: '/stories/newsletter', priority: 0.6, changeFrequency: 'monthly' },
     { url: '/contact', priority: 0.7, changeFrequency: 'yearly' },
     { url: '/student-aids/feedback', priority: 0.5, changeFrequency: 'yearly' },
   ] as const).map((route) => ({ ...route, url: `${SITE.url}${route.url}`, lastModified: now }));
@@ -44,11 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const blog: MetadataRoute.Sitemap = BLOG_ITEMS.map((item) => ({
-    url: `${SITE.url}/stories/blog/${item.slug}`,
+  const blogSlugs = await getAllBlogSlugs();
+  const blog: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+    url: `${SITE.url}/stories/blog/${slug}`,
     lastModified: now,
-    changeFrequency: 'yearly',
-    priority: 0.6,
+    changeFrequency: 'weekly',
+    priority: 0.7,
   }));
 
   const events: MetadataRoute.Sitemap = HIGHLIGHTED_EVENT_ITEMS.map((item) => ({

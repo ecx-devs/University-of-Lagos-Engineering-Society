@@ -111,3 +111,27 @@ model News {
   @@map("news")
 }
 
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  release     String   @default("Release #01")
+  category    String   @default("Campus Life")
+  author      String   @default("ULES Editorial")
+  authorBio   String   @default("The official voice and stories from the University of Lagos Engineering Society.") @db.Text
+  authorPfp   String?  @default("/logo/logo-transparent.png")
+  date        String
+  description String   @db.Text
+  body        String   @db.Text
+  imageUrl    String   @default("/blogs/my-first-love-letter.jpeg")
+  imageAlt    String?
+  readTime    String   @default("3 min read")
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, createdAt])
+  @@index([category])
+  @@map("blog_posts")
+}
+
