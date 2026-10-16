@@ -12,6 +12,7 @@ import {
   Layers,
   Play,
   ExternalLink,
+  Camera,
 } from 'lucide-react';
 import { EmptyState } from '@/components/ui/empty-state';
 import { cn } from '@/lib/utils';
@@ -26,6 +27,23 @@ export interface GalleryPhotoItem {
 interface GalleryLightboxGridProps {
   photos: GalleryPhotoItem[];
   eventTitle: string;
+}
+
+function getOptimizedImageUrl(url: string, width = 1200): string {
+  if (!url) return '';
+  if (url.includes('res.cloudinary.com') && url.includes('/image/upload/') && !url.includes('/f_auto')) {
+    return url.replace('/image/upload/', `/image/upload/f_auto,q_auto,w_${width},c_limit/`);
+  }
+  return url;
+}
+
+function getFullResolutionDownloadUrl(url: string): string {
+  if (!url) return '';
+  if (url.includes('res.cloudinary.com') && url.includes('/image/upload/')) {
+    // Strip web-viewing downscaling and inject fl_attachment to download the full original file
+    return url.replace(/\/image\/upload\/(?:[a-zA-Z0-9_,-]+\/)?/, '/image/upload/fl_attachment/');
+  }
+  return url;
 }
 
 type LayoutMode = 'editorial' | 'masonry' | 'grid';
@@ -70,10 +88,18 @@ export function GalleryLightboxGrid({ photos, eventTitle }: GalleryLightboxGridP
 
   if (!photos || photos.length === 0) {
     return (
-      <EmptyState
-        title="No photos uploaded yet"
-        description="Photos are yet to be uploaded for this event. Check back soon as the media team updates the collection."
-      />
+      <div className="py-12">
+        <EmptyState
+          icon={Camera}
+          badge="Media Pending"
+          title="No photos uploaded yet"
+          description="Photos are yet to be uploaded for this event. Check back soon as the media team updates the collection."
+          action={{
+            label: 'Back to Photo Albums',
+            href: '/activities/gallery',
+          }}
+        />
+      </div>
     );
   }
 
@@ -96,7 +122,7 @@ export function GalleryLightboxGrid({ photos, eventTitle }: GalleryLightboxGridP
         )}
       >
         <img
-          src={photo.imageUrl}
+          src={getOptimizedImageUrl(photo.imageUrl, 800)}
           alt={photo.alt || `${eventTitle} photo ${index + 1}`}
           className={cn(
             'w-full transition-transform duration-700 ease-out group-hover:scale-105',
@@ -325,12 +351,12 @@ export function GalleryLightboxGrid({ photos, eventTitle }: GalleryLightboxGridP
 
             <div className="flex items-center gap-3">
               <a
-                href={photos[selectedIndex].imageUrl}
+                href={getFullResolutionDownloadUrl(photos[selectedIndex].imageUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 download
                 className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-colors"
-                title="Open high resolution"
+                title="Download full resolution photo"
               >
                 <Download className="h-5 w-5" />
               </a>
@@ -376,7 +402,7 @@ export function GalleryLightboxGrid({ photos, eventTitle }: GalleryLightboxGridP
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={photos[selectedIndex].imageUrl}
+              src={getOptimizedImageUrl(photos[selectedIndex].imageUrl, 1600)}
               alt={photos[selectedIndex].alt || `${eventTitle} photo ${selectedIndex + 1}`}
               className="max-h-[80vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
             />
@@ -399,7 +425,7 @@ export function GalleryLightboxGrid({ photos, eventTitle }: GalleryLightboxGridP
                   }`}
                 >
                   <img
-                    src={thumb.imageUrl}
+                    src={getOptimizedImageUrl(thumb.imageUrl, 160)}
                     alt=""
                     className="h-full w-full object-cover"
                   />

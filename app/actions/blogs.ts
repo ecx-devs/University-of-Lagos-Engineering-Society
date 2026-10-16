@@ -99,47 +99,20 @@ async function ensureInitialSeed() {
   initialSeedAttempted = true;
 
   try {
-    const count = await prisma.blogPost.count();
-    if (count === 0) {
-      for (const p of INITIAL_BLOG_POSTS) {
-        await prisma.blogPost.create({
-          data: {
-            slug: p.slug,
-            title: p.details.title,
-            release: p.details.release || 'Release #01',
-            category: p.category || 'Campus Life',
-            author: p.details.author || 'ULES Editorial',
-            authorBio:
-              p.details.authorBio ||
-              'The official voice and stories from the University of Lagos Engineering Society.',
-            authorPfp: sanitizeAuthorPfp(p.details.authorPfp),
-            date: p.details.date,
-            readTime: p.details.readTime || calculateReadTime(p.details.body),
-            description: p.details.description,
-            body: p.details.body,
-            imageUrl: p.imageUrl,
-            imageAlt: p.imageAlt || p.details.title,
-            isPublished: p.isPublished ?? true,
-          },
-        });
-      }
-    } else {
-      // Migrate legacy author profile pictures in database
-      await prisma.blogPost.updateMany({
-        where: {
-          OR: [
-            { authorPfp: { contains: 'ules-author' } },
-            { authorPfp: null },
-            { authorPfp: '' },
-          ],
-        },
-        data: {
-          authorPfp: '/logo/logo-transparent.png',
-        },
-      });
-    }
+    await prisma.blogPost.updateMany({
+      where: {
+        OR: [
+          { authorPfp: { contains: 'ules-author' } },
+          { authorPfp: null },
+          { authorPfp: '' },
+        ],
+      },
+      data: {
+        authorPfp: '/logo/logo-transparent.png',
+      },
+    });
   } catch (err) {
-    console.warn('Initial blog post seeding bypassed or DB unavailable:', err);
+    console.warn('Initial blog post pfp hygiene check bypassed or DB unavailable:', err);
   }
 }
 
@@ -198,39 +171,13 @@ export async function getPaginatedBlogPosts({
       totalPages,
     };
   } catch (error) {
-    console.warn('Prisma blog query failed or timed out, serving fallback:', (error as Error)?.message || error);
-
-    let fallback: BlogPostData[] = INITIAL_BLOG_POSTS.map(mapFallbackPost);
-
-    if (publishedOnly) {
-      fallback = fallback.filter((p) => p.isPublished);
-    }
-
-    if (category && category !== 'All') {
-      fallback = fallback.filter((p) => p.category.toLowerCase() === category.toLowerCase());
-    }
-
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      fallback = fallback.filter(
-        (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.body.toLowerCase().includes(q) ||
-          p.author.toLowerCase().includes(q)
-      );
-    }
-
-    const total = fallback.length;
-    const paginatedFallback = fallback.slice(skip, skip + safePageSize);
-    const totalPages = Math.max(1, Math.ceil(total / safePageSize));
-
+    console.warn('Prisma blog query failed or timed out:', (error as Error)?.message || error);
     return {
-      items: paginatedFallback,
-      total,
+      items: [],
+      total: 0,
       page: safePage,
       pageSize: safePageSize,
-      totalPages,
+      totalPages: 1,
     };
   }
 }
@@ -244,8 +191,8 @@ export async function getAllAdminBlogPosts(): Promise<BlogPostData[]> {
     });
     return list.map(normalizeBlogPostItem);
   } catch (error) {
-    console.warn('Error fetching admin blog posts from DB, using fallback:', (error as Error)?.message || error);
-    return INITIAL_BLOG_POSTS.map(mapFallbackPost);
+    console.warn('Error fetching admin blog posts from DB:', (error as Error)?.message || error);
+    return [];
   }
 }
 
@@ -261,19 +208,9 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostData | nu
       return normalizeBlogPostItem(item);
     }
 
-    // Fallback to static items
-    const fallbackItem = INITIAL_BLOG_POSTS.find((p) => p.slug === slug);
-    if (fallbackItem) {
-      return mapFallbackPost(fallbackItem);
-    }
-
     return null;
   } catch (error) {
     console.error(`Error fetching blog post for slug ${slug}:`, error);
-    const fallbackItem = INITIAL_BLOG_POSTS.find((p) => p.slug === slug);
-    if (fallbackItem) {
-      return mapFallbackPost(fallbackItem);
-    }
     return null;
   }
 }
@@ -288,14 +225,10 @@ export async function getRecentBlogPosts(limit: number = 3): Promise<BlogPostDat
       take: limit,
     });
 
-    if (items.length > 0) {
-      return items.map(normalizeBlogPostItem);
-    }
-
-    return INITIAL_BLOG_POSTS.slice(0, limit).map(mapFallbackPost);
+    return items.map(normalizeBlogPostItem);
   } catch (error) {
     console.error('Error fetching recent blog posts:', error);
-    return INITIAL_BLOG_POSTS.slice(0, limit).map(mapFallbackPost);
+    return [];
   }
 }
 
@@ -307,13 +240,11 @@ export async function getAllBlogSlugs(): Promise<string[]> {
       where: { isPublished: true },
       select: { slug: true },
     });
-    if (posts.length > 0) {
-      return posts.map((p) => p.slug);
-    }
+    return posts.map((p) => p.slug);
   } catch (error) {
     console.error('Error fetching blog slugs:', error);
+    return [];
   }
-  return INITIAL_BLOG_POSTS.map((p) => p.slug);
 }
 
 // 6. Create or update blog post

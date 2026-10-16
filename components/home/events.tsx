@@ -3,26 +3,10 @@ import { LucideArrowRight } from 'lucide-react';
 import EventCard from '@/components/ui/eventCard';
 import { Button } from '@/components/ui/button';
 import { getUpcomingEvents } from '@/app/actions/events';
-import { HIGHLIGHTED_EVENT_ITEMS } from '../constants';
+import { EmptyState } from '@/components/ui/empty-state';
 
 const Events = async () => {
-  let upcomingEvents: any[] = await getUpcomingEvents();
-
-
-  if (!upcomingEvents || upcomingEvents.length === 0) {
-    upcomingEvents = HIGHLIGHTED_EVENT_ITEMS.slice(0, 3).map((item) => ({
-      id: String(item.id),
-      slug: item.slug,
-      title: item.details.title,
-      frequency: item.details.category,
-      date: new Date(item.timestamp),
-      description: item.details.shortAbout,
-      coverImageUrl: item.imageUrl,
-      galleryImages: [],
-      _count: { galleryImages: 0 },
-    }));
-  }
-
+  const upcomingEvents: any[] = (await getUpcomingEvents()) || [];
   const displayedEvents = upcomingEvents.slice(0, 3);
 
   return (
@@ -46,36 +30,51 @@ const Events = async () => {
         </Link>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
-        {displayedEvents.map((event: any) => {
-          const eventDate = new Date(event.date);
-          const dateStr = !isNaN(eventDate.getTime())
-            ? eventDate.toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-              })
-            : '';
+      {displayedEvents.length === 0 ? (
+        <div className="mt-6 sm:mt-8">
+          <EmptyState
+            icon="calendar"
+            badge="Upcoming Schedule"
+            title="No upcoming events scheduled"
+            description="We're currently planning exciting academic summits, engineering competitions, and student activities. Check back soon for the next announcement!"
+            action={{
+              label: 'Browse Past Events',
+              href: '/activities/events',
+            }}
+          />
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
+          {displayedEvents.map((event: any) => {
+            const eventDate = new Date(event.date);
+            const dateStr = !isNaN(eventDate.getTime())
+              ? eventDate.toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              : '';
 
-          const hasGallery =
-            (event.galleryImages?.length || event._count?.galleryImages || 0) > 0;
+            const hasGallery =
+              (event.galleryImages?.length || event._count?.galleryImages || 0) > 0;
 
-          return (
-            <EventCard
-              key={event.id}
-              id={event.id}
-              slug={event.slug}
-              title={event.title}
-              frequency={event.frequency}
-              date={dateStr}
-              description={event.description}
-              imageUrl={event.coverImageUrl}
-              imageAlt={event.title}
-              hasGallery={hasGallery}
-            />
-          );
-        })}
-      </div>
+            return (
+              <EventCard
+                key={event.id}
+                id={event.id}
+                slug={event.slug}
+                title={event.title}
+                frequency={event.frequency}
+                date={dateStr}
+                description={event.description}
+                imageUrl={event.coverImageUrl}
+                imageAlt={event.title}
+                hasGallery={hasGallery}
+              />
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

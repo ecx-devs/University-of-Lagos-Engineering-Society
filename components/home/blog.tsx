@@ -3,9 +3,10 @@ import { LucideArrowRight } from 'lucide-react';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { Button } from '@/components/ui/button';
 import { getRecentBlogPosts } from '@/app/actions/blogs';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export default async function Blog() {
-  const recentPosts = await getRecentBlogPosts(3);
+  const recentPosts = (await getRecentBlogPosts(3)) || [];
 
   return (
     <div className="bg-muted/50 px-4 py-8 md:py-10 lg:px-[4.5%] lg:py-16 xl:px-[7.778%]">
@@ -33,26 +34,41 @@ export default async function Blog() {
         </Link>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
-        {recentPosts.map((post) => (
-          <BlogCard
-            key={post.id}
-            slug={post.slug}
-            category={post.category}
-            details={{
-              release: post.release,
-              title: post.title,
-              author: post.author,
-              authorPfp: post.authorPfp,
-              date: post.date,
-              readTime: post.readTime,
-              description: post.description,
+      {recentPosts.length === 0 ? (
+        <div className="mt-6 sm:mt-8">
+          <EmptyState
+            icon="blog"
+            badge="Student Stories & Insights"
+            title="No blog stories published yet"
+            description="Student essays, engineering experiences, and tech reflections are currently in the editorial pipeline. Stay tuned!"
+            action={{
+              label: 'Explore ULES Blog',
+              href: '/stories/blog',
             }}
-            imageUrl={post.imageUrl}
-            imageAlt={post.imageAlt || post.title}
           />
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
+          {recentPosts.map((post) => (
+            <BlogCard
+              key={post.id}
+              slug={post.slug}
+              category={post.category}
+              details={{
+                release: post.release,
+                title: post.title,
+                author: post.author,
+                authorPfp: post.authorPfp,
+                date: post.date,
+                readTime: post.readTime,
+                description: post.description,
+              }}
+              imageUrl={post.imageUrl}
+              imageAlt={post.imageAlt || post.title}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

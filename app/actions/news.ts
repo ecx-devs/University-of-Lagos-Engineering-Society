@@ -97,47 +97,13 @@ export async function getPaginatedNews({
       totalPages,
     };
   } catch (error) {
-    console.warn('Prisma news query failed or timed out, serving fallback dataset:', (error as Error)?.message || error);
-
-    let fallback: NewsItemData[] = NEWS_ITEMS.map((item) => ({
-      id: String(item.id),
-      slug: item.slug,
-      title: item.details.title,
-      description: item.details.description,
-      date: item.details.date,
-      body: item.details.body,
-      imageUrl: item.imageUrl,
-      imageAlt: item.imageAlt,
-      category: 'Digest',
-      isPublished: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
-
-    if (category && category !== 'All') {
-      fallback = fallback.filter((i) => i.category.toLowerCase() === category.toLowerCase());
-    }
-
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      fallback = fallback.filter(
-        (i) =>
-          i.title.toLowerCase().includes(q) ||
-          i.description.toLowerCase().includes(q) ||
-          i.body.toLowerCase().includes(q)
-      );
-    }
-
-    const total = fallback.length;
-    const paginatedFallback = fallback.slice(skip, skip + safePageSize);
-    const totalPages = Math.max(1, Math.ceil(total / safePageSize));
-
+    console.warn('Prisma news query failed or timed out:', (error as Error)?.message || error);
     return {
-      items: paginatedFallback,
-      total,
+      items: [],
+      total: 0,
       page: safePage,
       pageSize: safePageSize,
-      totalPages,
+      totalPages: 1,
     };
   }
 }
@@ -150,21 +116,8 @@ export async function getAllAdminNews(): Promise<NewsItemData[]> {
     });
     return list.map((i) => ({ ...i, category: i.category || 'Digest' }));
   } catch (error) {
-    console.warn('Error fetching admin news from DB, using fallback:', (error as Error)?.message || error);
-    return NEWS_ITEMS.map((item) => ({
-      id: String(item.id),
-      slug: item.slug,
-      title: item.details.title,
-      description: item.details.description,
-      date: item.details.date,
-      body: item.details.body,
-      imageUrl: item.imageUrl,
-      imageAlt: item.imageAlt,
-      category: 'Digest',
-      isPublished: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
+    console.warn('Error fetching admin news from DB:', (error as Error)?.message || error);
+    return [];
   }
 }
 
@@ -179,45 +132,9 @@ export async function getNewsBySlug(slug: string): Promise<NewsItemData | null> 
       return { ...item, category: item.category || 'Digest' };
     }
 
-    // Fallback to static items
-    const fallbackItem = NEWS_ITEMS.find((n) => n.slug === slug);
-    if (fallbackItem) {
-      return {
-        id: String(fallbackItem.id),
-        slug: fallbackItem.slug,
-        title: fallbackItem.details.title,
-        description: fallbackItem.details.description,
-        date: fallbackItem.details.date,
-        body: fallbackItem.details.body,
-        imageUrl: fallbackItem.imageUrl,
-        imageAlt: fallbackItem.imageAlt,
-        category: 'Digest',
-        isPublished: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-    }
-
     return null;
   } catch (error) {
     console.error(`Error fetching news for slug ${slug}:`, error);
-    const fallbackItem = NEWS_ITEMS.find((n) => n.slug === slug);
-    if (fallbackItem) {
-      return {
-        id: String(fallbackItem.id),
-        slug: fallbackItem.slug,
-        title: fallbackItem.details.title,
-        description: fallbackItem.details.description,
-        date: fallbackItem.details.date,
-        body: fallbackItem.details.body,
-        imageUrl: fallbackItem.imageUrl,
-        imageAlt: fallbackItem.imageAlt,
-        category: 'Digest',
-        isPublished: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-    }
     return null;
   }
 }
@@ -231,41 +148,10 @@ export async function getRecentNews(limit: number = 2): Promise<NewsItemData[]> 
       take: limit,
     });
 
-    if (items.length > 0) {
-      return items.map((i) => ({ ...i, category: i.category || 'Digest' }));
-    }
-
-    // Fallback
-    return NEWS_ITEMS.slice(0, limit).map((item) => ({
-      id: String(item.id),
-      slug: item.slug,
-      title: item.details.title,
-      description: item.details.description,
-      date: item.details.date,
-      body: item.details.body,
-      imageUrl: item.imageUrl,
-      imageAlt: item.imageAlt,
-      category: 'Digest',
-      isPublished: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
+    return items.map((i) => ({ ...i, category: i.category || 'Digest' }));
   } catch (error) {
     console.error('Error fetching recent news:', error);
-    return NEWS_ITEMS.slice(0, limit).map((item) => ({
-      id: String(item.id),
-      slug: item.slug,
-      title: item.details.title,
-      description: item.details.description,
-      date: item.details.date,
-      body: item.details.body,
-      imageUrl: item.imageUrl,
-      imageAlt: item.imageAlt,
-      category: 'Digest',
-      isPublished: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
+    return [];
   }
 }
 
@@ -276,13 +162,11 @@ export async function getAllNewsSlugs(): Promise<string[]> {
       where: { isPublished: true },
       select: { slug: true },
     });
-    if (news.length > 0) {
-      return news.map((n) => n.slug);
-    }
+    return news.map((n) => n.slug);
   } catch (error) {
     console.error('Error fetching news slugs:', error);
+    return [];
   }
-  return NEWS_ITEMS.map((item) => item.slug);
 }
 
 // 6. Create or update news item
@@ -359,6 +243,7 @@ export async function createOrUpdateNews(data: {
     revalidatePath('/stories/news');
     revalidatePath(`/stories/news/${savedItem.slug}`);
     revalidatePath('/');
+    revalidatePath('/', 'layout');
     revalidatePath('/sitemap.xml');
 
     return { success: true, news: savedItem };
@@ -381,6 +266,7 @@ export async function toggleNewsPublished(id: string, isPublished: boolean) {
     revalidatePath('/stories/news');
     revalidatePath(`/stories/news/${item.slug}`);
     revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     console.error('Error toggling news published state:', error);
@@ -400,6 +286,7 @@ export async function deleteNews(id: string) {
     revalidatePath('/stories/news');
     revalidatePath(`/stories/news/${item.slug}`);
     revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting news item:', error);

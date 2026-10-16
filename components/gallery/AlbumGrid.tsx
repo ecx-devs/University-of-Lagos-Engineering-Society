@@ -11,8 +11,14 @@ export function AlbumGrid({ events = [] }: AlbumGridProps) {
     <section className="px-section py-8 md:py-10 lg:py-16">
       {events.length === 0 ? (
         <EmptyState
+          icon="gallery"
+          badge="Photo Albums"
           title="No photo albums published yet"
-          description="We haven't published any event photo sets yet. Check back after the next event wraps up, or follow our social channels in the meantime."
+          description="We haven't published any event photo sets yet. Photo albums capturing high-energy campus events, summits, and celebrations will appear here."
+          action={{
+            label: 'Browse Events',
+            href: '/activities/events',
+          }}
         />
       ) : (
         <Stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

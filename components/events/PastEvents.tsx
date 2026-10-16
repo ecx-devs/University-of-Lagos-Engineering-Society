@@ -1,4 +1,5 @@
 import EventCard from '@/components/ui/eventCard';
+import { EmptyState } from '@/components/ui/empty-state';
 
 interface PastEventsProps {
   events?: any[];
@@ -6,13 +7,18 @@ interface PastEventsProps {
 
 const PastEvents = ({ events = [] }: PastEventsProps) => {
   return (
-    <section className="bg-muted px-4 py-8 md:py-10 lg:px-[4.5%] lg:py-16 xl:px-[7.778%]">
+    <section id="past" className="bg-muted px-4 py-8 md:py-10 lg:px-[4.5%] lg:py-16 xl:px-[7.778%]">
       <h2 className="text-center font-sans text-2xl leading-tight font-medium text-[#1A2B56] sm:text-[26px] lg:text-3xl/9">
         Past Events
       </h2>
       {events.length === 0 ? (
-        <div className="mt-8 text-center text-sm text-muted-foreground">
-          No past events recorded yet.
+        <div className="mt-8">
+          <EmptyState
+            icon="calendar-check"
+            badge="Event Archive"
+            title="No past events recorded yet"
+            description="Concluded symposiums, dinners, sports festivals, and workshops will appear here with recaps and event highlights."
+          />
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">

@@ -14,6 +14,7 @@ import {
   type BlogPostData,
 } from '@/app/actions/blogs';
 import { uploadToCloudinary } from '@/app/actions/upload';
+import { compressImageFile } from '@/lib/image-compression';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -195,32 +196,23 @@ export default function BlogAdminPage() {
     setFormFeedback(null);
 
     try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        try {
-          const base64 = reader.result as string;
-          const secureUrl = await uploadToCloudinary(base64, 'ules_blog');
-          form.setValue('imageUrl', secureUrl, { shouldValidate: true });
-        } catch (err: any) {
-          console.error(err);
-          setFormFeedback({
-            type: 'error',
-            message: 'Failed to upload image: ' + (err.message || 'Unknown error'),
-          });
-        } finally {
-          setUploadingImage(false);
-          if (fileInputRef.current) fileInputRef.current.value = '';
-        }
-      };
-      reader.onerror = () => {
-        setFormFeedback({ type: 'error', message: 'Failed to read image file.' });
-        setUploadingImage(false);
-      };
-    } catch (err) {
+      // Compress large images in browser to ~250-400KB before network transfer
+      const base64 = await compressImageFile(file, {
+        maxWidth: 1600,
+        maxHeight: 1200,
+        quality: 0.82,
+      });
+      const secureUrl = await uploadToCloudinary(base64, 'ules_blog');
+      form.setValue('imageUrl', secureUrl, { shouldValidate: true });
+    } catch (err: any) {
       console.error(err);
-      setFormFeedback({ type: 'error', message: 'An unexpected error occurred during upload.' });
+      setFormFeedback({
+        type: 'error',
+        message: 'Failed to upload image: ' + (err.message || 'Unknown error'),
+      });
+    } finally {
       setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 

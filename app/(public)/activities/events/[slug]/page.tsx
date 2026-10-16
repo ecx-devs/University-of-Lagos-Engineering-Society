@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Calendar, Clock, MapPin, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, MapPin, Image as ImageIcon, Camera } from 'lucide-react';
 import { getEventBySlug } from '@/app/actions/events';
 import { HIGHLIGHTED_EVENT_ITEMS } from '@/components/constants/events';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageMetadata, eventJsonLd } from '@/lib/seo';
 import { EventCountdown } from '@/components/events/EventCountdown';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -227,13 +228,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               </div>
             </>
           ) : (
-            <div className="rounded-xl border border-dashed border-border py-12 text-center">
-              <ImageIcon className="mx-auto h-10 w-10 text-muted-foreground/50" />
-              <p className="mt-3 font-semibold text-[#170A51]">No photos uploaded yet</p>
-              <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
-                Photos are yet to be uploaded for this event. Check back soon as the media team updates the collection.
-              </p>
-            </div>
+            <EmptyState
+              icon="camera"
+              badge="Media Pending"
+              title="No photos uploaded yet"
+              description="Photos are yet to be uploaded for this event. Check back soon as the media team updates the collection."
+              compact
+            />
           )}
         </div>
       </div>

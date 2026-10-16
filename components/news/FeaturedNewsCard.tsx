@@ -42,8 +42,7 @@ export function FeaturedNewsCard({
           {/* Featured pill badge */}
           <div className="absolute top-4 left-4 flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#106333] text-white shadow-md">
-              <Sparkles className="size-3" />
-              Featured Issue
+              Featured
             </span>
             <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-white/95 text-[#170A51] backdrop-blur-md shadow-xs border border-white/50">
               {category}

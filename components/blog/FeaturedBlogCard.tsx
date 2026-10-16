@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Clock, Sparkles, User, Tag } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 type FeaturedBlogCardProps = {
   slug: string;
@@ -35,7 +36,7 @@ export function FeaturedBlogCard({
       <Card className="hover-lift overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-0 shadow-sm transition-all duration-300 hover:border-[#C85B15]/40 hover:shadow-lg ring-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
           <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-[420px] lg:col-span-7 overflow-hidden bg-slate-100">
-            <Image
+            <OptimizedImage
               src={imageUrl || '/blogs/my-first-love-letter.jpeg'}
               alt={imageAlt || title}
               fill
