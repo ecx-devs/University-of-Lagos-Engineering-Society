@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { BookOpen, SearchX, RotateCcw } from 'lucide-react';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { FeaturedBlogCard } from '@/components/blog/FeaturedBlogCard';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -56,30 +57,29 @@ export function BlogList({
         transition={{ duration: 0.35, ease: 'easeOut' }}
       >
         {items.length === 0 ? (
-          <div className="py-16 text-center">
+          <div className="py-8">
             {isSearching || isFilteringCategory ? (
-              <div className="max-w-md mx-auto space-y-4">
-                <EmptyState
-                  title="No stories found"
-                  description={
-                    isSearching
-                      ? `We couldn't find any articles matching "${search}". Try another keyword or reset filters.`
-                      : `No stories are filed under "${category}" yet. Select another category or pick All to see everything.`
-                  }
-                />
-                <div className="pt-2">
-                  <a
-                    href="/stories/blog"
-                    className="inline-flex h-10 items-center justify-center rounded-xl bg-[#170A51] px-5 text-sm font-semibold text-white shadow-xs hover:bg-[#170A51]/90 transition-colors"
-                  >
-                    Clear filters & search
-                  </a>
-                </div>
-              </div>
+              <EmptyState
+                icon={SearchX}
+                badge="Search & Filter"
+                title="No stories found"
+                description={
+                  isSearching
+                    ? `We couldn't find any articles matching "${search}". Try another keyword or reset filters.`
+                    : `No stories are filed under "${category}" yet. Select another category or pick All to see everything.`
+                }
+                action={{
+                  label: 'Clear filters & search',
+                  href: '/stories/blog',
+                  icon: RotateCcw,
+                }}
+              />
             ) : (
               <EmptyState
+                icon={BookOpen}
+                badge="Student Voices"
                 title="No blog stories published yet"
-                description="There are no stories published right now. Check back soon, or follow our announcements."
+                description="There are no stories published right now. Check back soon as our student writers and contributors publish new pieces."
               />
             )}
           </div>

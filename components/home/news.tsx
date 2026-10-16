@@ -3,9 +3,10 @@ import { LucideArrowRight } from 'lucide-react';
 import NewsCard from '@/components/ui/newsCard';
 import { Button } from '@/components/ui/button';
 import { getRecentNews } from '@/app/actions/news';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export default async function News() {
-  const recentNews = await getRecentNews(2);
+  const recentNews = (await getRecentNews(2)) || [];
 
   return (
     <div className="bg-white px-4 py-8 md:py-10 lg:px-[4.5%] lg:py-16 xl:px-[7.778%]">
@@ -16,7 +17,7 @@ export default async function News() {
         <Link href="/stories/news">
           <Button
             variant={'ghost'}
-            className="tracking-0 flex h-auto items-center gap-1 py-0 text-sm/6 text-[#1A2B56] sm:text-base"
+            className="tracking-0 flex h-auto items-center gap-1 py-0 text-sm/6 text-[#1A2B56] sm:text-base hover:text-[#C85B15]"
           >
             View
             <span className="xs:inline hidden"> More </span>
@@ -26,21 +27,37 @@ export default async function News() {
           </Button>
         </Link>
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2">
-        {recentNews.map((item) => (
-          <NewsCard
-            key={item.id}
-            details={{
-              title: item.title,
-              description: item.description,
-              date: item.date,
-              readMoreHref: `/stories/news/${item.slug}`,
+
+      {recentNews.length === 0 ? (
+        <div className="mt-6 sm:mt-8">
+          <EmptyState
+            icon="news"
+            badge="Press & Circulars"
+            title="No news published yet"
+            description="Official faculty notices, circulars, and executive updates will appear here once published."
+            action={{
+              label: 'Visit News Portal',
+              href: '/stories/news',
             }}
-            imageUrl={item.imageUrl}
-            imageAlt={item.imageAlt || item.title}
           />
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:mt-8 sm:grid-cols-2">
+          {recentNews.map((item) => (
+            <NewsCard
+              key={item.id}
+              details={{
+                title: item.title,
+                description: item.description,
+                date: item.date,
+                readMoreHref: `/stories/news/${item.slug}`,
+              }}
+              imageUrl={item.imageUrl}
+              imageAlt={item.imageAlt || item.title}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

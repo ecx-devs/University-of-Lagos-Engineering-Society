@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { Newspaper, SearchX, RotateCcw } from 'lucide-react';
 import { NewsListCard } from '@/components/news/NewsListCard';
 import { FeaturedNewsCard } from '@/components/news/FeaturedNewsCard';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -56,30 +57,29 @@ export function NewsList({
         transition={{ duration: 0.35, ease: 'easeOut' }}
       >
         {items.length === 0 ? (
-          <div className="py-16 text-center">
+          <div className="py-8">
             {isSearching || isFilteringCategory ? (
-              <div className="max-w-md mx-auto space-y-4">
-                <EmptyState
-                  title="No articles found"
-                  description={
-                    isSearching
-                      ? `We couldn't find any news issues matching "${search}". Try searching with different keywords or clearing filters.`
-                      : `No news articles are filed under "${category}" yet. Select another category or view all.`
-                  }
-                />
-                <div className="pt-2">
-                  <a
-                    href="/stories/news"
-                    className="inline-flex h-10 items-center justify-center rounded-xl bg-[#170A51] px-5 text-sm font-semibold text-white shadow-xs hover:bg-[#170A51]/90 transition-colors"
-                  >
-                    Clear filters & search
-                  </a>
-                </div>
-              </div>
+              <EmptyState
+                icon={SearchX}
+                badge="Search & Filter"
+                title="No articles found"
+                description={
+                  isSearching
+                    ? `We couldn't find any news issues matching "${search}". Try searching with different keywords or clearing filters.`
+                    : `No news articles are filed under "${category}" yet. Select another category or view all.`
+                }
+                action={{
+                  label: 'Clear filters & search',
+                  href: '/stories/news',
+                  icon: RotateCcw,
+                }}
+              />
             ) : (
               <EmptyState
+                icon={Newspaper}
+                badge="Editorial Desk"
                 title="No news published yet"
-                description="There are no announcements published right now. Check back soon for fresh updates."
+                description="There are no announcements published right now. Check back soon for fresh updates directly from the faculty executive."
               />
             )}
           </div>

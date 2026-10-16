@@ -195,14 +195,27 @@ export function Header() {
               'xs:px-[4.1%] px-4',
             )}
           >
-            
-            <div className="flex h-16.25 w-full items-center justify-end border-b border-transparent">
+            <div className="flex h-16.25 w-full items-center justify-between border-b border-border/40">
+              <Link
+                href="/"
+                onClick={closeMobileNav}
+                className="flex items-center gap-2 focus:outline-none"
+              >
+                <Image
+                  src="/ules-logo.png"
+                  alt="ULES Logo"
+                  width={200}
+                  height={44}
+                  priority
+                  className="h-10 w-auto object-contain"
+                />
+              </Link>
               <SheetClose
                 render={
                   <Button
                     variant="ghost"
                     size="icon-xs"
-                    className="text-primary py-[6.25px] hover:bg-transparent"
+                    className="text-primary py-[6.25px] hover:bg-transparent cursor-pointer"
                   />
                 }
               >

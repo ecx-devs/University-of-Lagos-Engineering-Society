@@ -1,4 +1,5 @@
 import EventCard from '@/components/ui/eventCard';
+import { EmptyState } from '@/components/ui/empty-state';
 
 interface UpcomingEventsProps {
   events?: any[];
@@ -13,8 +14,13 @@ const UpcomingEvents = ({ events = [] }: UpcomingEventsProps) => {
         </h2>
 
         {events.length === 0 ? (
-          <div className="mt-8 text-center text-sm text-muted-foreground">
-            No upcoming events scheduled right now. Check back soon for announcements!
+          <div className="mt-8">
+            <EmptyState
+              icon="calendar"
+              badge="Stay Tuned"
+              title="No upcoming events scheduled"
+              description="There are currently no events on the calendar. Keep an eye out for announcements on academic workshops, faculty competitions, and student gatherings!"
+            />
           </div>
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

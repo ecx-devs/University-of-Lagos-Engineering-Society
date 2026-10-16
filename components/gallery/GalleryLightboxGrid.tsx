@@ -12,6 +12,7 @@ import {
   Layers,
   Play,
   ExternalLink,
+  Camera,
 } from 'lucide-react';
 import { EmptyState } from '@/components/ui/empty-state';
 import { cn } from '@/lib/utils';
@@ -87,10 +88,18 @@ export function GalleryLightboxGrid({ photos, eventTitle }: GalleryLightboxGridP
 
   if (!photos || photos.length === 0) {
     return (
-      <EmptyState
-        title="No photos uploaded yet"
-        description="Photos are yet to be uploaded for this event. Check back soon as the media team updates the collection."
-      />
+      <div className="py-12">
+        <EmptyState
+          icon={Camera}
+          badge="Media Pending"
+          title="No photos uploaded yet"
+          description="Photos are yet to be uploaded for this event. Check back soon as the media team updates the collection."
+          action={{
+            label: 'Back to Photo Albums',
+            href: '/activities/gallery',
+          }}
+        />
+      </div>
     );
   }
 
