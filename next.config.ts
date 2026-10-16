@@ -15,13 +15,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/blogs/ules-author.png',
-        destination: '/logo/logo-transparent.png',
-      },
-    ];
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '15mb',
+    },
   },
 };
 

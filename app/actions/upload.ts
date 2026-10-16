@@ -38,5 +38,11 @@ export async function uploadToCloudinary(
     throw new Error(data.error?.message || 'Upload to Cloudinary failed');
   }
 
-  return data.secure_url;
+  let secureUrl = data.secure_url;
+  // Automatically inject Cloudinary CDN optimization (auto-format WebP/AVIF, perceptual auto-quality, max width limit)
+  if (secureUrl && secureUrl.includes('/image/upload/') && !secureUrl.includes('/f_auto')) {
+    secureUrl = secureUrl.replace('/image/upload/', '/image/upload/f_auto,q_auto,w_1600,c_limit/');
+  }
+
+  return secureUrl;
 }

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { createOrUpdateSpotlight, toggleSpotlightPublished, getSpotlights, deleteSpotlight } from '@/app/actions/spotlight';
 import { uploadToCloudinary } from '@/app/actions/upload';
+import { compressImageFile } from '@/lib/image-compression';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -111,29 +112,15 @@ export default function SpotlightsAdminPage() {
     setUploadingImage(true);
     
     try {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        try {
-          const base64 = reader.result as string;
-          const secureUrl = await uploadToCloudinary(base64);
-          form.setValue('imageUrl', secureUrl, { shouldValidate: true });
-        } catch (err: any) {
-          console.error(err);
-          alert('Failed to upload image: ' + err.message);
-        } finally {
-          setUploadingImage(false);
-          if (fileInputRef.current) fileInputRef.current.value = '';
-        }
-      };
-      reader.onerror = () => {
-        alert("Failed to read file.");
-        setUploadingImage(false);
-      };
-    } catch (err) {
+      const base64 = await compressImageFile(file, { maxWidth: 1600, maxHeight: 1200, quality: 0.82 });
+      const secureUrl = await uploadToCloudinary(base64);
+      form.setValue('imageUrl', secureUrl, { shouldValidate: true });
+    } catch (err: any) {
       console.error(err);
-      alert('An unexpected error occurred during upload.');
+      alert('Failed to upload image: ' + err.message);
+    } finally {
       setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 

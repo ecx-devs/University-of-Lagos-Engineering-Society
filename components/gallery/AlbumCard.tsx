@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
-
-
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 type AlbumCardProps = {
   slug: string;
@@ -15,9 +13,9 @@ export function AlbumCard({ slug, title, coverImage, coverAlt, photoCount }: Alb
   return (
     <Link
       href={`/activities/gallery/${slug}`}
-      className="group hover-lift focus-visible:ring-ring/50 relative block aspect-square overflow-hidden rounded-2xl outline-none focus-visible:ring-3"
+      className="group hover-lift focus-visible:ring-ring/50 relative block aspect-square overflow-hidden rounded-2xl outline-none focus-visible:ring-3 bg-slate-900/10"
     >
-      <Image
+      <OptimizedImage
         src={coverImage}
         alt={coverAlt}
         fill

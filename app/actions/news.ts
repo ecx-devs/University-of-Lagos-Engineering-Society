@@ -359,6 +359,7 @@ export async function createOrUpdateNews(data: {
     revalidatePath('/stories/news');
     revalidatePath(`/stories/news/${savedItem.slug}`);
     revalidatePath('/');
+    revalidatePath('/', 'layout');
     revalidatePath('/sitemap.xml');
 
     return { success: true, news: savedItem };
@@ -381,6 +382,7 @@ export async function toggleNewsPublished(id: string, isPublished: boolean) {
     revalidatePath('/stories/news');
     revalidatePath(`/stories/news/${item.slug}`);
     revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     console.error('Error toggling news published state:', error);
@@ -400,6 +402,7 @@ export async function deleteNews(id: string) {
     revalidatePath('/stories/news');
     revalidatePath(`/stories/news/${item.slug}`);
     revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting news item:', error);

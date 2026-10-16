@@ -124,7 +124,6 @@ async function ensureInitialSeed() {
         });
       }
     } else {
-      // Migrate legacy author profile pictures in database
       await prisma.blogPost.updateMany({
         where: {
           OR: [

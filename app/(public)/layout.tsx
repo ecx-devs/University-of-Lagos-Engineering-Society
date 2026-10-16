@@ -1,6 +1,6 @@
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import { EventCountdownBanner } from '@/components/layout/EventCountdownBanner';
+import { NewsBanner } from '@/components/layout/NewsBanner';
 
 export default function PublicLayout({
   children,
@@ -10,7 +10,7 @@ export default function PublicLayout({
   return (
     <>
       <Header />
-      <EventCountdownBanner />
+      <NewsBanner />
       {children}
       <Footer />
     </>

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Clock, ArrowRight, User, Tag } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 export type BlogCardProps = {
   slug: string;
@@ -27,7 +28,7 @@ export function BlogCard({ slug, category, details, imageUrl, imageAlt }: BlogCa
       <Card className="hover-lift flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-0 shadow-xs transition-all duration-300 hover:border-[#C85B15]/40 hover:shadow-md ring-0">
         {/* Cover Image Container */}
         <div className="relative aspect-16/9 w-full overflow-hidden bg-slate-100">
-          <Image
+          <OptimizedImage
             src={imageUrl || '/blogs/my-first-love-letter.jpeg'}
             alt={imageAlt || title}
             fill

@@ -37,6 +37,7 @@ import {
 } from '@/app/actions/events';
 import { slugify } from '@/lib/utils';
 import { uploadToCloudinary } from '@/app/actions/upload';
+import { compressImageFile } from '@/lib/image-compression';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -179,23 +180,14 @@ export default function EventsAdminPage() {
 
     setUploadingCover(true);
     try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        try {
-          const base64 = reader.result as string;
-          const url = await uploadToCloudinary(base64, 'ules_events');
-          form.setValue('coverImageUrl', url, { shouldValidate: true });
-          showToast('Cover image uploaded successfully');
-        } catch (err: any) {
-          showToast(err.message || 'Upload failed', 'error');
-        } finally {
-          setUploadingCover(false);
-        }
-      };
-      reader.readAsDataURL(file);
+      const base64 = await compressImageFile(file, { maxWidth: 1600, maxHeight: 1200, quality: 0.82 });
+      const url = await uploadToCloudinary(base64, 'ules_events');
+      form.setValue('coverImageUrl', url, { shouldValidate: true });
+      showToast('Cover image uploaded successfully');
     } catch (err: any) {
+      showToast(err.message || 'Upload failed', 'error');
+    } finally {
       setUploadingCover(false);
-      showToast('Failed to read file', 'error');
     }
   };
 
@@ -213,13 +205,16 @@ export default function EventsAdminPage() {
     for (let i = 0; i < total; i++) {
       const file = files[i];
       try {
-        const base64 = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-
+        // Keep untouched original for photos under 5MB; for massive raw files, scale to 4K Ultra-HD (3840px)
+        const base64 =
+          file.size > 5 * 1024 * 1024
+            ? await compressImageFile(file, { maxWidth: 3840, maxHeight: 3840, quality: 0.90 })
+            : await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+              });
         const url = await uploadToCloudinary(base64, 'ules_gallery');
         uploadedUrls.push(url);
         setGalleryProgress({ current: i + 1, total });

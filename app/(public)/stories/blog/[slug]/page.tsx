@@ -12,8 +12,9 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { articleJsonLd, pageMetadata } from '@/lib/seo';
 import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from '@/app/actions/blogs';
 import { parseBlogBody } from '@/lib/blog-parser';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
-export const revalidate = 60; // Dynamic cache revalidation every minute
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await getAllBlogSlugs();
@@ -152,7 +153,7 @@ export default async function BlogDetailPage({
 
         {/* Hero Cover Image */}
         <div className="relative mb-10 aspect-16/9 md:aspect-21/9 w-full overflow-hidden rounded-2xl md:rounded-3xl bg-slate-100 shadow-sm border border-slate-200/80">
-          <Image
+          <OptimizedImage
             src={imageUrl || '/blogs/my-first-love-letter.jpeg'}
             alt={imageAlt || title}
             fill
