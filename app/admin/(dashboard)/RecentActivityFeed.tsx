@@ -19,11 +19,12 @@ import {
   X,
   Newspaper,
   BookOpen,
+  Award,
 } from 'lucide-react';
 
 export interface SerializableActivityItem {
   id: string;
-  type: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog';
+  type: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog' | 'leadership';
   title: string;
   description: string;
   timestamp: string; // ISO string
@@ -32,7 +33,7 @@ export interface SerializableActivityItem {
     text: string;
     className: string;
   };
-  iconType: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog';
+  iconType: 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog' | 'leadership';
   iconBg: string;
   iconColor: string;
 }
@@ -44,7 +45,7 @@ export default function RecentActivityFeed({
 }: {
   activities: SerializableActivityItem[];
 }) {
-  const [typeFilter, setTypeFilter] = useState<'all' | 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog'>('all');
+  const [typeFilter, setTypeFilter] = useState<'all' | 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog' | 'leadership'>('all');
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | '7days' | '30days'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,6 +109,8 @@ export default function RecentActivityFeed({
         return <Newspaper className="size-5" />;
       case 'blog':
         return <BookOpen className="size-5" />;
+      case 'leadership':
+        return <Award className="size-5" />;
       default:
         return <Clock className="size-5" />;
     }
@@ -316,6 +319,19 @@ export default function RecentActivityFeed({
               }`}
             >
               Blog
+            </button>
+            <button
+              onClick={() => {
+                setTypeFilter('leadership');
+                setCurrentPage(1);
+              }}
+              className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors ${
+                typeFilter === 'leadership'
+                  ? 'bg-purple-700 text-white font-semibold'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Leadership
             </button>
           </div>
         </div>

@@ -7,6 +7,7 @@ import {
   Users,
   Newspaper,
   BookOpen,
+  Award,
 } from 'lucide-react';
 import { getBodyBySlug } from '@/components/constants';
 import RecentActivityFeed, { type SerializableActivityItem } from './RecentActivityFeed';
@@ -21,11 +22,13 @@ export default async function AdminDashboardHome() {
     spotlightsCount,
     newsCount,
     blogCount,
+    executiveCount,
     feedbacks,
     spotlights,
     newsList,
     blogList,
     leaders,
+    executiveLeaders,
     settings,
     admins,
   ] = await Promise.all([
@@ -35,6 +38,7 @@ export default async function AdminDashboardHome() {
     prisma.spotlight.count().catch(() => 0),
     prisma.news.count().catch(() => 0),
     prisma.blogPost.count().catch(() => 0),
+    prisma.executiveLeader.count().catch(() => 0),
     prisma.feedback.findMany({ take: 25, orderBy: { createdAt: 'desc' } }).catch(() => []),
     prisma.spotlight.findMany({ take: 25, orderBy: { updatedAt: 'desc' } }).catch(() => []),
     prisma.news.findMany({ take: 25, orderBy: { updatedAt: 'desc' } }).catch(() => []),
@@ -44,6 +48,7 @@ export default async function AdminDashboardHome() {
         SELECT "slug", "name", "title", "session", "updatedAt" FROM "AssociationLeader" ORDER BY "updatedAt" DESC LIMIT 25
       `
       .catch(() => []),
+    prisma.executiveLeader.findMany({ take: 25, orderBy: { updatedAt: 'desc' } }).catch(() => []),
     prisma
       .$queryRaw<Array<{ key: string; value: string; updatedAt: Date }>>`
         SELECT "key", "value", "updatedAt" FROM "GlobalSetting" ORDER BY "updatedAt" DESC LIMIT 10
@@ -143,7 +148,25 @@ export default async function AdminDashboardHome() {
     });
   }
 
-  // 4. Global Settings (Academic Session)
+  // 6. Executive Council Updates
+  for (const ex of executiveLeaders) {
+    rawActivities.push({
+      id: `exco-${ex.id}`,
+      type: 'leadership',
+      title: `Executive Leader: ${ex.name}`,
+      description: `${ex.title} • ${ex.department || 'Engineering Faculty'}`,
+      timestamp: new Date(ex.updatedAt).toISOString(),
+      link: '/admin/leadership',
+      badge: ex.isPublished
+        ? { text: 'Published Live', className: 'bg-emerald-100 text-emerald-800 font-semibold' }
+        : { text: 'Draft', className: 'bg-amber-100 text-amber-800' },
+      iconType: 'leadership',
+      iconBg: 'bg-purple-50',
+      iconColor: 'text-[#170A51]',
+    });
+  }
+
+  // 7. Global Settings (Academic Session)
   for (const s of settings) {
     if (s.key === 'academic_session') {
       rawActivities.push({
@@ -161,7 +184,7 @@ export default async function AdminDashboardHome() {
     }
   }
 
-  // 5. Admin Registrations
+  // 8. Admin Registrations
   for (const adm of admins) {
     rawActivities.push({
       id: `admin-${adm.id}`,
@@ -190,7 +213,30 @@ export default async function AdminDashboardHome() {
       </div>
 
       {/* Metric Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-5">
+        {/* Card 0: Executive Council (New) */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/40">
+          <div className="flex items-center justify-between">
+            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
+              Executive Council
+            </h3>
+            <div className="size-9 rounded-lg bg-purple-50 flex items-center justify-center text-[#170A51]">
+              <Award className="size-4.5" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <span className="text-4xl font-['Anton'] text-[#170A51]">
+              {executiveCount.toLocaleString()}
+            </span>
+          </div>
+          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+            <span className="text-gray-500">EXCO Profiles</span>
+            <Link href="/admin/leadership" className="text-primary hover:underline font-semibold flex items-center gap-1">
+              Manage &rarr;
+            </Link>
+          </div>
+        </div>
+
         {/* Card 1: Submissions */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/30">
           <div className="flex items-center justify-between">

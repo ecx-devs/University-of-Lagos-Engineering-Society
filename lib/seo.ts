@@ -226,3 +226,47 @@ export function associationJsonLd({
     },
   };
 }
+
+export function leadershipJsonLd(
+  leaders: Array<{
+    name: string;
+    title: string;
+    department?: string;
+    email?: string;
+    phoneNumber?: string;
+    imageUrl?: string;
+  }>
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'ULES Executive Council & Leadership',
+    description:
+      'Official leadership directory of the University of Lagos Engineering Society (ULES) Executive Council representing over 6,000 engineering students.',
+    url: `${SITE.url}/about/leadership`,
+    mainEntity: {
+      '@type': 'EducationalOrganization',
+      name: SITE.fullName,
+      alternateName: SITE.name,
+      url: SITE.url,
+      member: leaders.map((leader) => ({
+        '@type': 'Person',
+        name: leader.name,
+        jobTitle: leader.title,
+        ...(leader.department
+          ? { worksFor: { '@type': 'EducationalOrganization', name: `${leader.department}, UNILAG` } }
+          : {}),
+        ...(leader.email ? { email: leader.email } : {}),
+        ...(leader.phoneNumber ? { telephone: leader.phoneNumber } : {}),
+        ...(leader.imageUrl
+          ? {
+              image: leader.imageUrl.startsWith('http')
+                ? leader.imageUrl
+                : `${SITE.url}${leader.imageUrl}`,
+            }
+          : {}),
+      })),
+    },
+  };
+}
+

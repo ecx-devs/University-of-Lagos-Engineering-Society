@@ -98,6 +98,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-NG"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={cn('h-full font-sans antialiased', neueMachina.variable, anton.variable)}
     >
