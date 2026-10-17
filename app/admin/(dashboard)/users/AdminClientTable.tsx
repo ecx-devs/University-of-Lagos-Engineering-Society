@@ -15,10 +15,10 @@ export default function AdminClientTable({ admins, isSuperAdmin, superAdminEmail
     <div className="space-y-6">
       {/* Header & Create Button */}
       {isSuperAdmin && (
-        <div className="flex justify-end">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-            <DialogTrigger className="flex items-center gap-2 bg-[#170A51] hover:bg-[#22203E] text-white px-5 py-2.5 rounded-lg font-medium transition-colors">
-              <Plus className="w-5 h-5" />
+            <DialogTrigger className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#170A51] hover:bg-[#22203E] text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-xs cursor-pointer">
+              <Plus className="w-4 h-4" />
               Add New Administrator
             </DialogTrigger>
             <DialogContent showCloseButton>
@@ -81,61 +81,63 @@ export default function AdminClientTable({ admins, isSuperAdmin, superAdminEmail
         </DialogContent>
       </Dialog>
 
-      <div className="bg-white border rounded-xl overflow-hidden shadow-xs">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-              {isSuperAdmin && <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <tr className="bg-[#106333]/5">
-              <td className="px-6 py-4 text-sm font-medium text-gray-900">System Superadmin</td>
-              <td className="px-6 py-4 text-sm text-gray-500">{superAdminEmail}</td>
-              <td className="px-6 py-4 text-sm">
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#106333] text-white">SUPERADMIN</span>
-              </td>
-              {isSuperAdmin && <td className="px-6 py-4 text-sm text-right text-gray-400">Fixed System Role</td>}
-            </tr>
-            {admins.map((admin) => (
-              <tr key={admin.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm font-medium text-gray-900">{admin.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{admin.email}</td>
-                <td className="px-6 py-4 text-sm">
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">ADMIN</span>
-                </td>
-                {isSuperAdmin && (
-                  <td className="px-6 py-4 text-sm text-right">
-                    <div className="flex justify-end gap-3">
-                      <button
-                        onClick={() => setEditAdminId(admin.id)}
-                        className="text-gray-400 hover:text-blue-600 transition-colors"
-                        title="Edit Admin"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={async () => {
-                          if (confirm("Are you sure you want to revoke this admin's access?")) {
-                            await deleteAdmin(admin.id);
-                            window.location.reload();
-                          }
-                        }}
-                        className="text-gray-400 hover:text-red-600 transition-colors"
-                        title="Delete Admin"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                )}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full min-w-[640px] divide-y divide-gray-200">
+            <thead className="bg-gray-50/90 border-b border-gray-200">
+              <tr>
+                <th className="px-4 py-3 sm:px-6 sm:py-3.5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Name</th>
+                <th className="px-4 py-3 sm:px-6 sm:py-3.5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Email</th>
+                <th className="px-4 py-3 sm:px-6 sm:py-3.5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Role</th>
+                {isSuperAdmin && <th className="px-4 py-3 sm:px-6 sm:py-3.5 text-right text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Actions</th>}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-100">
+              <tr className="bg-[#106333]/5">
+                <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm font-semibold text-gray-900 whitespace-nowrap">System Superadmin</td>
+                <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm text-gray-500 whitespace-nowrap">{superAdminEmail}</td>
+                <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm whitespace-nowrap">
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#106333] text-white tracking-wider">SUPERADMIN</span>
+                </td>
+                {isSuperAdmin && <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm text-right text-gray-400 whitespace-nowrap">Fixed System Role</td>}
+              </tr>
+              {admins.map((admin) => (
+                <tr key={admin.id} className="hover:bg-gray-50/80 transition-colors">
+                  <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{admin.name}</td>
+                  <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm text-gray-500 whitespace-nowrap">{admin.email}</td>
+                  <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm whitespace-nowrap">
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-800 border border-gray-200">ADMIN</span>
+                  </td>
+                  {isSuperAdmin && (
+                    <td className="px-4 py-3.5 sm:px-6 sm:py-4 text-sm text-right whitespace-nowrap">
+                      <div className="flex justify-end items-center gap-3">
+                        <button
+                          onClick={() => setEditAdminId(admin.id)}
+                          className="text-gray-400 hover:text-blue-600 transition-colors p-1"
+                          title="Edit Admin"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (confirm("Are you sure you want to revoke this admin's access?")) {
+                              await deleteAdmin(admin.id);
+                              window.location.reload();
+                            }
+                          }}
+                          className="text-gray-400 hover:text-red-600 transition-colors p-1"
+                          title="Delete Admin"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

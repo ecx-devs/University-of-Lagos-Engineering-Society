@@ -44,6 +44,7 @@ import {
   Phone,
   Mail,
   X,
+  Plus,
 } from 'lucide-react';
 
 const leaderFormSchema = z.object({
@@ -77,6 +78,7 @@ export default function LeadershipAdminPage() {
   const [filterQuery, setFilterQuery] = useState('');
   const [isPending, startTransition] = useTransition();
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [reordering, setReordering] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -85,7 +87,6 @@ export default function LeadershipAdminPage() {
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const formTopRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<LeaderFormValues>({
     resolver: zodResolver(leaderFormSchema),
@@ -113,14 +114,15 @@ export default function LeadershipAdminPage() {
     loadLeaders();
   }, []);
 
-  const handleCancelEdit = () => {
+  const handleOpenCreateModal = () => {
     setEditingId(null);
     form.reset(INITIAL_FORM_VALUES);
     if (fileInputRef.current) fileInputRef.current.value = '';
     setFeedback(null);
+    setModalOpen(true);
   };
 
-  const handleEdit = (leader: ExecutiveLeaderData) => {
+  const handleOpenEditModal = (leader: ExecutiveLeaderData) => {
     setEditingId(leader.id);
     form.reset({
       id: leader.id,
@@ -133,10 +135,14 @@ export default function LeadershipAdminPage() {
       isPublished: leader.isPublished,
     });
     setFeedback(null);
+    setModalOpen(true);
+  };
 
-    if (formTopRef.current) {
-      formTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setEditingId(null);
+    form.reset(INITIAL_FORM_VALUES);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const onSubmit = (values: LeaderFormValues) => {
@@ -160,7 +166,7 @@ export default function LeadershipAdminPage() {
             ? `Successfully updated "${values.name}"!`
             : `Successfully added "${values.name}" as ${values.title}!`,
         });
-        handleCancelEdit();
+        handleCloseModal();
         await loadLeaders();
       } else {
         setFeedback({
@@ -183,7 +189,7 @@ export default function LeadershipAdminPage() {
           type: 'success',
           message: `Deleted "${leader.name}" from executive leadership.`,
         });
-        if (editingId === leader.id) handleCancelEdit();
+        if (editingId === leader.id) handleCloseModal();
         await loadLeaders();
       } else {
         setFeedback({
@@ -233,7 +239,7 @@ export default function LeadershipAdminPage() {
 
       const secureUrl = await uploadToCloudinary(base64, 'ules_leadership');
       form.setValue('imageUrl', secureUrl, { shouldValidate: true });
-      setFeedback({ type: 'success', message: 'Photo uploaded and optimized successfully!' });
+      setFeedback({ type: 'success', message: 'Photo uploaded successfully!' });
     } catch (err: any) {
       console.error(err);
       setFeedback({
@@ -333,84 +339,40 @@ export default function LeadershipAdminPage() {
   const publishedCount = leaders.filter((l) => l.isPublished).length;
 
   return (
-    <div className="container mx-auto max-w-7xl px-2 py-6 space-y-8 font-['Neue_Machina']">
+    <div className="space-y-6 font-['Neue_Machina']">
       {/* Top Banner / Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <h1 className="text-2xl sm:text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">
               Executive Leadership
             </h1>
-            <span className="rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
-              {academicSession} Session
+            <span className="rounded-full bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap">
+              {academicSession}
             </span>
           </div>
-          <p className="mt-1 text-sm text-gray-500 max-w-2xl">
+          <p className="mt-1 text-xs sm:text-sm text-gray-500 max-w-2xl">
             Manage ULES Executive Council (EXCO) profiles, offices, contact details, photos, and
-            custom front-page display ordering.
+            custom display ordering.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <Link
-            href="/about/leadership"
+            href="/about-us"
             target="_blank"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-gray-300 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-2xs"
+            className="inline-flex items-center justify-center gap-1.5 text-xs text-gray-600 hover:text-primary transition-colors border border-gray-200 rounded-lg px-3 py-2 bg-white shadow-2xs"
           >
             <ExternalLink className="size-3.5" />
-            View Live Page
+            <span>View Live</span>
           </Link>
-        </div>
-      </div>
-
-      {/* Metric Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-2xs">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Total EXCOs
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-3xl font-['Anton'] text-[#170A51]">{leaders.length}</span>
-            <span className="text-xs text-gray-500">leaders registered</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-2xs">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Published Live
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-3xl font-['Anton'] text-emerald-600">{publishedCount}</span>
-            <span className="text-xs text-gray-500">visible on website</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-2xs">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Hidden Drafts
-          </span>
-          <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-3xl font-['Anton'] text-amber-600">
-              {leaders.length - publishedCount}
-            </span>
-            <span className="text-xs text-gray-500">hidden from public</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-2xs">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Display Order
-          </span>
-          <div className="mt-2 flex items-center gap-2">
-            <span className="text-sm font-semibold text-primary">Custom Sequential</span>
-            {reordering && (
-              <span className="inline-flex items-center text-xs text-amber-600 font-medium">
-                <Loader2 className="size-3 animate-spin mr-1" />
-                Saving...
-              </span>
-            )}
-          </div>
-          <p className="mt-1 text-[11px] text-gray-400">Use ▲ / ▼ or drag rows to reorder</p>
+          <Button
+            onClick={handleOpenCreateModal}
+            className="flex-1 sm:flex-none bg-[#170A51] hover:bg-[#22203E] text-white shadow-xs flex items-center justify-center gap-2 font-medium px-4 py-2 rounded-lg transition-colors cursor-pointer"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Executive Leader</span>
+          </Button>
         </div>
       </div>
 
@@ -438,477 +400,480 @@ export default function LeadershipAdminPage() {
         </div>
       )}
 
-      {/* Two Column Layout: Left Form (1/3) + Right List/Reorder Table (2/3) */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        {/* LEFT COLUMN: Leader Form */}
-        <div
-          ref={formTopRef}
-          className="xl:col-span-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-xs sticky top-6"
-        >
-          <div className="flex items-center justify-between border-b pb-4 mb-6">
-            <div className="flex items-center gap-2">
-              <Award className="size-5 text-primary" />
-              <h2 className="text-lg font-bold text-[#170A51]">
-                {editingId ? 'Edit Leader Profile' : 'Add New Executive Leader'}
-              </h2>
-            </div>
-            {editingId && (
+      {/* Full Width Leaders List & Interactive Reordering Table */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+        {/* Table Search & Filter Bar */}
+        <div className="p-3.5 sm:p-4 border-b bg-gray-50/50 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div className="relative w-full sm:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+            <Input
+              value={filterQuery}
+              onChange={(e) => setFilterQuery(e.target.value)}
+              placeholder="Filter by name, post, department..."
+              className="pl-9 text-xs bg-white w-full shadow-2xs"
+            />
+            {filterQuery && (
               <button
-                onClick={handleCancelEdit}
-                className="text-xs text-gray-500 hover:text-gray-800 underline"
+                onClick={() => setFilterQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-700"
               >
-                Cancel
+                Clear
               </button>
             )}
           </div>
 
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Full Name */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700 block mb-1">
-                Full Name <span className="text-red-500">*</span>
-              </label>
-              <Input
-                {...form.register('name')}
-                placeholder="e.g. Halimat Ozemoka"
-                className="text-sm"
-              />
-              {form.formState.errors.name && (
-                <p className="text-xs text-red-600 mt-1">
-                  {form.formState.errors.name.message}
-                </p>
-              )}
-            </div>
+          <div className="flex items-center gap-3 text-xs text-gray-500 w-full sm:w-auto justify-between sm:justify-end">
+            <span className="text-[11px] text-gray-400 hidden lg:inline">
+              Drag rows or use ▲ / ▼ to reorder positions
+            </span>
+            <span className="text-xs text-gray-600 font-medium">
+              Showing <strong className="text-gray-900">{filteredLeaders.length}</strong> of{' '}
+              <strong className="text-gray-900">{leaders.length}</strong> ({publishedCount} Live)
+            </span>
+          </div>
+        </div>
 
-            {/* Office / Post Held */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700 block mb-1">
-                Office / Post Held (Title) <span className="text-red-500">*</span>
-              </label>
-              <Input
-                {...form.register('title')}
-                placeholder="e.g. Social Secretary, President"
-                className="text-sm"
-              />
-              {form.formState.errors.title && (
-                <p className="text-xs text-red-600 mt-1">
-                  {form.formState.errors.title.message}
-                </p>
-              )}
+        {/* Table or Loading / Empty States */}
+        {loading ? (
+          <div className="p-12 text-center space-y-3">
+            <Loader2 className="size-8 animate-spin text-[#170A51] mx-auto" />
+            <p className="text-sm font-semibold text-gray-700">Loading leadership records...</p>
+          </div>
+        ) : filteredLeaders.length === 0 ? (
+          <div className="p-16 text-center space-y-4">
+            <div className="size-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-gray-400">
+              <Award className="size-7" />
             </div>
-
-            {/* Department */}
             <div>
-              <label className="text-xs font-semibold text-gray-700 block mb-1">
-                Department <span className="text-red-500">*</span>
-              </label>
-              <Input
-                {...form.register('department')}
-                placeholder="e.g. Systems Engineering"
-                className="text-sm"
-              />
-              {form.formState.errors.department && (
-                <p className="text-xs text-red-600 mt-1">
-                  {form.formState.errors.department.message}
-                </p>
-              )}
+              <h3 className="font-bold text-gray-900">No leaders found</h3>
+              <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
+                {filterQuery
+                  ? `No records match "${filterQuery}". Try clearing search.`
+                  : 'No executive council members in database. Click "Add Executive Leader" to add a profile.'}
+              </p>
             </div>
+            {filterQuery && (
+              <Button variant="outline" size="sm" onClick={() => setFilterQuery('')}>
+                Clear Filter
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[840px] w-full">
+              <TableHeader>
+                <TableRow className="bg-gray-50/80 hover:bg-gray-50/80 border-b border-gray-200">
+                  <TableHead className="w-16 text-center text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">
+                    Order
+                  </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[180px]">
+                    Leader
+                  </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[140px]">
+                    Office / Role
+                  </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[140px]">
+                    Department
+                  </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[160px]">
+                    Contacts
+                  </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap text-center w-24">
+                    Status
+                  </TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap text-right pr-4 w-28">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredLeaders.map((leader, index) => {
+                  const isFirst = index === 0;
+                  const isLast = index === filteredLeaders.length - 1;
 
-            {/* Email & Phone Number Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-gray-700 block mb-1">
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  {...form.register('email')}
-                  type="email"
-                  placeholder="leader@gmail.com"
-                  className="text-sm"
-                />
-                {form.formState.errors.email && (
-                  <p className="text-xs text-red-600 mt-1">
-                    {form.formState.errors.email.message}
-                  </p>
-                )}
+                  return (
+                    <TableRow
+                      key={leader.id}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, index)}
+                      onDragOver={handleDragOver}
+                      onDrop={(e) => handleDrop(e, index)}
+                      className="transition-colors cursor-move group hover:bg-gray-50/80 border-b border-gray-100"
+                    >
+                      {/* Order index + Reorder Controls */}
+                      <TableCell className="text-center py-3">
+                        <div className="flex flex-col items-center justify-center gap-1">
+                          <span className="inline-flex size-6 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold group-hover:bg-[#170A51] group-hover:text-white transition-colors">
+                            #{index + 1}
+                          </span>
+
+                          {/* Up / Down Reorder buttons */}
+                          <div className="flex items-center gap-0.5">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveOrder(index, 'up');
+                              }}
+                              disabled={isFirst || isPending || reordering}
+                              className="p-1 rounded text-gray-400 hover:text-gray-900 disabled:opacity-20 hover:bg-slate-200 transition-colors"
+                              title="Move Up"
+                              aria-label={`Move ${leader.name} up`}
+                            >
+                              <MoveUp className="size-3" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMoveOrder(index, 'down');
+                              }}
+                              disabled={isLast || isPending || reordering}
+                              className="p-1 rounded text-gray-400 hover:text-gray-900 disabled:opacity-20 hover:bg-slate-200 transition-colors"
+                              title="Move Down"
+                              aria-label={`Move ${leader.name} down`}
+                            >
+                              <MoveDown className="size-3" />
+                            </button>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      {/* Leader Portrait & Name */}
+                      <TableCell className="py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="relative size-11 rounded-lg overflow-hidden shrink-0 border border-gray-200 bg-slate-100">
+                            <Image
+                              src={leader.imageUrl || '/logo/logo-transparent.png'}
+                              alt={leader.name}
+                              fill
+                              sizes="44px"
+                              className="object-cover object-top"
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-bold text-gray-900 truncate">
+                              {leader.name}
+                            </p>
+                            <p className="text-[11px] text-gray-400 truncate">
+                              {leader.session || academicSession}
+                            </p>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      {/* Office / Post Held */}
+                      <TableCell className="py-3">
+                        <span className="inline-block rounded-md bg-primary/10 text-primary font-semibold text-xs px-2.5 py-1">
+                          {leader.title}
+                        </span>
+                      </TableCell>
+
+                      {/* Department */}
+                      <TableCell className="py-3">
+                        <p className="text-xs text-gray-600 truncate max-w-[200px]" title={leader.department}>
+                          {leader.department}
+                        </p>
+                      </TableCell>
+
+                      {/* Contacts */}
+                      <TableCell className="py-3">
+                        <div className="space-y-1 text-[11px] text-gray-500">
+                          <div className="flex items-center gap-1.5 truncate">
+                            <Phone className="size-3 text-gray-400 shrink-0" />
+                            <span>{leader.phoneNumber}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 truncate">
+                            <Mail className="size-3 text-gray-400 shrink-0" />
+                            <span className="truncate max-w-[180px]" title={leader.email}>
+                              {leader.email}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      {/* Published Status */}
+                      <TableCell className="py-3 text-center">
+                        <button
+                          type="button"
+                          onClick={() => handleTogglePublish(leader)}
+                          disabled={isPending}
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors ${
+                            leader.isPublished
+                              ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                          title="Click to toggle publish status"
+                        >
+                          {leader.isPublished ? (
+                            <>
+                              <Eye className="size-3" />
+                              Live
+                            </>
+                          ) : (
+                            <>
+                              <EyeOff className="size-3" />
+                              Draft
+                            </>
+                          )}
+                        </button>
+                      </TableCell>
+
+                      {/* Actions (Edit & Delete) */}
+                      <TableCell className="py-3 text-right pr-4">
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleOpenEditModal(leader)}
+                            className="size-8 p-0 text-gray-500 hover:text-primary hover:bg-primary/10"
+                            title="Edit Leader"
+                          >
+                            <Edit className="size-3.5" />
+                          </Button>
+
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDelete(leader)}
+                            className="size-8 p-0 text-gray-400 hover:text-red-600 hover:bg-red-50"
+                            title="Delete Leader"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+
+      {/* CREATE / EDIT MODAL */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-2xl rounded-2xl border border-gray-200 bg-white shadow-2xl my-8 overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50/70 px-6 py-4">
+              <div className="flex items-center gap-2">
+                <Award className="size-5 text-primary" />
+                <h2 className="text-xl font-['Anton'] text-[#170A51] tracking-wide uppercase">
+                  {editingId ? 'Edit Leader Profile' : 'Add New Executive Leader'}
+                </h2>
               </div>
-
-              <div>
-                <label className="text-xs font-semibold text-gray-700 block mb-1">
-                  Phone Number <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  {...form.register('phoneNumber')}
-                  placeholder="+234 812 345 6789"
-                  className="text-sm"
-                />
-                {form.formState.errors.phoneNumber && (
-                  <p className="text-xs text-red-600 mt-1">
-                    {form.formState.errors.phoneNumber.message}
-                  </p>
-                )}
-              </div>
+              <button
+                onClick={handleCloseModal}
+                className="rounded-full p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
 
-            {/* Leader Portrait Image (Cloudinary Dropzone) */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700 block mb-1">
-                Official Portrait Photo <span className="text-red-500">*</span>
-              </label>
-
-              {imageUrl ? (
-                <div className="relative aspect-4/5 w-32 mx-auto rounded-xl overflow-hidden border-2 border-primary/40 group shadow-sm bg-slate-100">
-                  <Image
-                    src={imageUrl}
-                    alt="Leader preview"
-                    fill
-                    className="object-cover object-top"
+            {/* Modal Form Content */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+              {/* Full Name & Office/Post Held */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-gray-700 block mb-1">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    {...form.register('name')}
+                    placeholder="e.g. Halimat Ozemoka"
+                    className="text-sm bg-white"
                   />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="px-2.5 py-1 rounded bg-white text-gray-900 text-xs font-semibold hover:bg-gray-100 shadow-xs"
-                    >
-                      Change
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => form.setValue('imageUrl', '', { shouldValidate: true })}
-                      className="px-2.5 py-1 rounded bg-red-600 text-white text-xs font-semibold hover:bg-red-700 shadow-xs"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  onClick={() => !uploadingImage && fileInputRef.current?.click()}
-                  className={`border-2 border-dashed border-gray-300 hover:border-primary rounded-xl p-5 text-center cursor-pointer transition-colors bg-slate-50/50 ${
-                    uploadingImage ? 'pointer-events-none opacity-60' : ''
-                  }`}
-                >
-                  {uploadingImage ? (
-                    <div className="flex flex-col items-center justify-center py-4">
-                      <Loader2 className="size-8 animate-spin text-primary mb-2" />
-                      <p className="text-xs font-semibold text-gray-700">
-                        Compressing & uploading to Cloudinary...
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center py-2">
-                      <div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-2">
-                        <UploadCloud className="size-5" />
-                      </div>
-                      <p className="text-xs font-semibold text-gray-800">
-                        Click or drag portrait photo
-                      </p>
-                      <p className="text-[11px] text-gray-400 mt-1">
-                        PNG, JPG, WebP up to 5MB (auto-compressed)
-                      </p>
-                    </div>
+                  {form.formState.errors.name && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {form.formState.errors.name.message}
+                    </p>
                   )}
                 </div>
-              )}
 
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-              {form.formState.errors.imageUrl && (
-                <p className="text-xs text-red-600 mt-1">
-                  {form.formState.errors.imageUrl.message}
-                </p>
-              )}
-            </div>
+                <div>
+                  <label className="text-xs font-semibold text-gray-700 block mb-1">
+                    Office / Post Held (Title) <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    {...form.register('title')}
+                    placeholder="e.g. Social Secretary, President"
+                    className="text-sm bg-white"
+                  />
+                  {form.formState.errors.title && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {form.formState.errors.title.message}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            {/* Is Published Toggle */}
-            <div className="flex items-center gap-3 pt-2">
-              <input
-                id="isPublished"
-                type="checkbox"
-                {...form.register('isPublished')}
-                className="size-4 rounded border-gray-300 text-primary focus:ring-primary"
-              />
-              <label htmlFor="isPublished" className="text-xs font-medium text-gray-700 cursor-pointer">
-                Publish live immediately
-              </label>
-            </div>
+              {/* Department */}
+              <div>
+                <label className="text-xs font-semibold text-gray-700 block mb-1">
+                  Department <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  {...form.register('department')}
+                  placeholder="e.g. Systems Engineering"
+                  className="text-sm bg-white"
+                />
+                {form.formState.errors.department && (
+                  <p className="text-xs text-red-600 mt-1">
+                    {form.formState.errors.department.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Submit and Cancel Buttons */}
-            <div className="flex items-center gap-3 pt-4 border-t">
-              <Button
-                type="submit"
-                disabled={isPending || uploadingImage}
-                className="flex-1 bg-[#170A51] hover:bg-[#170A51]/90 text-white font-semibold text-xs py-2.5"
-              >
-                {isPending && <Loader2 className="size-4 animate-spin mr-2" />}
-                {editingId ? 'Update Leader Profile' : 'Save Leader'}
-              </Button>
+              {/* Email & Phone Number Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-semibold text-gray-700 block mb-1">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    {...form.register('email')}
+                    type="email"
+                    placeholder="leader@gmail.com"
+                    className="text-sm bg-white"
+                  />
+                  {form.formState.errors.email && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {form.formState.errors.email.message}
+                    </p>
+                  )}
+                </div>
 
-              {editingId && (
+                <div>
+                  <label className="text-xs font-semibold text-gray-700 block mb-1">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    {...form.register('phoneNumber')}
+                    placeholder="+234 812 345 6789"
+                    className="text-sm bg-white"
+                  />
+                  {form.formState.errors.phoneNumber && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {form.formState.errors.phoneNumber.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Official Portrait Photo Upload */}
+              <div>
+                <label className="text-xs font-semibold text-gray-700 block mb-1">
+                  Official Portrait Photo <span className="text-red-500">*</span>
+                </label>
+
+                {imageUrl ? (
+                  <div className="relative aspect-4/5 w-32 mx-auto rounded-xl overflow-hidden border-2 border-primary/40 group shadow-sm bg-slate-100">
+                    <Image
+                      src={imageUrl}
+                      alt="Leader preview"
+                      fill
+                      className="object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="px-2.5 py-1 rounded bg-white text-gray-900 text-xs font-semibold hover:bg-gray-100 shadow-xs"
+                      >
+                        Change
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => form.setValue('imageUrl', '', { shouldValidate: true })}
+                        className="px-2.5 py-1 rounded bg-red-600 text-white text-xs font-semibold hover:bg-red-700 shadow-xs"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => !uploadingImage && fileInputRef.current?.click()}
+                    className={`border-2 border-dashed border-gray-300 hover:border-primary rounded-xl p-5 text-center cursor-pointer transition-colors bg-slate-50/50 ${
+                      uploadingImage ? 'pointer-events-none opacity-60' : ''
+                    }`}
+                  >
+                    {uploadingImage ? (
+                      <div className="flex flex-col items-center justify-center py-4">
+                        <Loader2 className="size-8 animate-spin text-primary mb-2" />
+                        <p className="text-xs font-semibold text-gray-700">
+                          Uploading image...
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-2">
+                        <div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-2">
+                          <UploadCloud className="size-5" />
+                        </div>
+                        <p className="text-xs font-semibold text-gray-800">
+                          Click or drag portrait photo
+                        </p>
+                        <p className="text-[11px] text-gray-400 mt-1">
+                          PNG, JPG, WebP up to 5MB
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                {form.formState.errors.imageUrl && (
+                  <p className="text-xs text-red-600 mt-1">
+                    {form.formState.errors.imageUrl.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Is Published Toggle */}
+              <div className="flex items-center gap-3 pt-2">
+                <input
+                  id="leaderIsPublished"
+                  type="checkbox"
+                  {...form.register('isPublished')}
+                  className="size-4 rounded border-gray-300 text-[#170A51] focus:ring-[#170A51]"
+                />
+                <label htmlFor="leaderIsPublished" className="text-xs font-medium text-gray-700 cursor-pointer">
+                  Publish live immediately on executive leadership page
+                </label>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={handleCancelEdit}
-                  disabled={isPending}
+                  onClick={handleCloseModal}
+                  disabled={isPending || uploadingImage}
                   className="text-xs"
                 >
                   Cancel
                 </Button>
-              )}
-            </div>
-          </form>
-        </div>
-
-        {/* RIGHT COLUMN: Leaders List & Interactive Reordering Table */}
-        <div className="xl:col-span-8 space-y-4">
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
-            {/* Table Search & Filter Bar */}
-            <div className="p-4 border-b bg-gray-50/50 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="relative w-full sm:w-80">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
-                <Input
-                  value={filterQuery}
-                  onChange={(e) => setFilterQuery(e.target.value)}
-                  placeholder="Filter by name, post, department..."
-                  className="pl-9 text-xs bg-white"
-                />
-                {filterQuery && (
-                  <button
-                    onClick={() => setFilterQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-700"
-                  >
-                    Clear
-                  </button>
-                )}
+                <Button
+                  type="submit"
+                  disabled={isPending || uploadingImage}
+                  className="bg-[#170A51] hover:bg-[#22203E] text-white font-semibold text-xs py-2 px-4"
+                >
+                  {isPending && <Loader2 className="size-4 animate-spin mr-2" />}
+                  {editingId ? 'Update Leader Profile' : 'Save Leader'}
+                </Button>
               </div>
-
-              <div className="flex items-center gap-2 text-xs text-gray-500 w-full sm:w-auto justify-between sm:justify-end">
-                <span>
-                  Showing <strong className="text-gray-900">{filteredLeaders.length}</strong> of{' '}
-                  <strong className="text-gray-900">{leaders.length}</strong> leaders
-                </span>
-              </div>
-            </div>
-
-            {/* Table or Loading / Empty States */}
-            {loading ? (
-              <div className="p-12 text-center space-y-3">
-                <Loader2 className="size-8 animate-spin text-primary mx-auto" />
-                <p className="text-sm font-semibold text-gray-700">Loading leadership records...</p>
-              </div>
-            ) : filteredLeaders.length === 0 ? (
-              <div className="p-16 text-center space-y-4">
-                <div className="size-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-gray-400">
-                  <Award className="size-7" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900">No leaders found</h3>
-                  <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
-                    {filterQuery
-                      ? `No records match "${filterQuery}". Try clearing search.`
-                      : 'No executive council members in database. Use the form on the left to add a leader.'}
-                  </p>
-                </div>
-                {filterQuery && (
-                  <Button variant="outline" size="sm" onClick={() => setFilterQuery('')}>
-                    Clear Filter
-                  </Button>
-                )}
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-50/70 hover:bg-gray-50/70">
-                      <TableHead className="w-16 text-center text-xs font-bold text-gray-600">
-                        Order
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600">Leader</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600">Office / Role</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600">Department</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600">Contacts</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 text-center">
-                        Status
-                      </TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 text-right pr-4">
-                        Actions
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredLeaders.map((leader, index) => {
-                      const isFirst = index === 0;
-                      const isLast = index === filteredLeaders.length - 1;
-                      const isEditingThis = editingId === leader.id;
-
-                      return (
-                        <TableRow
-                          key={leader.id}
-                          draggable
-                          onDragStart={(e) => handleDragStart(e, index)}
-                          onDragOver={handleDragOver}
-                          onDrop={(e) => handleDrop(e, index)}
-                          className={`transition-colors cursor-move group ${
-                            isEditingThis ? 'bg-amber-50/60' : 'hover:bg-gray-50/80'
-                          }`}
-                        >
-                          {/* Order index + Reorder Controls */}
-                          <TableCell className="text-center py-3">
-                            <div className="flex flex-col items-center justify-center gap-1">
-                              <span className="inline-flex size-6 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold group-hover:bg-[#170A51] group-hover:text-white transition-colors">
-                                #{index + 1}
-                              </span>
-
-                              {/* Up / Down Reorder buttons */}
-                              <div className="flex items-center gap-0.5">
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleMoveOrder(index, 'up');
-                                  }}
-                                  disabled={isFirst || isPending || reordering}
-                                  className="p-1 rounded text-gray-400 hover:text-gray-900 disabled:opacity-20 hover:bg-slate-200 transition-colors"
-                                  title="Move Up"
-                                  aria-label={`Move ${leader.name} up`}
-                                >
-                                  <MoveUp className="size-3" />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleMoveOrder(index, 'down');
-                                  }}
-                                  disabled={isLast || isPending || reordering}
-                                  className="p-1 rounded text-gray-400 hover:text-gray-900 disabled:opacity-20 hover:bg-slate-200 transition-colors"
-                                  title="Move Down"
-                                  aria-label={`Move ${leader.name} down`}
-                                >
-                                  <MoveDown className="size-3" />
-                                </button>
-                              </div>
-                            </div>
-                          </TableCell>
-
-                          {/* Leader Portrait & Name */}
-                          <TableCell className="py-3">
-                            <div className="flex items-center gap-3">
-                              <div className="relative size-11 rounded-lg overflow-hidden shrink-0 border border-gray-200 bg-slate-100">
-                                <Image
-                                  src={leader.imageUrl || '/logo/logo-transparent.png'}
-                                  alt={leader.name}
-                                  fill
-                                  className="object-cover object-top"
-                                />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-xs font-bold text-gray-900 truncate">
-                                  {leader.name}
-                                </p>
-                                <p className="text-[11px] text-gray-400 truncate">
-                                  {leader.session || academicSession}
-                                </p>
-                              </div>
-                            </div>
-                          </TableCell>
-
-                          {/* Office / Post Held */}
-                          <TableCell className="py-3">
-                            <span className="inline-block rounded-md bg-primary/10 text-primary font-semibold text-xs px-2.5 py-1">
-                              {leader.title}
-                            </span>
-                          </TableCell>
-
-                          {/* Department */}
-                          <TableCell className="py-3">
-                            <p className="text-xs text-gray-600 line-clamp-1" title={leader.department}>
-                              {leader.department}
-                            </p>
-                          </TableCell>
-
-                          {/* Contacts */}
-                          <TableCell className="py-3">
-                            <div className="space-y-1 text-[11px] text-gray-500">
-                              <div className="flex items-center gap-1.5 truncate">
-                                <Phone className="size-3 text-gray-400 shrink-0" />
-                                <span>{leader.phoneNumber}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5 truncate">
-                                <Mail className="size-3 text-gray-400 shrink-0" />
-                                <span className="truncate max-w-35" title={leader.email}>
-                                  {leader.email}
-                                </span>
-                              </div>
-                            </div>
-                          </TableCell>
-
-                          {/* Published Status */}
-                          <TableCell className="py-3 text-center">
-                            <button
-                              type="button"
-                              onClick={() => handleTogglePublish(leader)}
-                              disabled={isPending}
-                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors ${
-                                leader.isPublished
-                                  ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                              }`}
-                              title="Click to toggle publish status"
-                            >
-                              {leader.isPublished ? (
-                                <>
-                                  <Eye className="size-3" />
-                                  Live
-                                </>
-                              ) : (
-                                <>
-                                  <EyeOff className="size-3" />
-                                  Draft
-                                </>
-                              )}
-                            </button>
-                          </TableCell>
-
-                          {/* Actions (Edit & Delete) */}
-                          <TableCell className="py-3 text-right pr-4">
-                            <div className="flex items-center justify-end gap-1">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleEdit(leader)}
-                                className="size-8 p-0 text-gray-500 hover:text-primary hover:bg-primary/10"
-                                title="Edit Leader"
-                              >
-                                <Edit className="size-3.5" />
-                              </Button>
-
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDelete(leader)}
-                                className="size-8 p-0 text-gray-400 hover:text-red-600 hover:bg-red-50"
-                                title="Delete Leader"
-                              >
-                                <Trash2 className="size-3.5" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
+            </form>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

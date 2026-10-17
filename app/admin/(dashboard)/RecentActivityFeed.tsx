@@ -42,8 +42,10 @@ const ITEMS_PER_PAGE = 6;
 
 export default function RecentActivityFeed({
   activities: initialActivities,
+  isSuperAdmin = false,
 }: {
   activities: SerializableActivityItem[];
+  isSuperAdmin?: boolean;
 }) {
   const [typeFilter, setTypeFilter] = useState<'all' | 'feedback' | 'spotlight' | 'association' | 'setting' | 'admin' | 'news' | 'blog' | 'leadership'>('all');
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | '7days' | '30days'>('all');
@@ -179,26 +181,27 @@ export default function RecentActivityFeed({
         </div>
 
         {/* Filter Badges Bar */}
-        <div className="flex flex-wrap items-center gap-2 text-xs pt-1 border-t border-gray-200/60">
-          <span className="text-gray-400 flex items-center gap-1 text-[11px]">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-xs pt-1 border-t border-gray-200/60">
+          <span className="text-gray-400 flex items-center gap-1 text-[11px] shrink-0">
             <Filter className="size-3" /> Filters:
           </span>
 
-          {/* Date Filter Pills */}
-          <div className="inline-flex rounded-lg border border-gray-200 p-0.5 bg-white">
-            <button
-              onClick={() => {
-                setDateFilter('all');
-                setCurrentPage(1);
-              }}
-              className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors ${
-                dateFilter === 'all'
-                  ? 'bg-[#170A51] text-white font-semibold'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              All Time
-            </button>
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 w-full no-scrollbar">
+            {/* Date Filter Pills */}
+            <div className="inline-flex rounded-lg border border-gray-200 p-0.5 bg-white shrink-0">
+              <button
+                onClick={() => {
+                  setDateFilter('all');
+                  setCurrentPage(1);
+                }}
+                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                  dateFilter === 'all'
+                    ? 'bg-[#170A51] text-white font-semibold'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                All Time
+              </button>
             <button
               onClick={() => {
                 setDateFilter('today');
@@ -333,6 +336,22 @@ export default function RecentActivityFeed({
             >
               Leadership
             </button>
+            {isSuperAdmin && (
+              <button
+                onClick={() => {
+                  setTypeFilter('admin');
+                  setCurrentPage(1);
+                }}
+                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors ${
+                  typeFilter === 'admin'
+                    ? 'bg-indigo-600 text-white font-semibold'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Admins
+              </button>
+            )}
+          </div>
           </div>
         </div>
       </div>

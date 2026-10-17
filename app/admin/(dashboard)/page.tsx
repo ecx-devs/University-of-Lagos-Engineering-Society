@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
+import { auth } from '@/auth';
 import {
   Inbox,
   Sparkles,
@@ -8,6 +9,7 @@ import {
   Newspaper,
   BookOpen,
   Award,
+  Calendar,
 } from 'lucide-react';
 import { getBodyBySlug } from '@/components/constants';
 import RecentActivityFeed, { type SerializableActivityItem } from './RecentActivityFeed';
@@ -15,6 +17,10 @@ import RecentActivityFeed, { type SerializableActivityItem } from './RecentActiv
 export const revalidate = 0; // Fresh real-time activity feed on every admin visit
 
 export default async function AdminDashboardHome() {
+  const session = await auth();
+  const superAdminEmail = process.env.SUPERADMIN_EMAIL;
+  const isSuperAdmin = session?.user?.email === superAdminEmail;
+
   const [
     totalSubmissions,
     unreadSubmissions,
@@ -22,6 +28,7 @@ export default async function AdminDashboardHome() {
     spotlightsCount,
     newsCount,
     blogCount,
+    eventsCount,
     executiveCount,
     feedbacks,
     spotlights,
@@ -38,6 +45,7 @@ export default async function AdminDashboardHome() {
     prisma.spotlight.count().catch(() => 0),
     prisma.news.count().catch(() => 0),
     prisma.blogPost.count().catch(() => 0),
+    prisma.event.count().catch(() => 0),
     prisma.executiveLeader.count().catch(() => 0),
     prisma.feedback.findMany({ take: 25, orderBy: { createdAt: 'desc' } }).catch(() => []),
     prisma.spotlight.findMany({ take: 25, orderBy: { updatedAt: 'desc' } }).catch(() => []),
@@ -184,20 +192,22 @@ export default async function AdminDashboardHome() {
     }
   }
 
-  // 8. Admin Registrations
-  for (const adm of admins) {
-    rawActivities.push({
-      id: `admin-${adm.id}`,
-      type: 'admin',
-      title: `Admin Account: ${adm.name || adm.email}`,
-      description: `Role: ${adm.role} • ${adm.email}`,
-      timestamp: new Date(adm.createdAt).toISOString(),
-      link: '/admin/users',
-      badge: { text: 'Admin', className: 'bg-gray-100 text-gray-700' },
-      iconType: 'admin',
-      iconBg: 'bg-indigo-50',
-      iconColor: 'text-indigo-600',
-    });
+  // 8. Admin Registrations (Only visible to superadmins)
+  if (isSuperAdmin) {
+    for (const adm of admins) {
+      rawActivities.push({
+        id: `admin-${adm.id}`,
+        type: 'admin',
+        title: `Admin Account: ${adm.name || adm.email}`,
+        description: `Role: ${adm.role} • ${adm.email}`,
+        timestamp: new Date(adm.createdAt).toISOString(),
+        link: '/admin/users',
+        badge: { text: 'Admin', className: 'bg-gray-100 text-gray-700' },
+        iconType: 'admin',
+        iconBg: 'bg-indigo-50',
+        iconColor: 'text-indigo-600',
+      });
+    }
   }
 
   return (
@@ -212,174 +222,237 @@ export default async function AdminDashboardHome() {
         </p>
       </div>
 
-      {/* Metric Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-5">
-        {/* Card 0: Executive Council (New) */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/40">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              Executive Council
-            </h3>
-            <div className="size-9 rounded-lg bg-purple-50 flex items-center justify-center text-[#170A51]">
-              <Award className="size-4.5" />
+      {/* Metric Cards Grid - Compact, short-height responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+        {/* Card 1: Executive Council */}
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#170A51]/40 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-purple-50 flex items-center justify-center text-[#170A51] shrink-0">
+              <Award className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                Executive Council
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#170A51] leading-none">
+                  {executiveCount.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  EXCO Profiles
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-[#170A51]">
-              {executiveCount.toLocaleString()}
-            </span>
-          </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">EXCO Profiles</span>
-            <Link href="/admin/leadership" className="text-primary hover:underline font-semibold flex items-center gap-1">
-              Manage &rarr;
-            </Link>
-          </div>
+          <Link
+            href="/admin/leadership"
+            className="text-xs font-semibold text-primary hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            Manage &rarr;
+          </Link>
         </div>
 
-        {/* Card 1: Submissions */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/30">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              Student Submissions
-            </h3>
-            <div className="size-9 rounded-lg bg-[#170A51]/10 flex items-center justify-center text-[#170A51]">
-              <Inbox className="size-4.5" />
+        {/* Card 2: Submissions */}
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#106333]/30 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-[#106333]/10 flex items-center justify-center text-[#106333] shrink-0">
+              <Inbox className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                Submissions
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#106333] leading-none">
+                  {totalSubmissions.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  {unreadSubmissions > 0 ? `${unreadSubmissions} unread` : 'All caught up'}
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-[#170A51]">
-              {totalSubmissions.toLocaleString()}
-            </span>
-          </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">
-              {unreadSubmissions > 0 ? `${unreadSubmissions} unread feedback` : 'All caught up'}
-            </span>
-            <Link href="/admin/submissions" className="text-[#106333] hover:underline font-semibold flex items-center gap-1">
-              View &rarr;
-            </Link>
-          </div>
-        </div>
-
-        {/* Card 2: Spotlights */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#C85B15]/30">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              Spotlight Features
-            </h3>
-            <div className="size-9 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15]">
-              <Sparkles className="size-4.5" />
-            </div>
-          </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-[#C85B15]">
-              {spotlightsCount.toLocaleString()}
-            </span>
-          </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">Volunteer & Lecturer stories</span>
-            <Link href="/admin/spotlights" className="text-[#C85B15] hover:underline font-semibold flex items-center gap-1">
-              Manage &rarr;
-            </Link>
-          </div>
+          <Link
+            href="/admin/submissions"
+            className="text-xs font-semibold text-[#106333] hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            View &rarr;
+          </Link>
         </div>
 
         {/* Card 3: News & Digest */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#185A48]/30">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              News & Digest
-            </h3>
-            <div className="size-9 rounded-lg bg-[#185A48]/10 flex items-center justify-center text-[#185A48]">
-              <Newspaper className="size-4.5" />
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#185A48]/30 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-[#185A48]/10 flex items-center justify-center text-[#185A48] shrink-0">
+              <Newspaper className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                News & Digest
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#185A48] leading-none">
+                  {newsCount.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  Issues & News
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-[#185A48]">
-              {newsCount.toLocaleString()}
-            </span>
-          </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">Digest Issues & News</span>
-            <Link href="/admin/news" className="text-[#185A48] hover:underline font-semibold flex items-center gap-1">
-              Manage &rarr;
-            </Link>
-          </div>
+          <Link
+            href="/admin/news"
+            className="text-xs font-semibold text-[#185A48] hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            Manage &rarr;
+          </Link>
         </div>
 
         {/* Card 4: Blog Articles */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#C85B15]/30">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              Blog Articles
-            </h3>
-            <div className="size-9 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15]">
-              <BookOpen className="size-4.5" />
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#C85B15]/30 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15] shrink-0">
+              <BookOpen className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                Blog Articles
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#C85B15] leading-none">
+                  {blogCount.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  Stories
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-[#C85B15]">
-              {blogCount.toLocaleString()}
-            </span>
-          </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">Student & Tech stories</span>
-            <Link href="/admin/blog" className="text-[#C85B15] hover:underline font-semibold flex items-center gap-1">
-              CMS &rarr;
-            </Link>
-          </div>
+          <Link
+            href="/admin/blog"
+            className="text-xs font-semibold text-[#C85B15] hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            CMS &rarr;
+          </Link>
         </div>
 
-        {/* Card 5: Associations */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#106333]/30">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              Associations Tracked
-            </h3>
-            <div className="size-9 rounded-lg bg-[#106333]/10 flex items-center justify-center text-[#106333]">
-              <Building2 className="size-4.5" />
+        {/* Card 5: Events & Gallery */}
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#170A51]/30 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-[#170A51]/10 flex items-center justify-center text-[#170A51] shrink-0">
+              <Calendar className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                Events & Gallery
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#170A51] leading-none">
+                  {eventsCount.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  Events
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-[#106333]">
-              15
-            </span>
-          </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">9 Departments • 6 Sub-Bodies</span>
-            <Link href="/admin/associations" className="text-[#106333] hover:underline font-semibold flex items-center gap-1">
-              Roster &rarr;
-            </Link>
-          </div>
+          <Link
+            href="/admin/events"
+            className="text-xs font-semibold text-[#170A51] hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            Manage &rarr;
+          </Link>
         </div>
 
-        {/* Card 6: Admins */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between transition-all hover:border-[#22203E]/30">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-xs font-semibold uppercase tracking-wider">
-              Active Admins
-            </h3>
-            <div className="size-9 rounded-lg bg-[#22203E]/10 flex items-center justify-center text-[#22203E]">
-              <Users className="size-4.5" />
+        {/* Card 6: Spotlight Features */}
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#C85B15]/30 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15] shrink-0">
+              <Sparkles className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                Spotlights
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#C85B15] leading-none">
+                  {spotlightsCount.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  Features
+                </span>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-4xl font-['Anton'] text-gray-900">
-              {(activeAdmins + 1).toLocaleString()}
-            </span>
+          <Link
+            href="/admin/spotlights"
+            className="text-xs font-semibold text-[#C85B15] hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            Manage &rarr;
+          </Link>
+        </div>
+
+        {/* Card 7: Associations Tracked */}
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#106333]/30 transition-all flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="size-10 rounded-lg bg-[#106333]/10 flex items-center justify-center text-[#106333] shrink-0">
+              <Building2 className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                Associations
+              </span>
+              <div className="flex items-baseline gap-2 mt-0.5">
+                <span className="text-2xl font-['Anton'] text-[#106333] leading-none">
+                  15
+                </span>
+                <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                  9 Depts • 6 Bodies
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-            <span className="text-gray-500">Authorized executives</span>
-            <Link href="/admin/users" className="text-[#170A51] hover:underline font-semibold flex items-center gap-1">
+          <Link
+            href="/admin/associations"
+            className="text-xs font-semibold text-[#106333] hover:underline shrink-0 flex items-center gap-0.5"
+          >
+            Roster &rarr;
+          </Link>
+        </div>
+
+        {/* Card 8: Active Admins (Visible ONLY to Super Admin) */}
+        {isSuperAdmin && (
+          <div className="bg-white rounded-xl border border-gray-200/90 p-3.5 shadow-2xs hover:shadow-xs hover:border-[#22203E]/30 transition-all flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="size-10 rounded-lg bg-[#22203E]/10 flex items-center justify-center text-[#22203E] shrink-0">
+                <Users className="size-5" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+                  Active Admins
+                </span>
+                <div className="flex items-baseline gap-2 mt-0.5">
+                  <span className="text-2xl font-['Anton'] text-gray-900 leading-none">
+                    {(activeAdmins + 1).toLocaleString()}
+                  </span>
+                  <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
+                    Authorized
+                  </span>
+                </div>
+              </div>
+            </div>
+            <Link
+              href="/admin/users"
+              className="text-xs font-semibold text-[#170A51] hover:underline shrink-0 flex items-center gap-0.5"
+            >
               Admins &rarr;
             </Link>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Section: Filterable, Paginated Recent Activity Feed */}
-      <RecentActivityFeed activities={rawActivities} />
+      <RecentActivityFeed activities={rawActivities} isSuperAdmin={isSuperAdmin} />
     </div>
   );
 }
