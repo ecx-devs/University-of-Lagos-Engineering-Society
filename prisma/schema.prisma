@@ -135,3 +135,22 @@ model BlogPost {
   @@map("blog_posts")
 }
 
+model ExecutiveLeader {
+  id          String   @id @default(cuid())
+  name        String
+  title       String   // Post held / Position (e.g. President, Social Secretary)
+  department  String
+  phoneNumber String
+  email       String
+  imageUrl    String   @default("/logo/logo-transparent.png")
+  order       Int      @default(0)
+  session     String   @default("2025/2026")
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([isPublished, order])
+  @@map("executive_leaders")
+}
+

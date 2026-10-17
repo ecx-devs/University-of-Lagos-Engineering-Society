@@ -76,17 +76,16 @@ export function Header() {
 
   return (
     <header className="bg-background sticky top-0 z-50 w-full border-b">
-      {/* Navigation Header */}
       <div className="xs:px-[4.1%] flex w-full max-w-360 items-center justify-between px-4 lg:px-[4.5%] xl:px-[7.778%] 2xl:mx-auto 2xl:max-w-[84.44%] 2xl:px-0">
         
-        <Link href="/" className="my-[2.5px] flex items-center gap-2">
+        <Link href="/" className="my-[5px] flex items-center gap-2">
           <Image
             src="/ules-logo.png"
             alt="ULES Logo"
-            width={276}
-            height={60}
+            width={313}
+            height={77}
             priority
-            className="x-[276px] y-15"
+            className="h-15 w-auto object-contain"
           />
         </Link>
 
@@ -204,8 +203,8 @@ export function Header() {
                 <Image
                   src="/ules-logo.png"
                   alt="ULES Logo"
-                  width={200}
-                  height={44}
+                  width={313}
+                  height={77}
                   priority
                   className="h-10 w-auto object-contain"
                 />
