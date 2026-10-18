@@ -17,35 +17,42 @@ const navItems = [
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
-export function SidebarNav({ isSuperAdmin }: { isSuperAdmin: boolean }) {
+export function SidebarNav({
+  isSuperAdmin,
+  onNavigate,
+}: {
+  isSuperAdmin: boolean;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
 
-
-  const visibleNavItems = navItems.filter(item =>
+  const visibleNavItems = navItems.filter((item) =>
     item.name === "Admins" ? isSuperAdmin : true
   );
 
   return (
-    <nav className="flex-1 py-6 px-3 space-y-2 overflow-y-auto">
+    <nav className="flex-1 py-6 px-3 space-y-1.5 overflow-y-auto">
       {visibleNavItems.map((item) => {
         const Icon = item.icon;
 
-        const isActive = item.href === "/admin"
-          ? pathname === "/admin"
-          : pathname.startsWith(item.href);
+        const isActive =
+          item.href === "/admin"
+            ? pathname === "/admin"
+            : pathname.startsWith(item.href);
 
         return (
           <Link
             key={item.name}
             href={item.href}
-            className={`flex items-center gap-3 px-3 py-3 rounded-md transition-colors ${
+            onClick={onNavigate}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm ${
               isActive
-                ? "bg-[#C85B15] text-white"
-                : "text-gray-300 hover:bg-[#22203E] hover:text-white"
+                ? "bg-[#C85B15] text-white shadow-xs font-semibold"
+                : "text-gray-300 hover:bg-[#22203E] hover:text-white font-medium"
             }`}
           >
-            <Icon className="w-5 h-5" />
-            <span className="font-medium">{item.name}</span>
+            <Icon className="w-4.5 h-4.5 shrink-0" />
+            <span>{item.name}</span>
           </Link>
         );
       })}

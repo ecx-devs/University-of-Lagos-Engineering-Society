@@ -265,7 +265,7 @@ export default function SubmissionsClientTable({
 
           <Button
             onClick={() => fetchFeedbackSummary('all')}
-            className="bg-[#170A51] hover:bg-[#22203E] text-white text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs cursor-pointer self-start sm:self-auto"
+            className="w-full sm:w-auto justify-center bg-[#170A51] hover:bg-[#22203E] text-white text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-2 shadow-xs cursor-pointer"
           >
             Feedback Summary
           </Button>
@@ -313,7 +313,7 @@ export default function SubmissionsClientTable({
             onClick={() => setSentimentFilter(sentimentFilter === 'positive' ? 'all' : 'positive')}
             className={`px-3 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
               sentimentFilter === 'positive'
-                ? 'border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold'
+                ? 'border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold shadow-2xs'
                 : 'border-gray-200 bg-gray-50/70 text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -325,7 +325,7 @@ export default function SubmissionsClientTable({
             onClick={() => setSentimentFilter(sentimentFilter === 'suggestion' ? 'all' : 'suggestion')}
             className={`px-3 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
               sentimentFilter === 'suggestion'
-                ? 'border-amber-500 bg-amber-50 text-amber-900 font-semibold'
+                ? 'border-amber-500 bg-amber-50 text-amber-900 font-semibold shadow-2xs'
                 : 'border-gray-200 bg-gray-50/70 text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -337,7 +337,7 @@ export default function SubmissionsClientTable({
             onClick={() => setSentimentFilter(sentimentFilter === 'urgent' ? 'all' : 'urgent')}
             className={`px-3 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
               sentimentFilter === 'urgent'
-                ? 'border-red-500 bg-red-50 text-red-900 font-semibold'
+                ? 'border-red-500 bg-red-50 text-red-900 font-semibold shadow-2xs'
                 : 'border-gray-200 bg-gray-50/70 text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -349,7 +349,7 @@ export default function SubmissionsClientTable({
             onClick={() => setSentimentFilter(sentimentFilter === 'neutral' ? 'all' : 'neutral')}
             className={`px-3 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
               sentimentFilter === 'neutral'
-                ? 'border-gray-400 bg-gray-200 text-gray-900 font-semibold'
+                ? 'border-gray-400 bg-gray-200 text-gray-900 font-semibold shadow-2xs'
                 : 'border-gray-200 bg-gray-50/70 text-gray-700 hover:bg-gray-100'
             }`}
           >
@@ -386,10 +386,10 @@ export default function SubmissionsClientTable({
       </div>
 
       {/* SECTION 2: SEARCH, FILTER, AND CONTROLS TOOLBAR */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-xs space-y-3">
+      <div className="bg-white rounded-2xl border border-gray-200 p-3.5 sm:p-4 shadow-xs space-y-3">
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           {/* Search Box */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 w-full">
             <Search className="size-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <Input
               type="text"
@@ -399,7 +399,7 @@ export default function SubmissionsClientTable({
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="pl-9.5 text-xs bg-gray-50/50 border-gray-200 focus:bg-white"
+              className="pl-9.5 text-xs bg-gray-50/50 border-gray-200 focus:bg-white w-full"
             />
             {searchQuery && (
               <button
@@ -412,7 +412,7 @@ export default function SubmissionsClientTable({
           </div>
 
           {/* Quick Mark All Read & Clear Filters */}
-          <div className="flex items-center gap-2 self-end md:self-auto shrink-0">
+          <div className="flex items-center gap-2 justify-between md:justify-end shrink-0">
             {(searchQuery ||
               readFilter !== 'all' ||
               sentimentFilter !== 'all' ||
@@ -449,7 +449,7 @@ export default function SubmissionsClientTable({
         </div>
 
         {/* Filter Pills Bar */}
-        <div className="flex flex-wrap items-center gap-2 text-xs pt-1 border-t border-gray-100">
+        <div className="flex flex-wrap items-center gap-2 text-xs pt-2 border-t border-gray-100">
           <span className="text-gray-400 flex items-center gap-1 mr-1">
             <Filter className="size-3" />
             Filter by:
@@ -525,7 +525,7 @@ export default function SubmissionsClientTable({
                 dateFilter === '7days' ? 'bg-white text-gray-900 font-bold shadow-xs' : 'text-gray-500 hover:text-gray-900'
               }`}
             >
-              Past 7 Days
+              7 Days
             </button>
             <button
               onClick={() => {
@@ -536,14 +536,14 @@ export default function SubmissionsClientTable({
                 dateFilter === '30days' ? 'bg-white text-gray-900 font-bold shadow-xs' : 'text-gray-500 hover:text-gray-900'
               }`}
             >
-              Past 30 Days
+              30 Days
             </button>
           </div>
 
           {/* Sort Order */}
           <button
             onClick={() => setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest')}
-            className="ml-auto text-xs text-gray-500 hover:text-gray-900 px-2 py-1 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer"
+            className="w-full sm:w-auto sm:ml-auto text-xs text-gray-600 hover:text-gray-900 px-2.5 py-1 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer text-center sm:text-right"
           >
             Sort: <strong>{sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}</strong>
           </button>
@@ -552,23 +552,23 @@ export default function SubmissionsClientTable({
 
       {/* SECTION 3: SUBMISSIONS DATA TABLE */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 text-left">
-            <thead className="bg-gray-50/80">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full min-w-[760px] divide-y divide-gray-200 text-left">
+            <thead className="bg-gray-50/90 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3.5 sm:px-6 text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
                   Status & Date
                 </th>
-                <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3.5 sm:px-6 text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[150px]">
                   Student
                 </th>
-                <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3.5 sm:px-6 text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[220px]">
                   Subject & Excerpt
                 </th>
-                <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3.5 sm:px-6 text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[120px]">
                   Category
                 </th>
-                <th className="px-6 py-3.5 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3.5 sm:px-6 text-right text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap min-w-[100px]">
                   Actions
                 </th>
               </tr>

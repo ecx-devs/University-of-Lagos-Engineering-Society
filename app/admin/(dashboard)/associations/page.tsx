@@ -158,21 +158,21 @@ export default function AdminAssociationsPage() {
       {/* Page Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">
+          <h1 className="text-2xl sm:text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">
             Associations & Leadership
           </h1>
-          <p className="text-gray-500 font-['Neue_Machina'] text-sm mt-1">
+          <p className="text-gray-500 font-['Neue_Machina'] text-xs sm:text-sm mt-1">
             Manage the current president/leads and active academic session across all 15 departmental bodies and sub-bodies.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <Button
             type="button"
             variant="outline"
             onClick={loadData}
             disabled={loading}
-            className="flex items-center gap-2 border-gray-300"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 border-gray-300 bg-white"
           >
             <RefreshCw className={`size-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -182,7 +182,7 @@ export default function AdminAssociationsPage() {
             type="button"
             onClick={handleSaveAll}
             disabled={isBulkSaving || loading}
-            className="bg-[#106333] hover:bg-[#0c4b26] text-white flex items-center gap-2 shadow-xs"
+            className="flex-1 sm:flex-none bg-[#106333] hover:bg-[#0c4b26] text-white flex items-center justify-center gap-2 shadow-xs cursor-pointer"
           >
             {isBulkSaving ? (
               <>
@@ -218,26 +218,26 @@ export default function AdminAssociationsPage() {
       )}
 
       {/* Section 1: Global Academic Session Controller */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-xs space-y-4">
+      <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-xs space-y-4">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">
               Active Academic Session
             </h2>
-            <p className="text-sm text-gray-500 mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-gray-500 mt-1 max-w-2xl">
               Updating this session value propagates automatically across the entire platform — including the
               Home Welcome Message, Executive Council, and all 15 association profile cards and badges.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-end sm:self-auto">
-            <div className="relative">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
               <Calendar className="size-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <Input
                 value={session}
                 onChange={(e) => setSession(e.target.value)}
                 placeholder="e.g. 2026/2027"
-                className="pl-9 w-40 font-semibold text-gray-900 border-gray-300"
+                className="pl-9 w-full sm:w-40 font-semibold text-gray-900 border-gray-300"
               />
             </div>
 
@@ -245,7 +245,7 @@ export default function AdminAssociationsPage() {
               type="button"
               onClick={handleUpdateSessionOnly}
               disabled={savingId === 'session-only' || session === initialSession}
-              className="bg-[#C85B15] hover:bg-[#a84c11] text-white"
+              className="bg-[#C85B15] hover:bg-[#a84c11] text-white shrink-0 cursor-pointer"
             >
               {savingId === 'session-only' ? (
                 <>
@@ -263,41 +263,43 @@ export default function AdminAssociationsPage() {
       {/* Section 2: Search, Filters & Associations Roster */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
         {/* Filters and Search Toolbar */}
-        <div className="p-5 border-b border-gray-200 flex flex-col sm:flex-row gap-4 items-center justify-between bg-gray-50/50">
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={() => setFilterType('all')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                filterType === 'all'
-                  ? 'bg-[#170A51] text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
-              }`}
-            >
-              All Associations (15)
-            </button>
-            <button
-              type="button"
-              onClick={() => setFilterType('departmental')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                filterType === 'departmental'
-                  ? 'bg-[#106333] text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
-              }`}
-            >
-              Departments (9)
-            </button>
-            <button
-              type="button"
-              onClick={() => setFilterType('sub-bodies')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                filterType === 'sub-bodies'
-                  ? 'bg-[#C85B15] text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
-              }`}
-            >
-              Sub-Bodies (6)
-            </button>
+        <div className="p-3.5 sm:p-5 border-b border-gray-200 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-between bg-gray-50/50">
+          <div className="overflow-x-auto pb-1 sm:pb-0 w-full sm:w-auto">
+            <div className="flex items-center gap-2 w-max">
+              <button
+                type="button"
+                onClick={() => setFilterType('all')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  filterType === 'all'
+                    ? 'bg-[#170A51] text-white shadow-2xs'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                All Associations (15)
+              </button>
+              <button
+                type="button"
+                onClick={() => setFilterType('departmental')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  filterType === 'departmental'
+                    ? 'bg-[#106333] text-white shadow-2xs'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                Departments (9)
+              </button>
+              <button
+                type="button"
+                onClick={() => setFilterType('sub-bodies')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  filterType === 'sub-bodies'
+                    ? 'bg-[#C85B15] text-white shadow-2xs'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                Sub-Bodies (6)
+              </button>
+            </div>
           </div>
 
           <div className="relative w-full sm:w-72">
@@ -306,7 +308,7 @@ export default function AdminAssociationsPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by body or lead name..."
-              className="pl-9 bg-white border-gray-300 text-sm"
+              className="pl-9 bg-white border-gray-300 text-sm w-full shadow-2xs"
             />
           </div>
         </div>
@@ -324,15 +326,15 @@ export default function AdminAssociationsPage() {
             <p className="text-sm mt-0.5">Try clearing your search query or filters.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full min-w-[760px] text-left border-collapse">
               <thead>
-                <tr className="border-b border-gray-200 bg-gray-50/80 text-[11px] font-semibold tracking-wider text-gray-500 uppercase">
-                  <th className="py-3.5 px-4 sm:px-6">Association</th>
-                  <th className="py-3.5 px-4">Leadership Role / Title</th>
-                  <th className="py-3.5 px-4">Current Lead Name</th>
-                  <th className="py-3.5 px-4 text-center">Session</th>
-                  <th className="py-3.5 px-4 text-right pr-6">Action</th>
+                <tr className="border-b border-gray-200 bg-gray-50/90 text-xs font-bold tracking-wider text-gray-600 uppercase">
+                  <th className="py-3.5 px-4 sm:px-6 whitespace-nowrap min-w-[200px]">Association</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap min-w-[160px]">Leadership Role / Title</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap min-w-[200px]">Current Lead Name</th>
+                  <th className="py-3.5 px-4 text-center whitespace-nowrap min-w-[100px]">Session</th>
+                  <th className="py-3.5 px-4 text-right pr-6 whitespace-nowrap min-w-[100px]">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 text-sm">

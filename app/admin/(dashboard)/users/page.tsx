@@ -1,11 +1,16 @@
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import AdminClientTable from './AdminClientTable';
+import { redirect } from 'next/navigation';
 
 export default async function AdminsPage() {
   const session = await auth();
   const superAdminEmail = process.env.SUPERADMIN_EMAIL;
   const isSuperAdmin = session?.user?.email === superAdminEmail;
+
+  if (!isSuperAdmin) {
+    redirect('/admin');
+  }
 
   const admins = await prisma.admin.findMany({
     orderBy: { createdAt: 'desc' }

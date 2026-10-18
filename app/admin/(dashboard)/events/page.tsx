@@ -355,74 +355,82 @@ export default function EventsAdminPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">Events & Gallery Management</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl sm:text-3xl font-['Anton'] text-[#170A51] tracking-wide uppercase">Events & Gallery Management</h1>
+          <p className="mt-1 text-xs sm:text-sm text-gray-500">
             Create, manage and publish ULES events and their associated gallery photo collections.
           </p>
         </div>
         <Button
           onClick={handleOpenCreateModal}
-          className="bg-[#170A51] hover:bg-[#22203E] text-white shadow-xs flex items-center gap-2 font-medium px-4 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-[#170A51] hover:bg-[#22203E] text-white shadow-xs flex items-center justify-center gap-2 font-medium px-4 py-2 rounded-lg transition-colors cursor-pointer"
         >
           <Plus className="h-4 w-4" />
-          Create New Event
+          <span>Create New Event</span>
         </Button>
       </div>
 
       {/* Overview Metric Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-[#170A51]/30">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Events</span>
-            <div className="size-8 rounded-lg bg-[#170A51]/10 flex items-center justify-center text-[#170A51]">
-              <CalendarIcon className="size-4" />
-            </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3 shadow-2xs flex items-center gap-3 hover:border-[#170A51]/30 transition-all">
+          <div className="size-9 rounded-lg bg-[#170A51]/10 flex items-center justify-center text-[#170A51] shrink-0">
+            <CalendarIcon className="size-4.5" />
           </div>
-          <div className="mt-3">
-            <span className="text-3xl font-['Anton'] text-[#170A51]">{events.length}</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-[#106333]/30">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Upcoming Events</span>
-            <div className="size-8 rounded-lg bg-[#106333]/10 flex items-center justify-center text-[#106333]">
-              <Sparkles className="size-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <span className="text-3xl font-['Anton'] text-[#106333]">{upcomingCount}</span>
+          <div className="min-w-0">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+              Total Events
+            </span>
+            <span className="text-xl font-['Anton'] text-[#170A51] leading-none mt-0.5 block">
+              {events.length}
+            </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-gray-300">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Past Events</span>
-            <div className="size-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600">
-              <Clock className="size-4" />
-            </div>
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3 shadow-2xs flex items-center gap-3 hover:border-[#106333]/30 transition-all">
+          <div className="size-9 rounded-lg bg-[#106333]/10 flex items-center justify-center text-[#106333] shrink-0">
+            <Sparkles className="size-4.5" />
           </div>
-          <div className="mt-3">
-            <span className="text-3xl font-['Anton'] text-gray-700">{pastCount}</span>
+          <div className="min-w-0">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+              Upcoming
+            </span>
+            <span className="text-xl font-['Anton'] text-[#106333] leading-none mt-0.5 block">
+              {upcomingCount}
+            </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs flex flex-col justify-between transition-all hover:border-[#C85B15]/30">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500 text-xs font-semibold uppercase tracking-wider">Active Galleries</span>
-            <div className="size-8 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15]">
-              <ImageIcon className="size-4" />
-            </div>
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3 shadow-2xs flex items-center gap-3 hover:border-gray-300 transition-all">
+          <div className="size-9 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 shrink-0">
+            <Clock className="size-4.5" />
           </div>
-          <div className="mt-3">
-            <span className="text-3xl font-['Anton'] text-[#C85B15]">{galleryCount}</span>
+          <div className="min-w-0">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+              Past Events
+            </span>
+            <span className="text-xl font-['Anton'] text-gray-700 leading-none mt-0.5 block">
+              {pastCount}
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-gray-200/90 p-3 shadow-2xs flex items-center gap-3 hover:border-[#C85B15]/30 transition-all">
+          <div className="size-9 rounded-lg bg-[#C85B15]/10 flex items-center justify-center text-[#C85B15] shrink-0">
+            <ImageIcon className="size-4.5" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 block truncate">
+              Galleries
+            </span>
+            <span className="text-xl font-['Anton'] text-[#C85B15] leading-none mt-0.5 block">
+              {galleryCount}
+            </span>
           </div>
         </div>
       </div>
 
       {/* Controls: Search & Filter Tabs */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-md w-full">
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             placeholder="Search by title, venue, or slug..."
@@ -431,72 +439,75 @@ export default function EventsAdminPage() {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            className="pl-10 bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-lg shadow-2xs focus-visible:ring-[#170A51]"
+            className="pl-10 bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 rounded-lg shadow-2xs focus-visible:ring-[#170A51] w-full"
           />
         </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto rounded-xl border border-gray-200 bg-white p-1 text-xs shadow-2xs">
-          <button
-            onClick={() => {
-              setStatusFilter('all');
-              setCurrentPage(1);
-            }}
-            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'all' ? 'bg-[#170A51] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            }`}
-          >
-            All ({events.length})
-          </button>
-          <button
-            onClick={() => {
-              setStatusFilter('upcoming');
-              setCurrentPage(1);
-            }}
-            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'upcoming' ? 'bg-[#106333] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            }`}
-          >
-            Upcoming ({upcomingCount})
-          </button>
-          <button
-            onClick={() => {
-              setStatusFilter('past');
-              setCurrentPage(1);
-            }}
-            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'past' ? 'bg-gray-800 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            }`}
-          >
-            Past ({pastCount})
-          </button>
-          <button
-            onClick={() => {
-              setStatusFilter('gallery');
-              setCurrentPage(1);
-            }}
-            className={`rounded-lg px-3 py-1.5 font-medium transition-colors ${
-              statusFilter === 'gallery' ? 'bg-[#C85B15] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-            }`}
-          >
-            Has Gallery ({galleryCount})
-          </button>
+        <div className="w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+          <div className="flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white p-1 text-xs shadow-2xs w-max">
+            <button
+              onClick={() => {
+                setStatusFilter('all');
+                setCurrentPage(1);
+              }}
+              className={`rounded-lg px-3 py-1.5 font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                statusFilter === 'all' ? 'bg-[#170A51] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              All ({events.length})
+            </button>
+            <button
+              onClick={() => {
+                setStatusFilter('upcoming');
+                setCurrentPage(1);
+              }}
+              className={`rounded-lg px-3 py-1.5 font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                statusFilter === 'upcoming' ? 'bg-[#106333] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Upcoming ({upcomingCount})
+            </button>
+            <button
+              onClick={() => {
+                setStatusFilter('past');
+                setCurrentPage(1);
+              }}
+              className={`rounded-lg px-3 py-1.5 font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                statusFilter === 'past' ? 'bg-gray-800 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Past ({pastCount})
+            </button>
+            <button
+              onClick={() => {
+                setStatusFilter('gallery');
+                setCurrentPage(1);
+              }}
+              className={`rounded-lg px-3 py-1.5 font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                statusFilter === 'gallery' ? 'bg-[#C85B15] text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              With Gallery ({galleryCount})
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Events Table */}
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xs">
-        <Table>
-          <TableHeader className="bg-gray-50">
-            <TableRow className="border-b border-gray-200 hover:bg-transparent">
-              <TableHead className="w-16 text-gray-500 font-semibold text-xs uppercase tracking-wider">Cover</TableHead>
-              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Event Details</TableHead>
-              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Date & Time</TableHead>
-              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Venue</TableHead>
-              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Status</TableHead>
-              <TableHead className="text-gray-500 font-semibold text-xs uppercase tracking-wider">Gallery</TableHead>
-              <TableHead className="text-right text-gray-500 font-semibold text-xs uppercase tracking-wider">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+        <div className="overflow-x-auto w-full">
+          <Table className="min-w-[880px] w-full">
+            <TableHeader className="bg-gray-50/90 border-b border-gray-200">
+              <TableRow className="border-b border-gray-200 hover:bg-transparent">
+                <TableHead className="w-16 text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap">Cover</TableHead>
+                <TableHead className="text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap min-w-[220px]">Event Details</TableHead>
+                <TableHead className="text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap min-w-[140px]">Date & Time</TableHead>
+                <TableHead className="text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap min-w-[140px]">Venue</TableHead>
+                <TableHead className="text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap min-w-[100px]">Status</TableHead>
+                <TableHead className="text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap min-w-[100px]">Gallery</TableHead>
+                <TableHead className="text-right text-gray-600 font-bold text-xs uppercase tracking-wider whitespace-nowrap pr-4 min-w-[120px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
           <TableBody>
             {paginatedEvents.length === 0 ? (
               <TableRow className="border-b border-gray-100">
@@ -626,6 +637,7 @@ export default function EventsAdminPage() {
             )}
           </TableBody>
         </Table>
+        </div>
 
         {/* Pagination Footer */}
         {totalPages > 1 && (
@@ -820,10 +832,10 @@ export default function EventsAdminPage() {
                     </div>
                   </div>
 
-                  {/* Cover Image Upload (Cloudinary Dropzone) */}
+                  {/* Cover Image Upload */}
                   <div className="space-y-1">
                     <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
-                      Cover Image (Cloudinary Dropzone) *
+                      Cover Image *
                     </label>
                     <input
                       type="file"
@@ -868,13 +880,13 @@ export default function EventsAdminPage() {
                         {uploadingCover ? (
                           <div className="flex flex-col items-center gap-2">
                             <Loader2 className="h-8 w-8 animate-spin text-[#170A51]" />
-                            <p className="text-sm font-medium text-gray-900">Uploading to Cloudinary...</p>
+                            <p className="text-sm font-medium text-gray-900">Uploading image...</p>
                           </div>
                         ) : (
                           <>
                             <UploadCloud className="h-10 w-10 text-gray-400" />
                             <p className="mt-2 text-sm font-medium text-gray-800">
-                              Click or drop image to upload to Cloudinary
+                              Click or drop image to upload
                             </p>
                             <p className="mt-1 text-xs text-gray-500">PNG, JPG, WebP up to 5MB</p>
                           </>
@@ -980,7 +992,7 @@ export default function EventsAdminPage() {
                       Drop multiple photos here or click to browse
                     </p>
                     <p className="mt-1 text-xs text-gray-500">
-                      You can select multiple images simultaneously for batch upload to Cloudinary.
+                      You can select multiple images simultaneously for batch upload.
                     </p>
                   </div>
 
