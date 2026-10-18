@@ -1,20 +1,53 @@
+import { redirect, RedirectType } from 'next/navigation';
 import { PageBanner } from '@/components/section/PageBanner';
 import { DepartmentalBodies } from '@/components/association/DepartmentalBody';
 import { SubBodies } from '@/components/association/SubBody';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, associationsCollectionJsonLd } from '@/lib/seo';
 import { Reveal } from '@/components/motion/Reveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { getAllBodies, getBodyBySlug } from '@/components/constants';
 
 export const metadata = pageMetadata({
-  title: 'Associations',
+  title: 'Engineering Associations & Student Bodies | ULES UNILAG',
   description:
-    "The nine departmental bodies and six sub-bodies that make up ULES, from NIMechE and SEES to PAADC and the Engineering Ladies Initiative.",
+    'Directory of all 9 departmental bodies and 6 sub-bodies across the Faculty of Engineering at the University of Lagos (UNILAG) under ULES, including leadership, programs, and student activities.',
   path: '/associations',
-  keywords: ['ULES departmental bodies', 'NIMechE UNILAG', 'SEES UNILAG', 'NSChE UNILAG', 'ULES sub bodies'],
+  keywords: [
+    'ULES departmental bodies',
+    'ULES sub bodies',
+    'UNILAG engineering associations',
+    'Faculty of Engineering UNILAG',
+    ...getAllBodies().flatMap((b) => [
+      b.name,
+      b.acronym,
+      `${b.acronym} ULES`,
+      `${b.acronym} UNILAG`,
+      b.tagline,
+      b.departmentAffiliation,
+    ]),
+  ],
 });
 
-export default function Associations() {
+interface AssociationsPageProps {
+  searchParams?: Promise<{ body?: string; slug?: string }>;
+}
+
+export default async function Associations({ searchParams }: AssociationsPageProps) {
+  const params = await searchParams;
+  const requested = params?.body || params?.slug;
+
+  if (requested) {
+    const target = getBodyBySlug(requested);
+    if (target) {
+      redirect(`/associations/${target.slug}`, RedirectType.replace);
+    }
+  }
+
+  const allBodies = getAllBodies();
+
   return (
     <>
+      <JsonLd data={associationsCollectionJsonLd(allBodies)} />
       <PageBanner
         title="Departmental Bodies"
         tagline="Departmental bodies representing engineering students across various disciplines"

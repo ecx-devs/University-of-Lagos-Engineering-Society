@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: '/', priority: 1, changeFrequency: 'weekly' },
     { url: '/about/ules', priority: 0.9, changeFrequency: 'monthly' },
     { url: '/about/leadership', priority: 0.8, changeFrequency: 'monthly' },
-    { url: '/associations', priority: 0.8, changeFrequency: 'monthly' },
+    { url: '/associations', priority: 0.85, changeFrequency: 'weekly' },
     { url: '/activities/events', priority: 0.9, changeFrequency: 'weekly' },
     { url: '/activities/gallery', priority: 0.7, changeFrequency: 'weekly' },
     { url: '/stories/news', priority: 0.9, changeFrequency: 'weekly' },
@@ -73,10 +73,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const associations: MetadataRoute.Sitemap = getAllBodies().map((body) => ({
     url: `${SITE.url}/associations/${body.slug}`,
     lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.8,
+    changeFrequency: 'weekly',
+    priority: 0.85,
+    images: body.imageSrc ? [`${SITE.url}${body.imageSrc}`] : [],
   }));
 
   return [...staticRoutes, ...news, ...blog, ...events, ...gallery, ...associations];
 }
-

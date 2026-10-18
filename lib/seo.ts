@@ -27,7 +27,7 @@ const BASE_KEYWORDS = [
 ];
 
 type PageSeoOptions = {
-  title: string;
+  title: string | { absolute: string };
   description: string;
   
   path: string;
@@ -51,7 +51,10 @@ export function pageMetadata({
   authors,
 }: PageSeoOptions): Metadata {
   const url = `${SITE.url}${path}`;
-  const images = image ? [{ url: image, width: 1200, height: 630, alt: title }] : undefined;
+  const fullImageUrl = image ? (image.startsWith('http') ? image : `${SITE.url}${image}`) : undefined;
+  const rawTitle = typeof title === 'string' ? title : title.absolute;
+  const ogTitle = typeof title === 'string' ? `${title} | ${SITE.name}` : title.absolute;
+  const images = fullImageUrl ? [{ url: fullImageUrl, width: 1200, height: 630, alt: rawTitle }] : undefined;
 
   return {
     title,
@@ -59,7 +62,7 @@ export function pageMetadata({
     keywords: [...BASE_KEYWORDS, ...keywords],
     alternates: { canonical: url },
     openGraph: {
-      title: `${title} | ${SITE.name}`,
+      title: ogTitle,
       description,
       url,
       siteName: SITE.fullName,
@@ -71,7 +74,7 @@ export function pageMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | ${SITE.name}`,
+      title: ogTitle,
       description,
       site: SITE.twitter,
       ...(images ? { images: images.map((i) => i.url) } : {}),
@@ -200,30 +203,227 @@ export function eventJsonLd({
 
 export function associationJsonLd({
   name,
+  acronym,
+  alternateNames = [],
   description,
   path,
   image,
   foundingDate,
+  departmentAffiliation,
+  leaderName,
+  leaderTitle,
+  contactEmail,
+  socials,
+  focusAreas,
+  flagshipEvents,
 }: {
   name: string;
+  acronym?: string;
+  alternateNames?: string[];
   description: string;
   path: string;
   image?: string;
   foundingDate?: string;
+  departmentAffiliation?: string;
+  leaderName?: string;
+  leaderTitle?: string;
+  contactEmail?: string;
+  socials?: {
+    instagram?: string;
+    twitter?: string;
+    linkedin?: string;
+  };
+  focusAreas?: string[];
+  flagshipEvents?: Array<{ name: string; description: string }>;
 }) {
+  const url = `${SITE.url}${path}`;
+  const orgId = `${url}#organization`;
+  const webpageId = `${url}#webpage`;
+  const imageUrl = image ? (image.startsWith('http') ? image : `${SITE.url}${image}`) : undefined;
+
+  const sameAs: string[] = [];
+  if (socials?.instagram) sameAs.push(socials.instagram);
+  if (socials?.twitter) sameAs.push(socials.twitter);
+  if (socials?.linkedin) sameAs.push(socials.linkedin);
+
+  const allAlternateNames = Array.from(
+    new Set(
+      [
+        acronym,
+        acronym ? `${acronym} ULES` : undefined,
+        acronym ? `${acronym} UNILAG` : undefined,
+        acronym ? `${acronym} University of Lagos` : undefined,
+        ...(alternateNames || []),
+      ].filter(Boolean) as string[]
+    )
+  );
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'EducationalOrganization',
-    name,
-    description,
-    url: `${SITE.url}${path}`,
-    ...(image ? { logo: `${SITE.url}${image}`, image: `${SITE.url}${image}` } : {}),
-    ...(foundingDate ? { foundingDate } : {}),
-    parentOrganization: {
-      '@type': 'EducationalOrganization',
-      name: SITE.fullName,
-      url: SITE.url,
-    },
+    '@graph': [
+      {
+        '@type': 'EducationalOrganization',
+        '@id': orgId,
+        name,
+        ...(allAlternateNames.length > 0 ? { alternateName: allAlternateNames } : {}),
+        description,
+        url,
+        ...(imageUrl ? { logo: imageUrl, image: imageUrl } : {}),
+        ...(foundingDate ? { foundingDate } : {}),
+        ...(contactEmail ? { email: contactEmail } : {}),
+        ...(sameAs.length > 0 ? { sameAs } : {}),
+        ...(focusAreas && focusAreas.length > 0 ? { knowsAbout: focusAreas } : {}),
+        ...(departmentAffiliation
+          ? {
+              department: {
+                '@type': 'Organization',
+                name: departmentAffiliation,
+              },
+            }
+          : {}),
+        ...(leaderName
+          ? {
+              leader: {
+                '@type': 'Person',
+                name: leaderName,
+                ...(leaderTitle ? { jobTitle: leaderTitle } : {}),
+              },
+            }
+          : {}),
+        parentOrganization: {
+          '@type': 'EducationalOrganization',
+          '@id': `${SITE.url}/#organization`,
+          name: SITE.fullName,
+          alternateName: SITE.name,
+          url: SITE.url,
+        },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': webpageId,
+        url,
+        name: `${name} | ${SITE.name} UNILAG`,
+        description,
+        isPartOf: {
+          '@type': 'WebSite',
+          '@id': `${SITE.url}/#website`,
+        },
+        about: { '@id': orgId },
+        mainEntity: { '@id': orgId },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: SITE.url,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Associations',
+            item: `${SITE.url}/associations`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: acronym || name,
+            item: url,
+          },
+        ],
+      },
+      ...(flagshipEvents && flagshipEvents.length > 0
+        ? flagshipEvents.map((evt, idx) => ({
+            '@type': 'Event',
+            '@id': `${url}#event-${idx + 1}`,
+            name: evt.name,
+            description: evt.description,
+            organizer: { '@id': orgId },
+            location: {
+              '@type': 'Place',
+              name: 'Faculty of Engineering, University of Lagos',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Akoka, Yaba',
+                addressRegion: 'Lagos',
+                addressCountry: 'NG',
+              },
+            },
+          }))
+        : []),
+    ],
+  };
+}
+
+export function associationsCollectionJsonLd(
+  bodies: Array<{
+    name: string;
+    acronym: string;
+    slug: string;
+    tagline: string;
+    imageSrc?: string;
+  }>
+) {
+  const url = `${SITE.url}/associations`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: `Engineering Associations & Student Bodies | ${SITE.fullName}`,
+        description:
+          'Explore all 9 departmental bodies and 6 sub-bodies across the Faculty of Engineering at the University of Lagos (UNILAG) under ULES, including ECX, NISGS, NIMechE, SEES, and PAADC.',
+        isPartOf: {
+          '@type': 'WebSite',
+          '@id': `${SITE.url}/#website`,
+        },
+        about: { '@id': `${SITE.url}/#organization` },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: bodies.length,
+          itemListElement: bodies.map((body, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: `${body.name} (${body.acronym}) - ${body.tagline}`,
+            url: `${SITE.url}/associations/${body.slug}`,
+            description: body.tagline,
+            ...(body.imageSrc
+              ? {
+                  image: body.imageSrc.startsWith('http')
+                    ? body.imageSrc
+                    : `${SITE.url}${body.imageSrc}`,
+                }
+              : {}),
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: SITE.url,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Associations',
+            item: url,
+          },
+        ],
+      },
+    ],
   };
 }
 
