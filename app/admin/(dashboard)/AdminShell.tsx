@@ -68,7 +68,7 @@ export default function AdminShell({
             href="/admin"
             className="group flex items-center gap-3 transition-opacity hover:opacity-95"
           >
-            <div className="relative size-9 rounded-lg bg-white/10 p-1 flex items-center justify-center shrink-0 border border-white/10 group-hover:border-amber-400/40 transition-colors">
+            <div className="relative size-9 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 border border-white/10 group-hover:border-amber-400/40 transition-colors">
               <Image
                 src="/logo/logo-transparent.png"
                 alt="ULES Logo"
@@ -115,7 +115,7 @@ export default function AdminShell({
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-3"
           >
-            <div className="relative size-9 rounded-lg bg-white/10 p-1 flex items-center justify-center shrink-0 border border-white/10">
+            <div className="relative size-9 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 border border-white/10">
               <Image
                 src="/logo/logo-transparent.png"
                 alt="ULES Logo"

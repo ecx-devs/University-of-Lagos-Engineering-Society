@@ -1,5 +1,6 @@
 import { auth, signOut } from "@/auth";
 import AdminShell from "./AdminShell";
+import prisma from "@/lib/prisma";
 
 export default async function AdminLayout({
   children,
@@ -7,8 +8,12 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  const superAdminEmail = process.env.SUPERADMIN_EMAIL;
-  const isSuperAdmin = session?.user?.email === superAdminEmail;
+  const dbAdmin = session?.user?.email
+    ? await prisma.admin.findUnique({
+        where: { email: session.user.email },
+      })
+    : null;
+  const isSuperAdmin = dbAdmin?.role === "SUPERADMIN";
 
   async function handleSignOut() {
     "use server";

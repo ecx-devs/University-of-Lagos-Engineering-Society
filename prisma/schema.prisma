@@ -22,6 +22,17 @@ enum Role {
   ADMIN
 }
 
+model SuperAdminOtp {
+  id        String   @id @default(cuid())
+  email     String
+  targetId  String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email, targetId])
+}
+
 model Feedback {
   id        String   @id @default(cuid())
   name      String?
