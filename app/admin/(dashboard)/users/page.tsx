@@ -5,15 +5,19 @@ import { redirect } from 'next/navigation';
 
 export default async function AdminsPage() {
   const session = await auth();
-  const superAdminEmail = process.env.SUPERADMIN_EMAIL;
-  const isSuperAdmin = session?.user?.email === superAdminEmail;
+  const dbAdmin = session?.user?.email
+    ? await prisma.admin.findUnique({
+        where: { email: session.user.email },
+      })
+    : null;
+  const isSuperAdmin = dbAdmin?.role === 'SUPERADMIN';
 
   if (!isSuperAdmin) {
     redirect('/admin');
   }
 
   const admins = await prisma.admin.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: [{ role: 'desc' }, { createdAt: 'desc' }],
   });
 
   return (
@@ -23,15 +27,15 @@ export default async function AdminsPage() {
           Manage Administrators
         </h1>
         <p className="text-gray-500 mt-2">
-          View and manage the users who have access to this portal. 
-          {isSuperAdmin && " As the Super Administrator, you can grant access to new users."}
+          View and manage the administrators who have access to this portal. 
+          {isSuperAdmin && ' As a Super Administrator, you can invite new administrators, manage permissions, or transfer the Superadmin role.'}
         </p>
       </div>
 
       <AdminClientTable 
         admins={admins} 
         isSuperAdmin={isSuperAdmin} 
-        superAdminEmail={superAdminEmail} 
+        currentAdminEmail={session?.user?.email || ''} 
       />
     </div>
   );

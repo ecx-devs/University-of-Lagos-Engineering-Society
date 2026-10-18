@@ -18,8 +18,12 @@ export const revalidate = 0; // Fresh real-time activity feed on every admin vis
 
 export default async function AdminDashboardHome() {
   const session = await auth();
-  const superAdminEmail = process.env.SUPERADMIN_EMAIL;
-  const isSuperAdmin = session?.user?.email === superAdminEmail;
+  const dbAdmin = session?.user?.email
+    ? await prisma.admin.findUnique({
+        where: { email: session.user.email },
+      })
+    : null;
+  const isSuperAdmin = dbAdmin?.role === 'SUPERADMIN';
 
   const [
     totalSubmissions,
