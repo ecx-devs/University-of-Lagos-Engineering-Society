@@ -45,6 +45,11 @@ export interface AssociationBody {
     twitter?: string;
     linkedin?: string;
   };
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  alternateNames?: string[];
+  aliases?: string[];
 }
 
 export const DEPARTMENTAL_BODIES: AssociationBody[] = [
@@ -99,7 +104,7 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       'Simulation & Mathematical Modeling',
       'Industrial Systems Optimization',
     ],
-    contactEmail: 'asesunilag@gmail.com',
+    contactEmail: 'ases.unilagengineering@gmail.com',
     socials: {
       instagram: 'https://instagram.com/ases_unilag',
       twitter: 'https://x.com/ases_unilag',
@@ -386,7 +391,7 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       'Hydrographic Surveying & Marine Geodesy',
       'Differential GPS & Precise Geodetic Networks',
     ],
-    contactEmail: 'nisgsunilag@gmail.com',
+    contactEmail: 'info.nisgsunilag@gmail.com',
     socials: {
       instagram: 'https://instagram.com/nisgs_unilag',
       twitter: 'https://x.com/nisgs_unilag',
@@ -500,7 +505,7 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       'Digital Signal Processing & AI Hardware',
       'Industrial Automation & PLC Systems',
     ],
-    contactEmail: 'seesunilag@gmail.com',
+    contactEmail: 'theseesunilagofficial@gmail.com',
     socials: {
       instagram: 'https://instagram.com/sees_unilag',
       twitter: 'https://x.com/sees_unilag',
@@ -619,7 +624,7 @@ export const SUB_BODIES: AssociationBody[] = [
       'Cross-Disciplinary STEM Competitions',
       'Academic Survival & CGPA Coaching',
     ],
-    contactEmail: 'arb.ules@gmail.com',
+    contactEmail: 'arb.unilagengr@gmail.com',
     socials: {
       instagram: 'https://instagram.com/ules_arb',
       twitter: 'https://x.com/ules_arb',
@@ -733,15 +738,15 @@ export const SUB_BODIES: AssociationBody[] = [
       'Secondary School STEM Outreach',
       'Gender Equity in Engineering',
     ],
-    contactEmail: 'eli.unilag@gmail.com',
+    contactEmail: 'eliunilag@gmail.com',
     socials: {
       instagram: 'https://instagram.com/eli_unilag',
       twitter: 'https://x.com/eli_unilag',
       linkedin: 'https://linkedin.com/company/eli-unilag',
     },
     body:
-      'The Engineering Ladies Initiative (ELI) is the official female empowerment and leadership organ of the University of Lagos Engineering Society (ULES). Established in 2017 to tackle the historic underrepresentation of women in engineering, ELI provides an inclusive, inspiring community for female engineering undergraduates across all departments.\n\n' +
-      'Through its hallmark "ELI Week," executive mentorship circles, and technical bootcamps, the initiative connects students with trailblazing female industry leaders in energy, construction, tech, and aerospace. Additionally, ELI leads impactful secondary school outreach campaigns across Lagos State, debunking stereotypes and mentoring hundreds of young girls to pursue STEM careers, proving that female engineers are at the forefront of national infrastructure development.',
+      'Engineering Ladies Initiative is a program designed to address the specific needs and challenges faced by women in engineering. We provide resources, workshops, events, and support systems to help women thrive academically and professionally. Our initiative is driven by the desire to create an inclusive and supportive community that celebrates the achievements of women in engineering. \n\n' +
+      'We have various initiatives like Pad a Girl to educate on menstrual hygiene, Stem a Girl an outreach to secondary school students as well as so much more ',
   },
   {
     id: 3,
@@ -790,7 +795,7 @@ export const SUB_BODIES: AssociationBody[] = [
       'Venture Incubation & Intellectual Property',
       'National Inter-University STEM Collaboration',
     ],
-    contactEmail: 'paadc.official@gmail.com',
+    contactEmail: 'sponsorship@paadc.com',
     socials: {
       instagram: 'https://instagram.com/paadc_official',
       twitter: 'https://x.com/paadc_official',
@@ -916,13 +921,125 @@ export const SUB_BODIES: AssociationBody[] = [
   },
 ];
 
+export function computeBodySeo(body: AssociationBody) {
+  const isAcronymSameAsName = body.name.trim().toLowerCase() === body.acronym.trim().toLowerCase();
+  const nameAlreadyHasAcronym = body.name.toLowerCase().includes(body.acronym.toLowerCase());
+
+  const displayTitle = isAcronymSameAsName
+    ? `${body.acronym} – ${body.tagline} | ULES UNILAG`
+    : nameAlreadyHasAcronym
+      ? `${body.name} – ${body.tagline} | ULES UNILAG`
+      : `${body.name} (${body.acronym}) – ${body.tagline} | ULES UNILAG`;
+
+  const description = `${body.name} (${body.acronym}) is the official ${body.typeLabel.toLowerCase()} representing students of ${body.departmentAffiliation} at the University of Lagos (UNILAG) Faculty of Engineering under ULES. Explore programs, events, leadership, and initiatives.`;
+
+  const keywords = Array.from(
+    new Set([
+      body.name,
+      body.acronym,
+      `${body.acronym} ULES`,
+      `${body.acronym} UNILAG`,
+      `${body.acronym} University of Lagos`,
+      `${body.name} ULES`,
+      `${body.name} UNILAG`,
+      body.tagline,
+      `${body.tagline} ULES`,
+      `${body.tagline} UNILAG`,
+      body.departmentAffiliation,
+      `${body.departmentAffiliation} UNILAG`,
+      ...(body.flagshipEvents?.map((e) => e.name) || []),
+      ...(body.focusAreas || []),
+      body.president?.name ? `${body.president.name} ${body.acronym}` : '',
+      'ULES associations',
+      'UNILAG engineering',
+      'Faculty of Engineering UNILAG',
+    ].filter(Boolean))
+  );
+
+  const alternateNames = Array.from(
+    new Set([
+      body.name,
+      body.acronym,
+      `${body.acronym} ULES`,
+      `${body.acronym} UNILAG`,
+      `${body.acronym} University of Lagos`,
+      body.tagline,
+      `${body.tagline} UNILAG`,
+      `${body.tagline} ULES`,
+    ])
+  );
+
+  const aliases = Array.from(
+    new Set([
+      body.slug,
+      body.acronym.toLowerCase(),
+      `${body.slug}-unilag`,
+      `${body.slug}-ules`,
+      `${body.acronym.toLowerCase()}-unilag`,
+      `${body.acronym.toLowerCase()}-ules`,
+      body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      body.tagline.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    ])
+  );
+
+  return {
+    seoTitle: displayTitle,
+    seoDescription: description,
+    seoKeywords: keywords,
+    alternateNames,
+    aliases,
+  };
+}
+
 export function getAllBodies(): AssociationBody[] {
-  return [...DEPARTMENTAL_BODIES, ...SUB_BODIES];
+  return [...DEPARTMENTAL_BODIES, ...SUB_BODIES].map((body) => {
+    const seo = computeBodySeo(body);
+    return {
+      ...body,
+      seoTitle: seo.seoTitle,
+      seoDescription: seo.seoDescription,
+      seoKeywords: seo.seoKeywords,
+      alternateNames: seo.alternateNames,
+      aliases: seo.aliases,
+    };
+  });
 }
 
 export function getBodyBySlug(slug: string): AssociationBody | undefined {
+  if (!slug) return undefined;
   const normalized = slug.toLowerCase().trim();
-  return getAllBodies().find(
+  const stripped = normalized.replace(/[^a-z0-9]/g, '');
+
+  const bodies = getAllBodies();
+
+  // 1. Direct slug or ID match
+  const directMatch = bodies.find(
     (b) => b.slug.toLowerCase() === normalized || String(b.id) === normalized
   );
+  if (directMatch) return directMatch;
+
+  // 2. Acronym match (e.g. 'ecx', 'nisgs')
+  const acronymMatch = bodies.find((b) => b.acronym.toLowerCase() === normalized);
+  if (acronymMatch) return acronymMatch;
+
+  // 3. Aliases match
+  const aliasMatch = bodies.find((b) =>
+    b.aliases?.some(
+      (alias) =>
+        alias.toLowerCase() === normalized ||
+        alias.replace(/[^a-z0-9]/g, '') === stripped
+    )
+  );
+  if (aliasMatch) return aliasMatch;
+
+  // 4. Normalized stripped comparison (e.g. 'engineeringcareerexpo' -> 'ecx')
+  const strippedMatch = bodies.find((b) => {
+    if (b.slug.replace(/[^a-z0-9]/g, '') === stripped) return true;
+    if (b.acronym.toLowerCase().replace(/[^a-z0-9]/g, '') === stripped) return true;
+    if (b.name.toLowerCase().replace(/[^a-z0-9]/g, '') === stripped) return true;
+    if (b.tagline.toLowerCase().replace(/[^a-z0-9]/g, '') === stripped) return true;
+    return false;
+  });
+
+  return strippedMatch;
 }

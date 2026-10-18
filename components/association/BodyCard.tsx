@@ -7,6 +7,7 @@ type BodyCardProps = {
   id?: number;
   slug?: string;
   name: string;
+  acronym?: string;
   imageSrc: string;
   imageWidth: number | null;
   imageHeight: number | null;
@@ -18,6 +19,7 @@ type BodyCardProps = {
 export function BodyCard({
   slug,
   name,
+  acronym,
   imageSrc,
   imageWidth,
   imageHeight,
@@ -34,17 +36,22 @@ export function BodyCard({
       .trim();
 
   const href = `/associations/${targetSlug}`;
+  const displayLabel = acronym ? `${name} (${acronym})` : name;
 
   return (
-    <Card className="hover-lift flex h-full flex-col items-center gap-y-3 rounded-lg border border-border p-0 transition-all hover:border-primary/30 hover:shadow-md">
+    <Card
+      id={targetSlug}
+      className="hover-lift flex h-full flex-col items-center gap-y-3 rounded-lg border border-border p-0 transition-all hover:border-primary/30 hover:shadow-md"
+    >
       <Link
         href={href}
         className="flex h-55 w-full items-center justify-center overflow-hidden px-6 py-4 transition-transform hover:scale-105"
-        aria-label={`View ${name} profile`}
+        aria-label={`View ${displayLabel} - ${tagline} official profile`}
+        title={`${displayLabel} - ${tagline}`}
       >
         <Image
           src={imageSrc}
-          alt={name}
+          alt={`${displayLabel} Logo`}
           width={imageWidth ?? 200}
           height={imageHeight ?? 200}
           className={`object-contain ${type === 'departmental' ? 'h-50 w-auto' : 'h-fit'}`}
@@ -54,7 +61,7 @@ export function BodyCard({
 
       <div className="flex w-full flex-1 flex-col justify-between p-6 pr-4">
         <div>
-          <Link href={href} className="group/title block">
+          <Link href={href} className="group/title block" title={`Learn more about ${displayLabel}`}>
             <h3 className="text-primary group-hover/title:text-accent text-left text-2xl/6 font-medium transition-colors">
               {name}
             </h3>
@@ -69,17 +76,17 @@ export function BodyCard({
           <Link
             href={href}
             className="text-primary hover:text-accent group/btn inline-flex items-center gap-1.5 text-sm/5 font-semibold transition-colors"
+            title={`View official details and leadership for ${displayLabel}`}
           >
             <span>Read more</span>
             <ArrowRight
               className="size-4 transition-transform group-hover/btn:translate-x-1"
               aria-hidden="true"
             />
-            <span className="sr-only">about {name}</span>
+            <span className="sr-only">about {displayLabel} - {tagline}</span>
           </Link>
         </div>
       </div>
     </Card>
   );
 }
-

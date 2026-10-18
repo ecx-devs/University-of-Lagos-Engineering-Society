@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect, RedirectType } from 'next/navigation';
 import {
   ArrowLeft,
   ArrowRight,
@@ -25,7 +25,7 @@ import {
   SITE_URL,
 } from '@/components/constants';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { associationJsonLd, pageMetadata } from '@/lib/seo';
+import { associationJsonLd, pageMetadata, SITE } from '@/lib/seo';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/Reveal';
 import { CopyEmailButton } from '@/components/association/CopyEmailButton';
 import { getAssociationBodyWithDynamicLeadership } from '@/app/actions/associations';
@@ -34,35 +34,72 @@ export const revalidate = 60;
 interface AssociationDetailPageProps {
   params: Promise<{ slug: string }>;
 }
+
 export function generateStaticParams() {
-  return getAllBodies().map((body) => ({ slug: body.slug }));
+  const params: Array<{ slug: string }> = [];
+  for (const body of getAllBodies()) {
+    params.push({ slug: body.slug });
+    if (body.aliases) {
+      for (const alias of body.aliases) {
+        params.push({ slug: alias });
+      }
+    }
+  }
+  return params;
 }
+
 export async function generateMetadata({ params }: AssociationDetailPageProps) {
   const { slug } = await params;
   const body = (await getAssociationBodyWithDynamicLeadership(slug)) ?? getBodyBySlug(slug);
   if (!body) return {};
-  return pageMetadata({
-    title: `${body.name} (${body.acronym})`,
-    description: `${body.tagline}. Learn about the leadership, history, membership, and programs of ${body.name} at the University of Lagos Faculty of Engineering.`,
-    path: `/associations/${body.slug}`,
-    image: body.imageSrc,
-    keywords: [
+
+  const seoTitle = body.seoTitle ?? `${body.name} (${body.acronym}) | ${SITE.name} UNILAG`;
+  const seoDescription =
+    body.seoDescription ??
+    `${body.tagline}. Learn about the leadership, history, membership, and programs of ${body.name} (${body.acronym}) at the University of Lagos Faculty of Engineering under ULES.`;
+
+  const keywords = Array.from(
+    new Set([
+      ...(body.seoKeywords ?? []),
       body.name,
       body.acronym,
+      `${body.acronym} ULES`,
+      `${body.acronym} UNILAG`,
+      `${body.acronym} University of Lagos`,
       body.tagline,
+      `${body.tagline} ULES`,
+      `${body.tagline} UNILAG`,
+      body.departmentAffiliation,
       'ULES associations',
       'UNILAG engineering',
-      body.departmentAffiliation,
-    ],
+      'Faculty of Engineering UNILAG',
+      ...(body.alternateNames ?? []),
+      ...(body.aliases ?? []),
+    ])
+  );
+
+  return pageMetadata({
+    title: { absolute: seoTitle },
+    description: seoDescription,
+    path: `/associations/${body.slug}`,
+    image: body.imageSrc,
+    keywords,
   });
 }
+
 export default async function AssociationDetailPage({ params }: AssociationDetailPageProps) {
   const { slug } = await params;
-  const body = await getAssociationBodyWithDynamicLeadership(slug);
-  if (!body) {
-
+  const canonicalBody = (await getAssociationBodyWithDynamicLeadership(slug)) ?? getBodyBySlug(slug);
+  if (!canonicalBody) {
     notFound();
   }
+
+  // If visited via an alias or alternate capitalization, permanently redirect to canonical URL
+  if (slug.toLowerCase() !== canonicalBody.slug.toLowerCase()) {
+    redirect(`/associations/${canonicalBody.slug}`, RedirectType.replace);
+  }
+
+  const body = canonicalBody;
 
   // Related associations for quick navigation (other bodies of the same or alternating type)
   const relatedBodies = (body.type === 'departmental' ? DEPARTMENTAL_BODIES : SUB_BODIES)
@@ -80,10 +117,19 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
       <JsonLd
         data={associationJsonLd({
           name: body.name,
-          description: body.tagline,
+          acronym: body.acronym,
+          alternateNames: body.alternateNames,
+          description: body.seoDescription ?? body.tagline,
           path: `/associations/${body.slug}`,
           image: body.imageSrc,
           foundingDate: body.establishedYear,
+          departmentAffiliation: body.departmentAffiliation,
+          leaderName: body.president?.name,
+          leaderTitle: body.president?.title,
+          contactEmail: body.contactEmail,
+          socials: body.socials,
+          focusAreas: body.focusAreas,
+          flagshipEvents: body.flagshipEvents,
         })}
       />
 
@@ -156,7 +202,11 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
                   </div>
 
                   <h1 className="text-foreground font-heading text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight">
-                    {body.name}
+                    <span>{body.name}</span>
+                    <span className="sr-only">
+                      {' '}
+                      - {body.tagline} ({body.acronym}) | University of Lagos Engineering Society (ULES)
+                    </span>
                   </h1>
 
                   <p className="text-accent text-lg sm:text-xl font-medium leading-relaxed">

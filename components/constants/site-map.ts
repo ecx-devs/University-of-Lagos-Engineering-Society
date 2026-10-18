@@ -17,7 +17,6 @@ export const NAV_ITEMS: NavItem[] = [
     trigger: 'Activities',
     items: [
       { label: 'Events', href: '/activities/events' },
-
       { label: 'Gallery', href: '/activities/gallery' },
     ],
   },
@@ -36,6 +35,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     trigger: 'Associations',
     items: [
+      { label: 'All Associations', href: '/associations' },
       { label: 'Departmental Bodies', href: '/associations#departmental' },
       { label: 'Sub Bodies', href: '/associations#sub' },
     ],
@@ -43,7 +43,6 @@ export const NAV_ITEMS: NavItem[] = [
   {
     trigger: 'Student Aids',
     items: [
-
       { label: 'CGPA Calculator', href: 'https://gpai.com.ng' },
       { label: 'Feedback', href: '/student-aids/feedback' },
     ],
@@ -58,14 +57,12 @@ export const QUICK_LINKS: NavItem[] = [
 ];
 
 export const RESOURCES: NavItem[] = [
-
   { trigger: 'CGPA Calculator', href: 'https://gpai.com.ng' },
   { trigger: 'Contact Us', href: '/contact' },
   { trigger: 'Feedback', href: '/student-aids/feedback' },
 ];
 
 export const ACTIVITIES: NavItem[] = [
-
   { trigger: 'Gallery', href: '/activities/gallery' },
   { trigger: 'Events', href: '/activities/events' },
   { trigger: 'Blog', href: '/stories/blog' },
