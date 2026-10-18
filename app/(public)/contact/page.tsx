@@ -15,9 +15,7 @@ export default function ContactUs() {
   return (
     <>
       <PageBanner title="Contact Us" tagline="Get in touch with the ULES team" />
-      <Reveal>
-        <ContactInfo />
-      </Reveal>
+      <ContactInfo />
     </>
   );
 }

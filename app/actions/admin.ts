@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { Resend } from 'resend';
 import { auth } from '@/auth';
+import { SITE_URL } from '@/components/constants/sites';
 
 export async function createAdmin(formData: FormData) {
   const session = await auth();
@@ -51,7 +52,7 @@ export async function createAdmin(formData: FormData) {
         <p>Hello ${name},</p>
         <p>The Super Administrator has granted you access to the ULES backend system.</p>
         <p>You can now log in using this Google account by visiting:</p>
-        <p><a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/admin/login">Log in to the Admin Dashboard</a></p>
+        <p><a href="${process.env.NEXT_PUBLIC_SITE_URL || SITE_URL}/admin/login">Log in to the Admin Dashboard</a></p>
       `
     });
   }

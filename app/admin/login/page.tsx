@@ -5,7 +5,7 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left Panel: Rich Brand Background */}
-      <div className="hidden lg:flex lg:w-1/2 bg-[#170A51] flex-col justify-center p-12 text-white relative">
+      <div className="hidden lg:flex lg:w-1/2 bg-[#170A51] flex-col justify-center p-12 text-white relative overflow-hidden">
         <Image
           src="/logo/logo-transparent.png"
           alt="ULES Logo Background"
@@ -26,14 +26,26 @@ export default function AdminLoginPage() {
       </div>
 
       {/* Right Panel: Login Card */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 p-8">
-        <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
+      <div className="relative w-full lg:w-1/2 flex items-center justify-center bg-gray-50 p-6 sm:p-8 overflow-hidden min-h-screen lg:min-h-0">
+        {/* Mobile Watermark Logo */}
+        <div className="lg:hidden absolute -bottom-10 -right-10 xs:-bottom-14 xs:-right-14 pointer-events-none select-none z-0">
+          <Image
+            src="/logo/logo-transparent.png"
+            alt="ULES Logo Watermark"
+            width={600}
+            height={600}
+            className="w-[390px] xs:w-[460px] sm:w-[520px] h-auto opacity-15 pointer-events-none translate-x-1/6 translate-y-1/6"
+            priority
+          />
+        </div>
+
+        <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-xs p-8 sm:p-10 rounded-2xl shadow-xl border border-gray-100">
           <div className="text-center mb-10">
             <h2 className="text-4xl font-['Anton'] text-[#106333] tracking-wide mb-3">
               ADMIN PORTAL
             </h2>
             <p className="font-['Neue_Machina'] text-gray-500">
-              Sign in to securely access the dashboard.
+              Sign in to access the admin dashboard.
             </p>
           </div>
 

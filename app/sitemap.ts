@@ -36,6 +36,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: '/stories/newsletter', priority: 0.6, changeFrequency: 'monthly' },
     { url: '/contact', priority: 0.7, changeFrequency: 'yearly' },
     { url: '/student-aids/feedback', priority: 0.5, changeFrequency: 'yearly' },
+    { url: '/privacy', priority: 0.5, changeFrequency: 'monthly' },
+    { url: '/terms', priority: 0.5, changeFrequency: 'monthly' },
   ] as const).map((route) => ({ ...route, url: `${SITE.url}${route.url}`, lastModified: now }));
 
   const newsSlugs = await getAllNewsSlugs();
