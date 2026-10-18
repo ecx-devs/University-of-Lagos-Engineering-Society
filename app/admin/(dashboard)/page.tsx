@@ -437,7 +437,7 @@ export default async function AdminDashboardHome() {
                 </span>
                 <div className="flex items-baseline gap-2 mt-0.5">
                   <span className="text-2xl font-['Anton'] text-gray-900 leading-none">
-                    {(activeAdmins + 1).toLocaleString()}
+                    {activeAdmins.toLocaleString()}
                   </span>
                   <span className="text-[11px] text-gray-400 truncate hidden sm:inline">
                     Authorized
