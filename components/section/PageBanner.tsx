@@ -3,7 +3,7 @@ import type { PageBannerProps } from '../types';
 
 export function PageBanner({ id, title, tagline }: PageBannerProps) {
   return (
-    <section id={id} className="relative px-[9.8264%] py-16 text-center">
+    <section id={id} className="relative isolate overflow-hidden px-[9.8264%] py-16 text-center">
       <Image
         src="/banner.png"
         alt="Page Banner"

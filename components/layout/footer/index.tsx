@@ -111,13 +111,13 @@ export function Footer() {
               <li className="flex items-center gap-2.5">
                 <PhoneIcon className="size-4 shrink-0 text-white/80 [&_path]:stroke-current" />
                 <span className="whitespace-nowrap">
-                  Olawale: +234 813 023 4284
+                  Damilare: +234 701 377 9723
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <PhoneIcon className="size-4 shrink-0 text-white/80 [&_path]:stroke-current" />
                 <span className="whitespace-nowrap">
-                  Ogboro: +234 816 658 4997
+                  Joseph: +234 810 006 9464
                 </span>
               </li>
             </ul>

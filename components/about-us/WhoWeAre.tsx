@@ -1,19 +1,29 @@
 export function WhoWeAre() {
   return (
-    <section className="bg-background text-foreground w-full px-[4.103%] py-8 lg:px-[7.7%]">
-      <div className="rounded-[2rem] border border-border px-[8.64%] py-8 lg:px-[2.632%]">
+    <section className="bg-background text-foreground w-full px-[4.103%] py-8 lg:px-[7.7%] font-['Neue_Machina']">
+      <div className="rounded-[2rem] border border-border/80 bg-card/60 p-6 sm:p-10 lg:p-14 shadow-xs">
         <h2 className="text-primary text-center text-2xl/9 font-medium lg:text-3xl/9">
           Who We Are
         </h2>
-        <p className="py-8 text-center text-base/7 font-normal text-[hsl(217,19%,27%)] lg:pb-20.75 lg:text-lg/7">
-          The Faculty of Engineering at the University of Lagos opened its doors in the 1964/65 academic session, five years after the Ashby Commission report made the case for expanding Nigeria's technical capacity. It began with three departments, Civil, Electrical, and Mechanical, and has since grown to nine.
-          <br />
-          Its most significant restructuring came in 1982/83, when the faculty replaced the three-year post-A-level programme with the five-year unit course system still in place today, adding mandatory supervised industrial training along the way. Every undergraduate engineering programme is accredited by the Council for the Regulation of Engineering in Nigeria (COREN), with Surveying carrying additional accreditation from the Surveyors Council of Nigeria (SURCON).
-          <br />
-          The University of Lagos Engineering Society (ULES) is the student body that ties the faculty together. Every engineering student belongs to it, from Bio-medical, Chemical, Civil, Computer, Electrical, Material and Metallurgical, Mechanical, and Systems Engineering through to Surveying and Geoinformatics, and ULES sits above the departmental associations as the platform where they meet.
-          <br />
-          That position is what makes the interdisciplinary work possible. ULES runs the Engineering Career Expo (ECX), the ULES Sports Festival, and the Professor Ayodele Awojobi Design Competition (PAADC), alongside the day-to-day work of representing students, connecting them to industry, and giving them room to build things that matter outside the curriculum.
-        </p>
+        <div className="mx-auto mt-3 h-1 w-12 rounded-full bg-primary/30" />
+
+        <div className="mt-8 space-y-6 text-sm sm:text-base lg:text-[17px] leading-relaxed text-foreground/85 max-w-4xl mx-auto">
+          <p>
+            The University of Lagos Engineering Society (ULES) is the official student association representing all undergraduates within the Faculty of Engineering at the University of Lagos. Established following the founding of engineering education at UNILAG during the 1964/1965 academic session, ULES stands as the oldest student body at the university. Over the decades, it has evolved into a vital bridge connecting academic rigor, technical innovation, professional development, and vibrant student life, producing generations of industry captains, researchers, and technology pioneers across Nigeria and the global engineering landscape.
+          </p>
+
+          <p>
+            Today, ULES serves as the umbrella body for 10 distinct degree-awarding departments, encompassing Biomedical Engineering, Chemical Engineering, Civil and Environmental Engineering, Computer Engineering, Electrical and Electronics Engineering, Mechanical Engineering, Metallurgical and Materials Engineering, Petroleum and Gas Engineering, Surveying and Geoinformatics, and Systems Engineering. Through this broad cross-disciplinary reach, the society fosters collaboration and technical synergy across the entire faculty.
+          </p>
+
+          <p>
+            To drive its technical, academic, and creative mandate, ULES operates six specialized sub-bodies. The Academic and Research Board focuses on peer tutoring, academic competitions, and research support; the Engineering Career Expo acts as a major technical and career pipeline connecting students with industry partners through bootcamps and networking events; the Engineering Ladies Initiative empowers female engineering undergraduates through mentorship and STEM outreach; the Professor Ayodele Awojobi Design Competition serves as Nigeria’s flagship student-led innovation contest by funding and incubating impactful technical solutions; the Prototype Inter-Departmental Design Challenge promotes hardware prototyping and engineering problem-solving across all departments; and the ULES Oratory, Writers, and Literacy Society cultivates public speaking, debating, and editorial talents.
+          </p>
+
+          <p>
+            Beyond academics and technical projects, ULES leads vibrant faculty-wide events that define undergraduate student life. Each academic session features the relaxed, informal ULES Social Night for inter-departmental networking and entertainment; the ULES Sports Festival, the biggest and most competitive sports gathering in UNILAG; the week-long ULES Faculty Week which is a finalist experience; and the official ULES Dinner and Awards Night, a formal end-of-tenure gala honoring academic excellence, student leadership, service and impact. Through these pillars, ULES continues its long-standing legacy of fostering academic growth, engineering innovation, and strong community unity.
+          </p>
+        </div>
       </div>
     </section>
   );
