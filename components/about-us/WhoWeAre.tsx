@@ -1,6 +1,6 @@
 export function WhoWeAre() {
   return (
-    <section className="bg-background text-foreground w-full px-[4.103%] py-8 lg:px-[7.7%] font-['Neue_Machina']">
+    <section className="bg-background text-foreground w-full px-[4.103%] py-8 lg:px-[7.7%]">
       <div className="rounded-[2rem] border border-border/80 bg-card/60 p-6 sm:p-10 lg:p-14 shadow-xs">
         <h2 className="text-primary text-center text-2xl/9 font-medium lg:text-3xl/9">
           Who We Are

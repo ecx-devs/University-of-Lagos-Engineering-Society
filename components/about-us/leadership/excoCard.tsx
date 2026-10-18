@@ -38,7 +38,7 @@ export function ExcoCard({
       <div className="flex flex-1 w-full flex-col justify-between p-4.5 pr-3 pt-0">
         <div>
           <h3
-            className="text-left font-['Neue_Machina'] text-lg/6 font-semibold text-primary transition-colors group-hover:text-primary truncate"
+            className="text-left text-lg/6 font-semibold text-primary transition-colors group-hover:text-primary truncate"
             title={name}
           >
             {name}
