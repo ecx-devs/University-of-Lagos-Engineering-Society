@@ -17,14 +17,9 @@ export const metadata = pageMetadata({
     'ULES sub bodies',
     'UNILAG engineering associations',
     'Faculty of Engineering UNILAG',
-    ...getAllBodies().flatMap((b) => [
-      b.name,
-      b.acronym,
-      `${b.acronym} ULES`,
-      `${b.acronym} UNILAG`,
-      b.tagline,
-      b.departmentAffiliation,
-    ]),
+    'UNILAG engineering student bodies',
+    'engineering societies Lagos',
+    'student engineering leadership UNILAG',
   ],
 });
 

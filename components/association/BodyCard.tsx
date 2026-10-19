@@ -36,7 +36,8 @@ export function BodyCard({
       .trim();
 
   const href = `/associations/${targetSlug}`;
-  const displayLabel = acronym ? `${name} (${acronym})` : name;
+  const displayLabel = acronym ? `${acronym} | ULES` : name;
+  const fullLabel = acronym ? `${name} (${acronym})` : name;
 
   return (
     <Card
@@ -47,11 +48,11 @@ export function BodyCard({
         href={href}
         className="flex h-55 w-full items-center justify-center overflow-hidden px-6 py-4 transition-transform hover:scale-105"
         aria-label={`View ${displayLabel} - ${tagline} official profile`}
-        title={`${displayLabel} - ${tagline}`}
+        title={`${fullLabel} - ${tagline}`}
       >
         <Image
           src={imageSrc}
-          alt={`${displayLabel} Logo`}
+          alt={`${fullLabel} Logo`}
           width={imageWidth ?? 200}
           height={imageHeight ?? 200}
           className={`object-contain ${type === 'departmental' ? 'h-50 w-auto' : 'h-fit'}`}
@@ -61,7 +62,7 @@ export function BodyCard({
 
       <div className="flex w-full flex-1 flex-col justify-between p-6 pr-4">
         <div>
-          <Link href={href} className="group/title block" title={`Learn more about ${displayLabel}`}>
+          <Link href={href} className="group/title block" title={`Official profile of ${displayLabel} – ${name}`}>
             <h3 className="text-primary group-hover/title:text-accent text-left text-2xl/6 font-medium transition-colors">
               {name}
             </h3>
@@ -83,7 +84,7 @@ export function BodyCard({
               className="size-4 transition-transform group-hover/btn:translate-x-1"
               aria-hidden="true"
             />
-            <span className="sr-only">about {displayLabel} - {tagline}</span>
+            <span className="sr-only">about {displayLabel} – {tagline}</span>
           </Link>
         </div>
       </div>

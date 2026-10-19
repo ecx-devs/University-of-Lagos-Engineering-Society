@@ -74,7 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${SITE.url}/associations/${body.slug}`,
     lastModified: now,
     changeFrequency: 'weekly',
-    priority: 0.85,
+    priority: 0.9,
     images: body.imageSrc ? [`${SITE.url}${body.imageSrc}`] : [],
   }));
 

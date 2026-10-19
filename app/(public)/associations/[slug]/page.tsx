@@ -10,6 +10,7 @@ import {
   Building2,
   Sparkles,
   Mail,
+  Phone,
   MapPin,
   ExternalLink,
   BookOpen,
@@ -53,10 +54,10 @@ export async function generateMetadata({ params }: AssociationDetailPageProps) {
   const body = (await getAssociationBodyWithDynamicLeadership(slug)) ?? getBodyBySlug(slug);
   if (!body) return {};
 
-  const seoTitle = body.seoTitle ?? `${body.name} (${body.acronym}) | ${SITE.name} UNILAG`;
+  const seoTitle = body.seoTitle ?? `${body.acronym} UNILAG – ${body.tagline} | ULES`;
   const seoDescription =
     body.seoDescription ??
-    `${body.tagline}. Learn about the leadership, history, membership, and programs of ${body.name} (${body.acronym}) at the University of Lagos Faculty of Engineering under ULES.`;
+    `Official profile of ${body.acronym} (ULES) – ${body.name}. ${body.tagline} at the University of Lagos Faculty of Engineering under ULES.`;
 
   const keywords = Array.from(
     new Set([
@@ -127,6 +128,7 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
           leaderName: body.president?.name,
           leaderTitle: body.president?.title,
           contactEmail: body.contactEmail,
+          contactPhone: body.contactPhone,
           socials: body.socials,
           focusAreas: body.focusAreas,
           flagshipEvents: body.flagshipEvents,
@@ -194,7 +196,7 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
                       {body.typeLabel}
                     </span>
                     <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
-                      {body.acronym}
+                      {body.acronym} | ULES
                     </span>
                     <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
                       UNILAG Engineering
@@ -205,7 +207,7 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
                     <span>{body.name}</span>
                     <span className="sr-only">
                       {' '}
-                      - {body.tagline} ({body.acronym}) | University of Lagos Engineering Society (ULES)
+                      - {body.acronym} UNILAG | {body.tagline} | University of Lagos Engineering Society (ULES)
                     </span>
                   </h1>
 
@@ -240,7 +242,6 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="hover-lift flex items-start gap-4 rounded-xl border border-border bg-card p-5 shadow-xs transition-colors hover:border-primary/40">
                   <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Calendar className="size-6" aria-hidden="true" />
                     <Calendar className="size-6" aria-hidden="true" />
                   </div>
                   <div>
@@ -465,6 +466,22 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
                             {body.president.name}
                           </span>
                         </li>
+                        {body.coChair && (
+                          <li className="py-3 flex items-start justify-between gap-3">
+                            <span className="text-muted-foreground font-medium">Co-Chair</span>
+                            <span className="text-foreground font-semibold text-right truncate max-w-[160px] sm:max-w-[200px]">
+                              {body.coChair}
+                            </span>
+                          </li>
+                        )}
+                        {body.headOfDepartment && (
+                          <li className="py-3 flex items-start justify-between gap-3">
+                            <span className="text-muted-foreground font-medium">Head of Dept</span>
+                            <span className="text-foreground font-semibold text-right truncate max-w-[160px] sm:max-w-[200px]">
+                              {body.headOfDepartment}
+                            </span>
+                          </li>
+                        )}
                         <li className="py-3 flex items-start justify-between gap-3">
                           <span className="text-muted-foreground font-medium">Academic Session</span>
                           <span className="text-foreground font-semibold text-right">{body.president.academicYear}</span>
@@ -526,6 +543,24 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
                           </div>
                           <CopyEmailButton email={body.contactEmail} />
                         </div>
+
+                        {body.contactPhone && (
+                          <div className="flex items-center justify-between gap-2 rounded-lg bg-muted/40 p-2.5 text-muted-foreground">
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <Phone className="size-4 text-primary shrink-0" aria-hidden="true" />
+                              <a
+                                href={`tel:${body.contactPhone.replace(/[^+\d]/g, '')}`}
+                                className="hover:text-primary transition-colors text-xs sm:text-sm font-medium text-foreground truncate"
+                                title={`Call ${body.name} secretariat hotline`}
+                              >
+                                {body.contactPhone}
+                              </a>
+                            </div>
+                            <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider pr-1">
+                              Hotline
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="mt-6 pt-4 border-t border-border/80">
