@@ -213,6 +213,7 @@ export function associationJsonLd({
   leaderName,
   leaderTitle,
   contactEmail,
+  contactPhone,
   socials,
   focusAreas,
   flagshipEvents,
@@ -228,6 +229,7 @@ export function associationJsonLd({
   leaderName?: string;
   leaderTitle?: string;
   contactEmail?: string;
+  contactPhone?: string;
   socials?: {
     instagram?: string;
     twitter?: string;
@@ -271,6 +273,7 @@ export function associationJsonLd({
         ...(imageUrl ? { logo: imageUrl, image: imageUrl } : {}),
         ...(foundingDate ? { foundingDate } : {}),
         ...(contactEmail ? { email: contactEmail } : {}),
+        ...(contactPhone ? { telephone: contactPhone } : {}),
         ...(sameAs.length > 0 ? { sameAs } : {}),
         ...(focusAreas && focusAreas.length > 0 ? { knowsAbout: focusAreas } : {}),
         ...(departmentAffiliation
@@ -302,7 +305,7 @@ export function associationJsonLd({
         '@type': 'WebPage',
         '@id': webpageId,
         url,
-        name: `${name} | ${SITE.name} UNILAG`,
+        name: `${acronym ? `${acronym} ULES – ` : ''}${name} | ${SITE.fullName} (${SITE.name}) UNILAG`,
         description,
         isPartOf: {
           '@type': 'WebSite',
@@ -331,7 +334,7 @@ export function associationJsonLd({
           {
             '@type': 'ListItem',
             position: 3,
-            name: acronym || name,
+            name: acronym ? `${acronym} (ULES)` : name,
             item: url,
           },
         ],

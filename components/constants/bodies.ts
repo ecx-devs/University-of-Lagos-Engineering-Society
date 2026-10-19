@@ -35,11 +35,14 @@ export interface AssociationBody {
   memberCount: string;
   establishedYear: string;
   departmentAffiliation: string;
-  mottoOrVision?: string;
+  mottoOrVision: string;
   keyHighlights: AssociationMetric[];
   flagshipEvents: AssociationEvent[];
   focusAreas: string[];
   contactEmail: string;
+  contactPhone?: string;
+  coChair?: string;
+  headOfDepartment?: string;
   socials?: {
     instagram?: string;
     twitter?: string;
@@ -125,33 +128,53 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     tagline: "Biomedical Engineering Students' Association",
     type: 'departmental',
     typeLabel: 'Departmental Body',
-    establishedYear: '2013',
-    memberCount: '320+ Active Students',
+    establishedYear: '2022',
+    memberCount: '116 Active Students',
     departmentAffiliation: 'Department of Biomedical Engineering',
-    mottoOrVision: 'Globally Minded, Impactful, and Future Ready',
+    mottoOrVision: 'Ancoras Vitae Cudebat (Forging the anchors of life)',
     president: {
       name: 'Favour Adebayo',
       title: 'President',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '2013', description: 'Pioneering healthcare engineering in Nigeria' },
-      { label: 'Current Members', value: '320+', description: 'Undergraduate student innovators' },
+      { label: 'Year Established', value: '2022', description: 'Student association of Biomedical Engineering' },
+      { label: 'Active Members', value: '116', description: 'Undergraduates across Year 2 to Year 5' },
       { label: 'Current President', value: 'Favour Adebayo', description: '2025/2026 Academic Session' },
-      { label: 'Clinical Partner', value: 'LUTH', description: 'Lagos University Teaching Hospital' },
+      { label: 'Flagship Summit', value: 'BioDrive', description: '300+ students & nationwide BME innovators' },
     ],
     flagshipEvents: [
       {
-        name: 'Bio-Drive Innovation Forum',
-        description: 'Flagship biomedical expo showcasing student prototypes of smart ECGs, ventilators, and medical devices.',
+        name: 'BioDrive Summit',
+        description: 'Flagship innovation summit bringing together about 300 students and biomedical engineering experts from across Nigeria for knowledge sharing, a student pitching competition, and recognition of key figures in the BME community.',
       },
       {
-        name: 'LUTH Clinical Immersion',
-        description: 'Practical clinical shadowing and medical equipment calibration in hospital wards.',
+        name: 'BMESA Games',
+        description: 'Annual sports competition where students from every level compete, building unity across the department.',
       },
       {
-        name: 'Health-Tech Symposium',
-        description: 'Industry keynote panels co-hosted with JNC International and Healthcare Federation of Nigeria.',
+        name: 'BMESA Hub',
+        description: 'Structured learning programme delivered through cohort classes that build practical skills beyond the classroom, backed by a nationwide community sharing opportunities such as scholarships, hackathons, and BME updates.',
+      },
+      {
+        name: 'BMESA Outreach',
+        description: 'Community outreach to a public school on World Biomedical Engineering Day, spreading awareness of biomedical engineering as a career path.',
+      },
+      {
+        name: 'BMESA Christmas',
+        description: 'End-of-year social event featuring class carols, Secret Santas, and games.',
+      },
+      {
+        name: 'BMESA Webinars',
+        description: 'Online sessions where students learn directly from professionals and experts in biomedical engineering.',
+      },
+      {
+        name: 'BMESA Scholarship',
+        description: 'Scholarship programme created in partnership with a sponsor to ease the financial burden on students and reward their commitment to the department.',
+      },
+      {
+        name: 'BMESA Movie Night',
+        description: 'Students gather to watch a movie together, built for laughs, screams, and bonding outside the classroom.',
       },
     ],
     focusAreas: [
@@ -168,8 +191,8 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       linkedin: 'https://linkedin.com/company/bmesa-unilag',
     },
     body:
-      'Launched as a B.Eng. program in 2013, the Department of Biomedical Engineering is a decisive intervention into Nigeria\'s healthcare technology sector. Fusing engineering with medical science, students master anatomy, biomechanics, medical imaging, and biomaterials, leveraging proximity to the Lagos University Teaching Hospital (LUTH) for clinical real-world testing.\n\n' +
-      'The Biomedical Engineering Students\' Association (BMESA) operates with a powerful vision: to be "Globally Minded, Impactful, and Future Ready." BMESA drives student development through its annual flagship biomedical innovation forum, "Bio-Drive," heavily supported by industry sponsors like JNC International and the Healthcare Federation of Nigeria. At Bio-Drive, students demo prototypes of low-cost ventilators, smart masks, and portable ECGs. Through peer tutorials and STEM outreach, BMESA is actively seeding a homegrown medical device manufacturing industry in Nigeria.',
+      'BMESA is the student association of the Department of Biomedical Engineering, University of Lagos. It works towards giving students more than a degree: a complete university life and the foundation to become well-rounded biomedical engineers, through innovation, community service, sports, and social life.\n\n' +
+      'Driven by its motto "Ancoras Vitae Cudebat (Forging the anchors of life)", BMESA organizes an extensive array of initiatives. Its flagship event, BioDrive, brings together about 300 students and biomedical engineering experts from across Nigeria for knowledge sharing, a student pitching competition, and recognition of key figures in the BME community. The association also powers the BMESA Hub cohort skill classes, secondary school outreaches on World Biomedical Engineering Day, dedicated scholarships in partnership with sponsors, the BMESA Games, webinars with top professionals, and community bonding traditions like Christmas carols and movie nights.',
   },
   {
     id: 2,
@@ -355,51 +378,69 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     tagline: 'Nigerian Institution of Surveying and Geoinformatics Students',
     type: 'departmental',
     typeLabel: 'Departmental Body',
-    establishedYear: '1973',
-    memberCount: '380+ Active Students',
+    establishedYear: '1972',
+    memberCount: '300+ Active Students',
     departmentAffiliation: 'Department of Surveying and Geoinformatics',
-    mottoOrVision: 'Mapping the Earth, Measuring the Future',
+    mottoOrVision: 'The Bedrock of Meaningful Development',
     president: {
-      name: 'Kazeem Balogun',
+      name: 'Habeeb Idowu',
       title: 'President',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '1973', description: 'Evolution from surveying to geomatics' },
-      { label: 'Current Members', value: '380+', description: 'Geospatial engineers & researchers' },
-      { label: 'Current President', value: 'Kazeem Balogun', description: '2025/2026 Academic Session' },
-      { label: 'NSE Milestone', value: 'First Induction', description: '2025 graduates inducted as NSE Members' },
+      { label: 'Year Established', value: '1972', description: 'Over five decades of surveying & geomatics excellence' },
+      { label: 'Current Members', value: '300+', description: 'Geospatial engineers & researchers' },
+      { label: 'Current President', value: 'Habeeb Idowu', description: '2025/2026 Academic Session' },
+      { label: 'Flagship Initiative', value: "Survey's Sphere", description: 'Practical equipment & geospatial software training' },
     ],
     flagshipEvents: [
       {
-        name: 'Survey Sphere Marathon',
-        description: 'Multi-day knowledge marathon delivering hands-on training in DGPS, Total Stations, and ArcGIS.',
+        name: "Survey's Sphere",
+        description: 'Practical training initiative exposing students to surveying equipment, geospatial software, and professional techniques (GNSS, DGPS, total station operations, levelling, AutoCAD, ArcGIS, and more), preparing them for industrial training.',
       },
       {
-        name: 'Geospatial Innovation Competition (GIC)',
-        description: 'Flagship competition offering ₦500,000+ prizes for innovative spatial and location intelligence projects.',
+        name: 'Geospatial Innovation Challenge (GIC)',
+        description: 'Innovation competition where students apply surveying, geoinformatics, and geospatial technologies to solve practical problems and showcase ideas to professionals and potential sponsors.',
       },
       {
-        name: 'World Hydrography Day Showcase',
-        description: 'Annual research exhibition where UNILAG bathymetric and maritime mapping teams compete nationally.',
+        name: 'HOD Games',
+        description: 'Departmental sporting event promoting unity, healthy competition, teamwork, and sportsmanship across levels.',
+      },
+      {
+        name: "Freshers' Orientation",
+        description: 'Welcomes newly admitted students and introduces them to the academic, professional, and social environment, including career paths in surveying and geoinformatics.',
+      },
+      {
+        name: 'Academic Research Team (ART) Programmes',
+        description: 'Tutorials, departmental quizzes, and academic discussions supporting students\' academic development.',
+      },
+      {
+        name: 'Industrial Visits and Professional Engagements',
+        description: 'Visits to surveying firms, geospatial technology companies, and professional associations to observe workflows and build networks.',
+      },
+      {
+        name: 'Professional Conferences and Seminars',
+        description: 'Participation in conferences, seminars, and workshops organised by surveying and geospatial organisations.',
       },
     ],
     focusAreas: [
+      'Land Surveying & Geodesy',
       'Geographic Information Systems (GIS)',
-      'Drone Mapping & Photogrammetry',
       'Satellite Remote Sensing & Earth Observation',
+      'Photogrammetry & Drone Mapping',
       'Hydrographic Surveying & Marine Geodesy',
-      'Differential GPS & Precise Geodetic Networks',
+      'Cartography & Spatial Data Science',
     ],
     contactEmail: 'info.nisgsunilag@gmail.com',
+    contactPhone: '09090449004',
     socials: {
       instagram: 'https://instagram.com/nisgs_unilag',
       twitter: 'https://x.com/nisgs_unilag',
       linkedin: 'https://linkedin.com/company/nisgs-unilag',
     },
     body:
-      'Formed in 1973, this department manages the critical science of spatial data, rapidly evolving from conventional surveying into advanced Geomatics Engineering. The curriculum is highly digitized, covering GIS, drone mapping, remote sensing, and hydrography. In a massive historical milestone, 2025 saw the first-ever graduates of UNILAG\'s Surveying department inducted as Graduate Members of the Nigerian Society of Engineers (NSE).\n\n' +
-      'The Nigerian Institution of Surveying and Geoinformatics Students (NISGS) UNILAG Chapter is a fiercely competitive and career-focused organization. Its absolute flagship event is Survey Sphere, a multi-day knowledge marathon. Survey Sphere 4.0 (2026) provided hands-on training with DGPS, Total Stations, and ArcGIS, culminating in the maiden Geospatial Innovation Competition (GIC 1.0), which awarded N500,000 to the top student innovators. NISGS is academically lethal; in 2025, a UNILAG team won the World Hydrography Day research competition. Recent stars like Adewuyi Sheriff graduated with a 4.74 CGPA, winning Most Innovative Final Year Student and securing his place at the forefront of global spatial technology.',
+      'The Department of Surveying and Geo-Informatics is committed to giving students the academic knowledge, technical expertise, and practical experience needed to excel in the surveying and geospatial industry. It focuses on the science, technology, and techniques of measuring, mapping, managing, and analysing spatial information about the Earth\'s surface. Fields covered include land surveying, GIS, remote sensing, geodesy, photogrammetry, hydrographic surveying, cartography, and other areas of geomatics.\n\n' +
+      'NISGS UNILAG Chapter is the student body representing students in the department. Guided by its motto "The Bedrock of Meaningful Development", it provides a platform for academic development, professional networking, leadership, social interaction, and practical exposure to the profession. Key initiatives include Survey\'s Sphere for hands-on equipment and GIS software mastery, the Geospatial Innovation Challenge (GIC), the HOD Games, freshers\' orientation, ART academic programs, industrial firm visits, and active participation in professional conferences.',
   },
   {
     id: 6,
@@ -524,36 +565,40 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     imageHeight: null,
     name: 'SPE Unilag',
     acronym: 'SPE',
-    tagline: 'Society of Petroleum Engineers Unilag',
+    tagline: 'Society of Petroleum Engineers (Petroleum and Gas Engineering)',
     type: 'departmental',
     typeLabel: 'Departmental Body',
-    establishedYear: '1975',
-    memberCount: '520+ Active Students',
+    establishedYear: '2001 (Dept. Chartered 2024)',
+    memberCount: '309+ Active Students',
     departmentAffiliation: 'Department of Petroleum and Gas Engineering',
-    mottoOrVision: 'Energy Knowledge for the Next Frontier',
+    mottoOrVision: 'To be a top class institution for the pursuit of excellence in knowledge, character and service to humanity.',
     president: {
       name: 'Samuel Akpu Uko',
       title: 'President',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '1975', description: 'Established during the 1970s energy boom' },
-      { label: 'Current Members', value: '520+', description: 'Petroleum, energy, and geoscience students' },
-      { label: 'Current President', value: 'Samuel Akpu Uko', description: '2025/2026 Academic Session' },
-      { label: 'NAICE Honor', value: 'Best Student Chapter', description: 'Awarded for membership retention and growth' },
+      { label: 'Programme Founded', value: '2001', description: 'Established 2001; department unbundled July 2024' },
+      { label: 'Total Population', value: '336', description: '309 undergraduates across levels & 27 staff members' },
+      { label: 'Head of Department', value: 'Dr. O. O. Olamigoke', description: 'Petroleum & Gas Engineering' },
+      { label: 'Chapter President', value: 'Samuel Akpu Uko', description: 'SPE UNILAG Student Chapter (2025/2026)' },
     ],
     flagshipEvents: [
       {
-        name: 'Student Technical Conference (STC)',
-        description: 'Annual technical conference featuring high-stakes Petroquiz battles and paper competitions.',
+        name: 'The Service Provider Handshake',
+        description: 'Bi-monthly webinars (Fridays, 11:00 AM to 12:00 PM) connecting students and researchers directly with energy service providers and industry operators.',
       },
       {
-        name: 'NAICE Annual Delegation',
-        description: 'Representing UNILAG at the SPE Nigeria Annual International Conference and Exhibition.',
+        name: 'HOD Games',
+        description: 'Departmental sports festival bringing together students and staff in healthy competition and solidarity (December 14th to 18th, 2026).',
       },
       {
-        name: 'SAASC Africa Tech Showcase',
-        description: 'Exhibiting international engineering solutions like the IoT Smart Safety Helmet in Nairobi.',
+        name: 'Industry and Career Fair',
+        description: 'Premier networking and recruitment expo connecting undergraduates with top exploration, production, and energy firms (March 18th, 2027).',
+      },
+      {
+        name: 'Student Technical Conference (STC) & Petroquiz',
+        description: 'Collegiate technical conference featuring high-stakes Petroquiz battles, paper competitions, and national SPE delegations.',
       },
     ],
     focusAreas: [
@@ -561,18 +606,20 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       'Drilling & Well Completion Engineering',
       'Natural Gas Monetization & LNG Logistics',
       'Energy Transition, CCUS & Geothermal',
-      'Health, Safety & Environmental (HSE) IoT',
+      'Petroleum Economics & Asset Management',
     ],
-    contactEmail: 'speunilag@gmail.com',
+    contactEmail: 'hodpetandgasengrg@unilag.edu.ng',
+    contactPhone: '08034969018',
+    headOfDepartment: 'Dr. O. O. Olamigoke',
     socials: {
       instagram: 'https://instagram.com/spe_unilag',
       twitter: 'https://x.com/spe_unilag',
       linkedin: 'https://linkedin.com/company/spe-unilag',
     },
+    aliases: ['petroleum-and-gas', 'petgas', 'petroleum-engineering', 'spe-unilag'],
     body:
-      'Growing out of the Chemical Engineering program in the 1970s to serve Nigeria\'s oil boom, the Department of Petroleum and Gas Engineering covers reservoir engineering, drilling, natural gas processing, and energy economics. Though UNILAG reportedly halted fresh admissions into the program in late 2025 to reflect the shifting global energy landscape, the department remains a titan of industry research.\n\n' +
-      'The Society of Petroleum Engineers (SPE) UNILAG Chapter is arguably one of the most decorated student organizations on the continent. SPE UNILAG adapts brilliantly to the energy transition, welcoming students from geosciences, law, and other engineering fields to build a multidisciplinary powerhouse. Led by dynamic executives like President Samuel Akpu Uko, the chapter\'s flagship event is the Student Technical Conference (STC), featuring Petroquiz competitions and paper contests.\n\n' +
-      'The chapter\'s dominance was on full display at the SPE Nigeria Annual International Conference and Exhibition (NAICE 2026), where they won Best Student Chapter for Membership Retention & Growth, secured 2nd place in the SPENC Chapter Contest, and won the SPENC Energy Challenge. Furthermore, demonstrating a pivot towards IoT and safety, students Samuel Uko and Ogboro Olaoluwa showcased an innovative "Smart Safety Helmet" at the SPE Africa Student Symposium (SAASC 2026) in Nairobi, proving that UNILAG students remain at the cutting edge of energy and industrial safety innovation.',
+      'The Petroleum and Gas Engineering programme was established in the 2001/2002 session within the Department of Chemical and Petroleum Engineering (established 1973), with an intake of nineteen students for the five-year B.Sc. (Honours) degree. The pioneering set graduated in 2006/2007. The degree takes five sessions after SSSC O-level or four sessions after GCE A-level. For the last eight years, the department has admitted students from the UNILAG Diploma II (Foundation) Programme into the second year. Yearly intake averages fifty. The programme is officially recognised by COREN and accredited by the NUC. On 3rd July 2024, the NUC approved the unbundling of the Department of Chemical and Petroleum Engineering into the Department of Chemical Engineering and the Department of Petroleum and Gas Engineering. Dr. O. A. Adeyanju became the pioneer head of the department thereafter, followed by Dr. O. O. Olamigoke.\n\n' +
+      'Vision: To be a top class institution for the pursuit of excellence in knowledge, character and service to humanity. Mission: To provide a conducive environment for teaching, learning, research and development, where staff interact seamlessly with students to foster effective competition and collaboration with their counterparts globally. With an active population of 336 (309 students and 27 staff as of September 2026), the department and the Society of Petroleum Engineers (SPE) UNILAG Chapter host flagship programs including "The Service Provider Handshake" bi-monthly webinars, the annual HOD Games, the Industry and Career Fair, and acclaimed student delegations at national and international energy conferences.',
   },
 ];
 
@@ -648,7 +695,7 @@ export const SUB_BODIES: AssociationBody[] = [
     establishedYear: '2019',
     memberCount: '1,500+ Community Fellows',
     departmentAffiliation: 'Faculty of Engineering (ULES Secretariat)',
-    mottoOrVision: 'Connecting Lecture Halls to Corporate Excellence',
+    mottoOrVision: 'To bridge the gap between students and the industry.',
     president: {
       name: 'Tobi Olaniyan',
       title: 'Lead Convener',
@@ -688,7 +735,7 @@ export const SUB_BODIES: AssociationBody[] = [
       linkedin: 'https://linkedin.com/company/ecx-unilag',
     },
     body:
-      'The Engineering Career Expo (ECX) at the University of Lagos is the premier student-led talent incubator and professional career bridge under the University of Lagos Engineering Society (ULES). Founded in 2019, ECX was created to decisively bridge the gap between rigorous university engineering curricula and the fast-paced global tech and corporate industry.\n\n' +
+      'Engineering Career Expo (ECX) is a student-led organization operating under the supervision of the University of Lagos Engineering Society (ULES). Guided by its motto "To bridge the gap between students and the industry", our primary goal is to bridge the gap between students and the industry by providing technical and soft skills training. We aim to make students job-ready, foster their interest in technology, and equip them with a strong foundation for further personal and professional development.\n\n' +
       'Through initiatives like "HackX" — an intense 72-hour national hackathon, the "ECX 30 Days of Code & Design" bootcamps, and executive networking mixers, ECX has trained over 1,500 students in software engineering, UI/UX design, cloud infrastructure, and product management. ECX routinely partners with top venture capital funds, corporate accelerators, and African unicorns, facilitating internships, job placements, and seed investment for student-led startups.',
   },
   {
@@ -702,22 +749,30 @@ export const SUB_BODIES: AssociationBody[] = [
     tagline: 'Engineering Ladies Initiative',
     type: 'sub-bodies',
     typeLabel: 'ULES Sub-Body',
-    establishedYear: '2017',
+    establishedYear: '2014',
     memberCount: '420+ Active Female Engineers',
     departmentAffiliation: 'Faculty of Engineering (ULES Secretariat)',
-    mottoOrVision: 'Empowering Women to Engineer the Future',
+    mottoOrVision: 'Government for the girls, by the girls and with the girls',
     president: {
       name: 'Ifeoluwa Adeleke',
       title: 'Executive Director',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '2017', description: 'Empowering women across all 10 departments' },
+      { label: 'Year Established', value: '2014', description: 'Founded as Engineering Ladies Day, expanded to ELI' },
       { label: 'Active Members', value: '420+', description: 'Undergraduate female engineering leaders' },
       { label: 'Executive Director', value: 'Ifeoluwa Adeleke', description: '2025/2026 Academic Session' },
       { label: 'Outreach Reach', value: '1,000+ Girls', description: 'Mentored annually in secondary schools' },
     ],
     flagshipEvents: [
+      {
+        name: 'Pad a Girl',
+        description: 'Comprehensive outreach program educating on menstrual hygiene and providing essential supplies to young women.',
+      },
+      {
+        name: 'Stem a Girl',
+        description: 'Outreach initiative to secondary school students inspiring and equipping young girls to pursue education and careers in STEM.',
+      },
       {
         name: 'ELI Week & Annual Gala',
         description: 'Week-long celebration featuring keynote speeches from senior female engineering executives and researchers.',
@@ -726,27 +781,24 @@ export const SUB_BODIES: AssociationBody[] = [
         name: 'SheEngineers Mentorship Circle',
         description: 'Matching female undergraduates with corporate mentors in energy, tech, civil construction, and robotics.',
       },
-      {
-        name: 'Girls in STEM Secondary School Tour',
-        description: 'State-wide outreach inspiring secondary school girls to embrace mathematics and pursue engineering degrees.',
-      },
     ],
     focusAreas: [
       'Female STEM Leadership & Advocacy',
+      'Menstrual Hygiene Education (Pad a Girl)',
+      'Secondary School STEM Outreach (Stem a Girl)',
       'Corporate Mentorship Matching',
       'Technical Upskilling & Career Readiness',
-      'Secondary School STEM Outreach',
-      'Gender Equity in Engineering',
     ],
     contactEmail: 'eliunilag@gmail.com',
+    contactPhone: '09037578588',
     socials: {
       instagram: 'https://instagram.com/eli_unilag',
       twitter: 'https://x.com/eli_unilag',
       linkedin: 'https://linkedin.com/company/eli-unilag',
     },
     body:
-      'Engineering Ladies Initiative is a program designed to address the specific needs and challenges faced by women in engineering. We provide resources, workshops, events, and support systems to help women thrive academically and professionally. Our initiative is driven by the desire to create an inclusive and supportive community that celebrates the achievements of women in engineering. \n\n' +
-      'We have various initiatives like Pad a Girl to educate on menstrual hygiene, Stem a Girl an outreach to secondary school students as well as so much more ',
+      'ELI is a programme designed to address the specific needs and challenges faced by women in engineering. It provides resources, workshops, events, and support systems to help women thrive academically and professionally, driven by the desire to create an inclusive and supportive community that celebrates the achievements of women in engineering.\n\n' +
+      'Founded in 2014 as "Engineering Ladies Day" by a group of passionate female students, the initiative expanded after five editions into the full-fledged Engineering Ladies Initiative to pursue broader empowerment goals. Guided by its motto "Government for the girls, by the girls and with the girls", ELI organizes vital community programs including "Pad a Girl" to educate on menstrual hygiene, "Stem a Girl" secondary school outreach, mentorship networks, and leadership symposia.',
   },
   {
     id: 3,
@@ -759,25 +811,29 @@ export const SUB_BODIES: AssociationBody[] = [
     tagline: 'Professor Ayodele Awojobi Design Competition',
     type: 'sub-bodies',
     typeLabel: 'ULES Sub-Body',
-    establishedYear: '2016',
+    establishedYear: '2017',
     memberCount: '120+ Organizing Fellows & 100+ National Teams',
     departmentAffiliation: 'National Initiative (Founded by ULES)',
-    mottoOrVision: "Inspiring Ingenuity, Solving Nigeria's Toughest Challenges",
+    mottoOrVision: 'Fostering the next generation of innovators by turning ideas into tangible solutions using STEM',
     president: {
       name: 'Olusola Benson',
       title: 'Chairman, Organizing Committee',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '2016', description: "Nigeria's #1 Undergraduate STEM Challenge" },
-      { label: 'National Scope', value: '100+ Tertiary Institutions', description: 'Participating across Nigeria' },
+      { label: 'Year Established', value: '2017', description: "National STEM innovation competition founded by ULES" },
+      { label: 'Focus Sectors', value: '5 Sectors', description: 'Healthcare, Agri, Edu, Essential Services, Sustainability' },
       { label: 'Committee Chairman', value: 'Olusola Benson', description: '2025/2026 Academic Session' },
       { label: 'Prize Grants', value: '₦5M+ Awarded', description: 'In equity-free seed funding to winners' },
     ],
     flagshipEvents: [
       {
         name: 'PAADC National Grand Finale',
-        description: 'The premier collegiate innovation stage where shortlisted finalists pitch working prototypes to investor panels.',
+        description: 'The premier collegiate innovation stage where selected finalist teams present and demonstrate their viable, indigenous STEM solutions to expert judging and investor panels.',
+      },
+      {
+        name: 'Multi-Stage Evaluation Process',
+        description: 'Rigorous selection rounds challenging student teams to identify real-world problems and develop viable prototypes.',
       },
       {
         name: 'Innovators Incubation Accelerator',
@@ -789,21 +845,23 @@ export const SUB_BODIES: AssociationBody[] = [
       },
     ],
     focusAreas: [
-      'Hardware & Indigenous Prototyping',
-      'Clean Energy & Agritech Inventions',
-      'Health-Tech & Medical Instrumentation',
-      'Venture Incubation & Intellectual Property',
-      'National Inter-University STEM Collaboration',
+      'Healthcare',
+      'Agriculture',
+      'Education',
+      'Essential Services',
+      'Environmental Sustainability',
     ],
-    contactEmail: 'sponsorship@paadc.com',
+    contactEmail: 'paadcofficial@gmail.com',
+    contactPhone: '(234) 810 850 1476',
+    coChair: 'Deputy Chair: (234) 810 045 7706',
     socials: {
       instagram: 'https://instagram.com/paadc_official',
       twitter: 'https://x.com/paadc_official',
       linkedin: 'https://linkedin.com/company/paadc',
     },
     body:
-      'The Professor Ayodele Awojobi Design Competition (PAADC) is Nigeria\'s largest student-led undergraduate STEM innovation competition, created in 2016 by the University of Lagos Engineering Society. Named in immortal tribute to the late academic prodigy and mechanical engineering legend Professor Ayodele Awojobi, PAADC challenges tertiary students across Nigeria to design indigenous engineering solutions to Africa\'s most pressing socioeconomic problems.\n\n' +
-      'Each year, PAADC attracts hundreds of submissions from over 100 universities and polytechnics across Nigeria, spanning categories in health tech, agritech, clean energy, and smart automation. Finalists participate in an intensive design-to-market incubation camp, culminating in a grand pitch finale where winners are awarded millions of Naira in equity-free development grants and mentorship from top venture capitalists and industrial leaders.',
+      'PAADC was established in 2017 by the University of Lagos Engineering Society (ULES) in honour of the late Professor Ayodele Awojobi. It is a national undergraduate innovation competition that challenges students to identify real-world problems and develop viable, indigenous solutions using STEM. Its mission is to foster the next generation of innovators by giving undergraduates a platform to turn ideas into tangible solutions to societal challenges. Participants progress through multiple stages of evaluation, and selected finalist teams present and demonstrate their innovations at the Grand Finale.\n\n' +
+      'Covering five critical focus sectors — Healthcare, Agriculture, Education, Essential Services, and Environmental Sustainability — PAADC gives undergraduates across tertiary institutions the resources, mentorship, and equity-free funding to commercialize impactful technologies.',
   },
   {
     id: 4,
@@ -873,19 +931,19 @@ export const SUB_BODIES: AssociationBody[] = [
     tagline: 'ULES Oratory, Writers and Literacy Society',
     type: 'sub-bodies',
     typeLabel: 'ULES Sub-Body',
-    establishedYear: '2020',
+    establishedYear: '2023',
     memberCount: '140+ Active Orators & Writers',
     departmentAffiliation: 'Faculty of Engineering (ULES Secretariat)',
-    mottoOrVision: 'Articulate Minds, Impactful Voices',
+    mottoOrVision: 'Beyond the classroom',
     president: {
       name: 'Miracle Okonkwo',
-      title: 'President',
+      title: 'Chairperson',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '2020', description: 'Communication and literary society of ULES' },
+      { label: 'Year Established', value: '2023', description: 'Official literary & communications arm of ULES' },
       { label: 'Active Members', value: '140+', description: 'Debaters, speech coaches, and technical writers' },
-      { label: 'Current President', value: 'Miracle Okonkwo', description: '2025/2026 Academic Session' },
+      { label: 'Current Chairperson', value: 'Miracle Okonkwo', description: '2025/2026 Academic Session' },
       { label: 'Flagship Stage', value: "The Orator's Stage", description: 'Faculty-wide parliamentary tournament' },
     ],
     flagshipEvents: [
@@ -894,8 +952,12 @@ export const SUB_BODIES: AssociationBody[] = [
         description: 'High-stakes debate championship challenging engineering students on technology policy, ethics, and civic leadership.',
       },
       {
-        name: 'WordCraft Technical Writing Clinics',
-        description: 'Workshops coaching engineers on publication-grade technical documentation, grant writing, and storytelling.',
+        name: 'Hands-on Workshops & Debate Sessions',
+        description: 'Practical training helping engineers master public speaking, persuasive presentations, and impactful leadership.',
+      },
+      {
+        name: 'Creative Writing Initiatives & Clinics',
+        description: 'Mentorship and workshops turning complex technical ideas into compelling stories and publications.',
       },
       {
         name: 'Engineering Literary Digest Publication',
@@ -903,43 +965,38 @@ export const SUB_BODIES: AssociationBody[] = [
       },
     ],
     focusAreas: [
-      'Parliamentary Debate & Rhetoric',
-      'Technical Writing & Documentation',
-      'Executive Public Speaking Coaching',
-      'Engineering Journalism & Op-Eds',
-      'Literary Expression & Creative Writing',
+      'Parliamentary Debate & Public Speaking',
+      'Technical Storytelling & Communication',
+      'Creative Writing & Editorial Initiatives',
+      'Persuasive Presentation Mastery',
+      'Executive Leadership Coaching',
     ],
-    contactEmail: 'owls.ules@gmail.com',
+    contactEmail: 'ulesowls@gmail.com',
+    contactPhone: '+234 802 373 8094',
+    coChair: 'Co-chair: +234 708 929 1510',
     socials: {
       instagram: 'https://instagram.com/ules_owls',
       twitter: 'https://x.com/ules_owls',
       linkedin: 'https://linkedin.com/company/ules-owls',
     },
     body:
-      'The ULES Oratory, Writers and Literacy Society (ULES OWLS) is the premier communications and literary hub within the Faculty of Engineering, founded in 2020. Recognizing that modern engineers must not only calculate and construct but also articulate, persuade, and lead, OWLS was formed to cultivate eloquence, public speaking mastery, and literary excellence among engineering students.\n\n' +
-      'OWLS organizes the prestigious "Orator\'s Stage" parliamentary debate tournaments, regular public speaking clinics, and creative writing workshops. The society also curates and publishes the annual ULES Literary Digest, documenting essays, poetry, and investigative op-eds that reflect the intellectual breadth and cultural vitality of UNILAG engineers.',
+      'ULES OWLS is the official literary, public speaking, and communications arm of the University of Lagos Engineering Society, formed in 2023. Guided by its motto "Beyond the classroom", it helps engineers master the spoken and written word, turning complex technical ideas into compelling stories, persuasive presentations, and impactful leadership, through hands-on workshops, debate sessions, and creative writing initiatives.\n\n' +
+      'OWLS organizes the prestigious "Orator\'s Stage" parliamentary debate tournaments, regular public speaking clinics, and creative writing workshops. The society also curates and publishes the annual ULES Literary Digest, celebrating prose, poetry, and thought leadership from UNILAG engineers.',
   },
 ];
 
 export function computeBodySeo(body: AssociationBody) {
-  const isAcronymSameAsName = body.name.trim().toLowerCase() === body.acronym.trim().toLowerCase();
-  const nameAlreadyHasAcronym = body.name.toLowerCase().includes(body.acronym.toLowerCase());
+  const displayTitle = `${body.acronym} UNILAG – ${body.tagline} | ULES`;
 
-  const displayTitle = isAcronymSameAsName
-    ? `${body.acronym} – ${body.tagline} | ULES UNILAG`
-    : nameAlreadyHasAcronym
-      ? `${body.name} – ${body.tagline} | ULES UNILAG`
-      : `${body.name} (${body.acronym}) – ${body.tagline} | ULES UNILAG`;
-
-  const description = `${body.name} (${body.acronym}) is the official ${body.typeLabel.toLowerCase()} representing students of ${body.departmentAffiliation} at the University of Lagos (UNILAG) Faculty of Engineering under ULES. Explore programs, events, leadership, and initiatives.`;
+  const description = `Official profile of ${body.acronym} (ULES) – ${body.name}. ${body.tagline} at the University of Lagos Faculty of Engineering. Explore student programs, leadership, flagship events, and contact details.`;
 
   const keywords = Array.from(
     new Set([
-      body.name,
       body.acronym,
       `${body.acronym} ULES`,
       `${body.acronym} UNILAG`,
       `${body.acronym} University of Lagos`,
+      body.name,
       `${body.name} ULES`,
       `${body.name} UNILAG`,
       body.tagline,
@@ -947,9 +1004,12 @@ export function computeBodySeo(body: AssociationBody) {
       `${body.tagline} UNILAG`,
       body.departmentAffiliation,
       `${body.departmentAffiliation} UNILAG`,
+      `${body.departmentAffiliation} ULES`,
       ...(body.flagshipEvents?.map((e) => e.name) || []),
       ...(body.focusAreas || []),
       body.president?.name ? `${body.president.name} ${body.acronym}` : '',
+      body.president?.name ? `${body.president.name} ULES` : '',
+      body.headOfDepartment ? `${body.headOfDepartment} UNILAG` : '',
       'ULES associations',
       'UNILAG engineering',
       'Faculty of Engineering UNILAG',
@@ -971,6 +1031,7 @@ export function computeBodySeo(body: AssociationBody) {
 
   const aliases = Array.from(
     new Set([
+      ...(body.aliases || []),
       body.slug,
       body.acronym.toLowerCase(),
       `${body.slug}-unilag`,
@@ -1012,17 +1073,14 @@ export function getBodyBySlug(slug: string): AssociationBody | undefined {
 
   const bodies = getAllBodies();
 
-  // 1. Direct slug or ID match
   const directMatch = bodies.find(
     (b) => b.slug.toLowerCase() === normalized || String(b.id) === normalized
   );
   if (directMatch) return directMatch;
 
-  // 2. Acronym match (e.g. 'ecx', 'nisgs')
   const acronymMatch = bodies.find((b) => b.acronym.toLowerCase() === normalized);
   if (acronymMatch) return acronymMatch;
 
-  // 3. Aliases match
   const aliasMatch = bodies.find((b) =>
     b.aliases?.some(
       (alias) =>
@@ -1032,7 +1090,6 @@ export function getBodyBySlug(slug: string): AssociationBody | undefined {
   );
   if (aliasMatch) return aliasMatch;
 
-  // 4. Normalized stripped comparison (e.g. 'engineeringcareerexpo' -> 'ecx')
   const strippedMatch = bodies.find((b) => {
     if (b.slug.replace(/[^a-z0-9]/g, '') === stripped) return true;
     if (b.acronym.toLowerCase().replace(/[^a-z0-9]/g, '') === stripped) return true;
