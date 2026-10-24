@@ -37,7 +37,7 @@ export function BodyCard({
 
   const href = `/associations/${targetSlug}`;
   const displayLabel = acronym ? `${acronym} | ULES` : name;
-  const fullLabel = acronym ? `${name} (${acronym})` : name;
+  const fullLabel = acronym && acronym !== name ? `${name} (${acronym})` : name;
 
   return (
     <Card

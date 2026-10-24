@@ -150,31 +150,23 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       },
       {
         name: 'BMESA Games',
-        description: 'Annual sports competition where students from every level compete, building unity across the department.',
+        description: 'Annual departmental sports championship where students from every level compete, promoting athletic excellence and inter-level unity.',
       },
       {
-        name: 'BMESA Hub',
-        description: 'Structured learning programme delivered through cohort classes that build practical skills beyond the classroom, backed by a nationwide community sharing opportunities such as scholarships, hackathons, and BME updates.',
+        name: 'BMESA Hub & Masterclasses',
+        description: 'Structured learning delivered through cohort classes and online sessions with medical device experts, sharing scholarships, hackathons, and BME industry updates.',
       },
       {
-        name: 'BMESA Outreach',
-        description: 'Community outreach to a public school on World Biomedical Engineering Day, spreading awareness of biomedical engineering as a career path.',
+        name: 'World BME Day Community Outreach',
+        description: 'STEM community outreach to public secondary schools on World Biomedical Engineering Day, spreading awareness of biomedical engineering careers.',
       },
       {
-        name: 'BMESA Christmas',
-        description: 'End-of-year social event featuring class carols, Secret Santas, and games.',
+        name: 'BMESA Student Welfare & Scholarships',
+        description: 'Merit-based scholarship scheme and welfare support created in partnership with industry sponsors to ease financial burdens and reward dedication.',
       },
       {
-        name: 'BMESA Webinars',
-        description: 'Online sessions where students learn directly from professionals and experts in biomedical engineering.',
-      },
-      {
-        name: 'BMESA Scholarship',
-        description: 'Scholarship programme created in partnership with a sponsor to ease the financial burden on students and reward their commitment to the department.',
-      },
-      {
-        name: 'BMESA Movie Night',
-        description: 'Students gather to watch a movie together, built for laughs, screams, and bonding outside the classroom.',
+        name: 'BMESA Socials & Movie Night',
+        description: 'Departmental recreational traditions including movie nights, end-of-year Christmas carols, and community bonding outside the classroom.',
       },
     ],
     focusAreas: [
@@ -272,52 +264,72 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     tagline: 'National Association of Metallurgical and Materials Engineering Students',
     type: 'departmental',
     typeLabel: 'Departmental Body',
-    establishedYear: '1973',
-    memberCount: '410+ Active Students',
+    establishedYear: '2000',
+    memberCount: '300+ Active Students',
     departmentAffiliation: 'Department of Metallurgical and Materials Engineering',
-    mottoOrVision: 'Forging the Materials that Drive Modern Civilization',
+    mottoOrVision: 'Reinforcing the Present... innovating the future.',
     president: {
-      name: 'Victor Okafor',
+      name: 'Soyemi Eniola',
       title: 'President',
-      academicYear: CURRENT_ACADEMIC_SESSION,
+      academicYear: '2026/2027',
     },
+    headOfDepartment: 'Prof. Olatunde Israel Sekunowo',
     keyHighlights: [
-      { label: 'Year Established', value: '1973', description: 'Catalyzing Nigerian industrialization' },
-      { label: 'Current Members', value: '410+', description: 'Materials and metallurgical engineers' },
-      { label: 'Current President', value: 'Victor Okafor', description: '2025/2026 Academic Session' },
-      { label: 'Faculty Distinction', value: 'BGS Faculty', description: 'Clinton Mekwunye, Overall Best Student' },
+      { label: 'Department Founded', value: '2000', description: 'Established January 20, 2000' },
+      { label: 'Department Population', value: '350+', description: '300+ active scholars & 50+ volunteer community' },
+      { label: 'Head of Department', value: 'Prof. O. I. Sekunowo', description: 'Metallurgical & Materials Engineering' },
+      { label: 'Chapter President', value: 'Soyemi Eniola', description: 'NAMMES UNILAG (2026/2027 Session)' },
     ],
     flagshipEvents: [
       {
-        name: 'NAMMES Zonal Technical Workshop',
-        description: 'Multi-university convention uniting materials researchers and metallurgical students.',
+        name: 'Materials Horizon',
+        description: 'Flagship conference and seminar convening lecturers, industry leaders, alumni, and students to discuss breakthroughs shaping the materials and engineering sector.',
       },
       {
-        name: 'Heavy Industrial Plant Excursions',
-        description: 'Site visits to smelting plants, steel rolling mills, and advanced composite foundries.',
+        name: 'NAMMES Launchpad Series',
+        description: 'Industry dialogue initiative bringing corporate engineering professionals closer to students for high-value career conversations and mentorship.',
       },
       {
-        name: 'Materials Synthesis Fair',
-        description: 'Exhibition of student-synthesized corrosion-resistant alloys and polymer matrices.',
+        name: 'HOD Games & NAMMES Games Festival',
+        description: 'Departmental sports and social day dedicated to unwinding, building camaraderie, and competing across athletic tournaments and board games.',
+      },
+      {
+        name: 'Heavy Industry Field Trips',
+        description: 'Practical excursions linking classroom theory to manufacturing practice, including plant visits to Beta Glass PLC and Nigerian Foundry Limited.',
+      },
+      {
+        name: 'Student Welfare & Safety Net (Pad Bank & Aid)',
+        description: 'Compassionate community support including the NAMMES Pad Bank for female students, School Fees Aid for indigent scholars, and Pulse Friday check-ins.',
+      },
+      {
+        name: 'Academic Tutorials & Inter-Chapter Collaborations',
+        description: 'Peer tutorials, digital resources via the NAMMES Hub, and joint technical activities in partnership with ULES ARB and NIMechE UNILAG SF.',
       },
     ],
     focusAreas: [
-      'Physical & Mechanical Metallurgy',
-      'Extractive Metallurgy & Mineral Processing',
-      'Advanced Polymers & Composite Materials',
-      'Corrosion Engineering & Surface Coating',
-      'Thermodynamics of Materials',
+      'Mineral Processing & Extractive Metallurgy',
+      'Physical Metallurgy & Nanotechnology',
+      'Materials Development & Advanced Processing',
+      'Welding, Foundry Technology & Surface Modification',
+      'Corrosion Engineering, Ceramics & Composites',
     ],
-    contactEmail: 'nammesunilag@gmail.com',
+    contactEmail: 'unilag.nammes@gmail.com',
+    contactPhone: '+234 705 040 9921',
     socials: {
-      instagram: 'https://instagram.com/nammes_unilag',
-      twitter: 'https://x.com/nammes_unilag',
+      instagram: 'https://instagram.com/unilag_nammes',
+      twitter: 'https://x.com/UNILAG_NAMMES',
       linkedin: 'https://linkedin.com/company/nammes-unilag',
     },
+    aliases: [
+      'nammes',
+      'nammes-unilag',
+      'metallurgical-and-materials',
+      'materials-engineering',
+      'hala-materials',
+    ],
     body:
-      'Created in 1973 to catalyze Nigeria\'s industrialization, the Department of Metallurgical and Materials Engineering forms the critical link between raw mineral extraction, refinement, and advanced materials design. The curriculum encompasses physical metallurgy, extractive processes, thermodynamics, and advanced composite characterization.\n\n' +
-      'The National Association of Metallurgical and Materials Engineering Students (NAMMES) UNILAG Chapter organizes zonal technical workshops, leadership training, and plant visits to steelworks. NAMMES promotes highly multi-disciplinary skills, with its members frequently excelling across the entire engineering faculty.\n\n' +
-      'Excellence Highlight: The department\'s absolute dominance was cemented recently when Clinton Mekwunye emerged not only as the Best Graduating Student of the Department of Metallurgical and Materials Engineering but as the overall Best Graduating Student in the entire Faculty of Engineering.',
+      'The Department of Metallurgical and Materials Engineering is an essential discipline within the Faculty of Engineering, University of Lagos, offering a five-year COREN-accredited B.Sc. alongside postgraduate programmes up to PhD level. Established on January 20, 2000, the department equips graduates with a rigorous engineering education across mineral processing, physical metallurgy, materials processing, welding, surface modification, foundry technology, ceramics, corrosion prevention, composite materials, and nanotechnology.\n\n' +
+      'Rallying under the departmental slogan "HALA MATERIALS" and the motto "Reinforcing the Present... innovating the future", the National Association of Metallurgical and Materials Engineering Students (NAMMES) UNILAG Chapter drives an active, future-ready community. Operating with an active digital hub (NAMMES Hub) and newsletter (The NAMMES Communiqué), the chapter hosts flagship programs including the Materials Horizon conference, NAMMES Launchpad Series, HOD Games, industrial plant tours (such as Beta Glass PLC and Nigerian Foundry Limited), peer tutorials with ULES ARB and NIMechE UNILAG SF, and welfare safety nets like the NAMMES Pad Bank and School Fees Aid.',
   },
   {
     id: 4,
@@ -325,9 +337,9 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     imageSrc: '/associations/nimeche.png',
     imageWidth: null,
     imageHeight: null,
-    name: 'NIMECHE Unilag',
-    acronym: 'NIMechE',
-    tagline: 'Nigerian Institution of Mechanical Engineers ("Motion Family")',
+    name: 'NIMechE UNILAG SF',
+    acronym: 'NIMechE UNILAG SF',
+    tagline: 'Nigerian Institution of Mechanical Engineers UNILAG Student Forum',
     type: 'departmental',
     typeLabel: 'Departmental Body',
     establishedYear: '1964',
@@ -347,8 +359,8 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     ],
     flagshipEvents: [
       {
-        name: 'NIMechE Student Symposium',
-        description: 'Flagship professional development event where students engage with industry leaders, academics, and researchers on emerging engineering trends.',
+        name: 'NIMechE UNILAG SF Students\' Symposium',
+        description: 'Flagship professional development event where students engage with industry leaders, academics, and researchers on emerging engineering trends and AI.',
       },
       {
         name: 'Innovate Local Challenge',
@@ -385,9 +397,18 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
       twitter: 'https://x.com/nimeche_unilag',
       linkedin: 'https://linkedin.com/company/nimeche-unilag',
     },
+    aliases: [
+      'nimeche',
+      'nimeche-unilag',
+      'nimeche-sf',
+      'nimeche-unilag-sf',
+      'nimechesf',
+      'mechanical-engineering',
+      'motion-family',
+    ],
     body:
       'The Department of Mechanical Engineering was founded in 1964 alongside the faculty\'s inception and emphasizes solid mechanics, thermodynamics, machine design, and manufacturing. Its historical trajectory is inextricably linked to the legacy of the late Professor Ayodele Awojobi, whose 1973 invention of the "Autonov 1" (a bi-directional vehicle moving forward and backward using dual steering wheels) established a culture of audacious indigenous innovation.\n\n' +
-      'Known affectionately as the "Motion Family," the student body belongs to both NIMechE and the UK-based Institution of Mechanical Engineers (IMechE). Operating with five technical communities (Aerospace, Automobile, HVAC, Energy, and Manufacturing) and two IMechE clubs (Formula Student Club and Railway Club), the chapter bridges academic rigor with world-class engineering practice. UNILAG mechanical engineers routinely distinguish themselves internationally, recently winning first place at the 12th Nigerian Heat of the IMechE Speak Out for Engineering (SOFE) competition.',
+      'Known affectionately as the "Motion Family," the student body operates officially as the Nigerian Institution of Mechanical Engineers UNILAG Student Forum (NIMechE UNILAG SF) and belongs to both NIMechE and the UK-based Institution of Mechanical Engineers (IMechE). Operating with five technical communities (Aerospace, Automobile, HVAC, Energy, and Manufacturing) and two IMechE clubs (Formula Student Club and Railway Club), the forum bridges academic rigor with world-class engineering practice. UNILAG mechanical engineers routinely distinguish themselves internationally, recently winning first place at the 12th Nigerian Heat of the IMechE Speak Out for Engineering (SOFE) competition.',
   },
   {
     id: 5,
@@ -425,8 +446,8 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
         description: 'Innovation competition where students apply surveying, geoinformatics, and geospatial technologies to solve practical problems and showcase ideas to professionals and potential sponsors.',
       },
       {
-        name: 'HOD Games',
-        description: 'Departmental sporting event promoting unity, healthy competition, teamwork, and sportsmanship across levels.',
+        name: 'HOD Games – Champions in Motion',
+        description: 'Departmental sports festival promoting unity, healthy competition, teamwork, and athletic sportsmanship under the official tournament banner "Champions in Motion".',
       },
       {
         name: "Freshers' Orientation",
@@ -437,12 +458,8 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
         description: 'Tutorials, departmental quizzes, and academic discussions supporting students\' academic development.',
       },
       {
-        name: 'Industrial Visits and Professional Engagements',
-        description: 'Visits to surveying firms, geospatial technology companies, and professional associations to observe workflows and build networks.',
-      },
-      {
-        name: 'Professional Conferences and Seminars',
-        description: 'Participation in conferences, seminars, and workshops organised by surveying and geospatial organisations.',
+        name: 'Industrial Excursions & Professional Conferences',
+        description: 'Visits to surveying firms, geospatial technology companies, and professional associations, alongside active student participation in national surveying conferences and workshops.',
       },
     ],
     focusAreas: [
@@ -462,7 +479,7 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     },
     body:
       'The Department of Surveying and Geo-Informatics is committed to giving students the academic knowledge, technical expertise, and practical experience needed to excel in the surveying and geospatial industry. It focuses on the science, technology, and techniques of measuring, mapping, managing, and analysing spatial information about the Earth\'s surface. Fields covered include land surveying, GIS, remote sensing, geodesy, photogrammetry, hydrographic surveying, cartography, and other areas of geomatics.\n\n' +
-      'NISGS UNILAG Chapter is the student body representing students in the department. Guided by its motto "The Bedrock of Meaningful Development", it provides a platform for academic development, professional networking, leadership, social interaction, and practical exposure to the profession. Key initiatives include Survey\'s Sphere for hands-on equipment and GIS software mastery, the Geospatial Innovation Challenge (GIC), the HOD Games, freshers\' orientation, ART academic programs, industrial firm visits, and active participation in professional conferences.',
+      'NISGS UNILAG Chapter is the student body representing students in the department. Guided by its motto "The Bedrock of Meaningful Development", it provides a platform for academic development, professional networking, leadership, social interaction, and practical exposure to the profession. Key initiatives include Survey\'s Sphere for hands-on equipment and GIS software mastery, the Geospatial Innovation Challenge (GIC), the HOD Games ("Champions in Motion"), freshers\' orientation, ART academic programs, industrial firm visits, and active participation in professional conferences.',
   },
   {
     id: 6,
@@ -1029,7 +1046,10 @@ export const SUB_BODIES: AssociationBody[] = [
 ];
 
 export function computeBodySeo(body: AssociationBody) {
-  const displayTitle = `${body.acronym} UNILAG – ${body.tagline} | ULES`;
+  const acronymWithUnilag = body.acronym.includes('UNILAG')
+    ? body.acronym
+    : `${body.acronym} UNILAG`;
+  const displayTitle = `${acronymWithUnilag} – ${body.tagline} | ULES`;
 
   const description = `Official profile of ${body.acronym} (ULES) – ${body.name}. ${body.tagline} at the University of Lagos Faculty of Engineering. Explore student programs, leadership, flagship events, and contact details.`;
 
