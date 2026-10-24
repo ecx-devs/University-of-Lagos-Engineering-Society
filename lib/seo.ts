@@ -382,7 +382,7 @@ export function associationsCollectionJsonLd(
         url,
         name: `Engineering Associations & Student Bodies | ${SITE.fullName}`,
         description:
-          'Explore all 9 departmental bodies and 6 sub-bodies across the Faculty of Engineering at the University of Lagos (UNILAG) under ULES, including ECX, NISGS, NIMechE, SEES, and PAADC.',
+          'Explore all 9 departmental bodies and 6 sub-bodies across the Faculty of Engineering at the University of Lagos (UNILAG) under ULES, including ECX, NISGS, NIMechE UNILAG SF, SEES, and PAADC.',
         isPartOf: {
           '@type': 'WebSite',
           '@id': `${SITE.url}/#website`,

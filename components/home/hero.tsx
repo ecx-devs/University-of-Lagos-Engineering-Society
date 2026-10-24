@@ -6,14 +6,14 @@ const Hero = () => {
   return (
     <section className="xs:px-6 relative top-0 left-0 m-0 flex min-h-[calc(100vh-66px)] w-full flex-col justify-end px-4 pb-23.5 sm:px-10 sm:pb-[clamp(2.5rem,9.24vh,6rem)] md:px-16 lg:px-[9.6528%]">
       <Image
-        src="/home/headshot.jpeg"
+        src="/home/lumen.jpg"
         fill
         sizes="100vw"
         alt="Image of all executives"
         priority
         className="object-cover object-[50%_30%]"
       />
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-black/30" />
       <div className="relative w-full max-w-290.5 font-sans text-primary-foreground">
         <div className="pl-[0.6454%]">
           <h1 className="font-heading xs:text-4xl max-w-full text-center text-[30px] leading-tight tracking-[-0.02em] sm:max-w-125 sm:text-5xl sm:leading-snug md:max-w-155 md:text-start md:text-[52px] lg:max-w-188.75 lg:text-[60px]/18">

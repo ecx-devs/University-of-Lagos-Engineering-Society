@@ -54,7 +54,9 @@ export async function generateMetadata({ params }: AssociationDetailPageProps) {
   const body = (await getAssociationBodyWithDynamicLeadership(slug)) ?? getBodyBySlug(slug);
   if (!body) return {};
 
-  const seoTitle = body.seoTitle ?? `${body.acronym} UNILAG – ${body.tagline} | ULES`;
+  const seoTitle =
+    body.seoTitle ??
+    `${body.acronym.includes('UNILAG') ? body.acronym : `${body.acronym} UNILAG`} – ${body.tagline} | ULES`;
   const seoDescription =
     body.seoDescription ??
     `Official profile of ${body.acronym} (ULES) – ${body.name}. ${body.tagline} at the University of Lagos Faculty of Engineering under ULES.`;

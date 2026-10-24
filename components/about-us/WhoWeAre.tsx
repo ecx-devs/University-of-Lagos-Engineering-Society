@@ -20,7 +20,7 @@ export function WhoWeAre() {
             <Link href="/associations/nsche" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Chemical Engineering (NSChE)</Link>,{' '}
             <Link href="/associations/cess" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Civil and Environmental Engineering (CESS / NICE-SA)</Link>,{' '}
             <Link href="/associations/sees" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Computer Engineering &amp; Electrical and Electronics Engineering (SEES)</Link>,{' '}
-            <Link href="/associations/nimeche" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Mechanical Engineering (NIMechE)</Link>,{' '}
+            <Link href="/associations/nimeche" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Mechanical Engineering (NIMechE UNILAG SF)</Link>,{' '}
             <Link href="/associations/nammes" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Metallurgical and Materials Engineering (NAMMES)</Link>,{' '}
             <Link href="/associations/spe" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Petroleum and Gas Engineering (SPE)</Link>,{' '}
             <Link href="/associations/nisgs" className="text-primary hover:text-accent font-medium hover:underline transition-colors">Surveying and Geoinformatics (NISGS)</Link>, and{' '}
