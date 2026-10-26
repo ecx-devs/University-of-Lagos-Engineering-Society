@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { NEWS_ITEMS } from '@/components/constants/news';
+import { deleteFromCloudinary } from '@/app/actions/upload';
 
 export type NewsItemData = {
   id: string;
@@ -280,6 +281,12 @@ export async function deleteNews(id: string) {
     const item = await prisma.news.delete({
       where: { id },
     });
+
+    if (item?.imageUrl) {
+      deleteFromCloudinary(item.imageUrl).catch((err) =>
+        console.error('Failed to cleanup news image from Cloudinary:', err)
+      );
+    }
 
     revalidatePath('/admin/news');
     revalidatePath('/admin');

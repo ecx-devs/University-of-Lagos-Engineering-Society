@@ -143,14 +143,12 @@ export function Excos({ leaders = [] }: ExcosProps) {
           )}
         </div>
 
-        {/* Live count indicator */}
         <p className="text-xs text-muted-foreground">
           Showing <span className="font-semibold text-foreground">{filteredLeaders.length}</span> of{' '}
           <span className="font-semibold text-foreground">{leaders.length}</span> executive council members
         </p>
       </div>
 
-      {/* Grid of Executive Cards */}
       {filteredLeaders.length === 0 ? (
         <ExcosEmptyState searchQuery={searchQuery} onClear={() => setSearchQuery('')} />
       ) : (

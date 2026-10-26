@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { INITIAL_BLOG_POSTS, type BlogPostItem } from '@/components/constants/blogs';
+import { deleteFromCloudinary } from '@/app/actions/upload';
 
 export type BlogPostData = {
   id: string;
@@ -380,6 +381,17 @@ export async function deleteBlogPost(id: string) {
     const item = await prisma.blogPost.delete({
       where: { id },
     });
+
+    if (item?.imageUrl) {
+      deleteFromCloudinary(item.imageUrl).catch((err) =>
+        console.error('Failed to cleanup blog post image from Cloudinary:', err)
+      );
+    }
+    if (item?.authorPfp) {
+      deleteFromCloudinary(item.authorPfp).catch((err) =>
+        console.error('Failed to cleanup blog author photo from Cloudinary:', err)
+      );
+    }
 
     revalidatePath('/admin/blog');
     revalidatePath('/admin');

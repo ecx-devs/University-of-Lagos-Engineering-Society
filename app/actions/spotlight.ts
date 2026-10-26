@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { deleteFromCloudinary } from '@/app/actions/upload';
 
 type SpotlightType = 'volunteer' | 'lecturer';
 
@@ -50,6 +51,16 @@ export async function createOrUpdateSpotlight(data: {
   const { id, ...rest } = data;
 
   if (id) {
+    const existing = await prisma.spotlight.findUnique({
+      where: { id },
+      select: { imageUrl: true },
+    });
+    if (existing?.imageUrl && rest.imageUrl && existing.imageUrl !== rest.imageUrl) {
+      deleteFromCloudinary(existing.imageUrl).catch((err) =>
+        console.error('Failed to cleanup replaced spotlight image from Cloudinary:', err)
+      );
+    }
+
     await prisma.spotlight.update({
       where: { id },
       data: rest,
@@ -76,6 +87,16 @@ export async function toggleSpotlightPublished(id: string, isPublished: boolean)
 }
 
 export async function deleteSpotlight(id: string) {
+  const spotlight = await prisma.spotlight.findUnique({
+    where: { id },
+    select: { imageUrl: true },
+  });
+  if (spotlight?.imageUrl) {
+    deleteFromCloudinary(spotlight.imageUrl).catch((err) =>
+      console.error('Failed to cleanup deleted spotlight image from Cloudinary:', err)
+    );
+  }
+
   await prisma.spotlight.delete({
     where: { id },
   });

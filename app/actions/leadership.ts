@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 import { getGlobalAcademicSession } from '@/app/actions/associations';
+import { deleteFromCloudinary } from '@/app/actions/upload';
 
 export type ExecutiveLeaderData = {
   id: string;
@@ -71,6 +72,16 @@ export async function createOrUpdateExecutiveLeader(data: {
 
   try {
     if (id) {
+      const existing = await prisma.executiveLeader.findUnique({
+        where: { id },
+        select: { imageUrl: true },
+      });
+      if (existing?.imageUrl && imageUrl && existing.imageUrl !== imageUrl) {
+        deleteFromCloudinary(existing.imageUrl).catch((err) =>
+          console.error('Failed to cleanup replaced executive image from Cloudinary:', err)
+        );
+      }
+
       const updated = await prisma.executiveLeader.update({
         where: { id },
         data: {
@@ -166,6 +177,16 @@ export async function deleteExecutiveLeader(id: string): Promise<{ success: bool
   }
 
   try {
+    const leader = await prisma.executiveLeader.findUnique({
+      where: { id },
+      select: { imageUrl: true },
+    });
+    if (leader?.imageUrl) {
+      deleteFromCloudinary(leader.imageUrl).catch((err) =>
+        console.error('Failed to cleanup deleted executive image from Cloudinary:', err)
+      );
+    }
+
     await prisma.executiveLeader.delete({
       where: { id },
     });

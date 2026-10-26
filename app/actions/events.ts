@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { slugify } from '@/lib/utils';
+import { deleteFromCloudinary } from '@/app/actions/upload';
 
 export interface EventFormData {
   id?: string;
@@ -159,6 +160,16 @@ export async function createOrUpdateEvent(data: EventFormData) {
 
   let result;
   if (id) {
+    const existing = await prisma.event.findUnique({
+      where: { id },
+      select: { coverImageUrl: true },
+    });
+    if (existing?.coverImageUrl && coverImageUrl && existing.coverImageUrl !== coverImageUrl) {
+      deleteFromCloudinary(existing.coverImageUrl).catch((err) =>
+        console.error('Failed to cleanup replaced event cover image:', err)
+      );
+    }
+
     result = await prisma.event.update({
       where: { id },
       data: {
@@ -203,8 +214,25 @@ export async function createOrUpdateEvent(data: EventFormData) {
 }
 
 export async function deleteEvent(id: string) {
-  const event = await prisma.event.findUnique({ where: { id } });
+  const event = await prisma.event.findUnique({
+    where: { id },
+    include: { galleryImages: true },
+  });
   if (!event) return null;
+
+  // Clean up cover image and gallery images from Cloudinary
+  if (event.coverImageUrl) {
+    deleteFromCloudinary(event.coverImageUrl).catch((err) =>
+      console.error('Failed to delete event cover image from Cloudinary:', err)
+    );
+  }
+  if (event.galleryImages?.length) {
+    event.galleryImages.forEach((img) => {
+      deleteFromCloudinary(img.imageUrl).catch((err) =>
+        console.error('Failed to delete event gallery photo from Cloudinary:', err)
+      );
+    });
+  }
 
   await prisma.event.delete({
     where: { id },
@@ -252,6 +280,13 @@ export async function deleteGalleryImage(imageId: string) {
   });
 
   if (!image) return null;
+
+  // Clean up photo from Cloudinary
+  if (image.imageUrl) {
+    deleteFromCloudinary(image.imageUrl).catch((err) =>
+      console.error('Failed to delete gallery image from Cloudinary:', err)
+    );
+  }
 
   await prisma.eventGalleryImage.delete({
     where: { id: imageId },

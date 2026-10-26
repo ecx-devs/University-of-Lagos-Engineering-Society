@@ -67,55 +67,65 @@ export const DEPARTMENTAL_BODIES: AssociationBody[] = [
     tagline: 'Association of Systems Engineering Students',
     type: 'departmental',
     typeLabel: 'Departmental Body',
-    establishedYear: '1973 (Chartered 2000)',
-    memberCount: '450+ Active Students',
+    establishedYear: '1975 (Chartered 2000)',
+    memberCount: '427+ Active Students',
     departmentAffiliation: 'Department of Systems Engineering',
-    mottoOrVision: 'Optimization, Cybernetics & Indigenous Intelligence',
+    mottoOrVision: "The Hub of Engineers' Engineers",
     president: {
       name: 'Eva Chiku Isani',
       title: 'President',
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '1973', description: 'Chartered as department in 2000' },
-      { label: 'Current Members', value: '450+', description: 'Across all undergraduate levels' },
-      { label: 'Current President', value: 'Eva Chiku Isani', description: '2025/2026 Academic Session' },
-      { label: 'Research Hub', value: 'AIRLAB', description: 'Artificial Intelligence & Robotics Lab' },
+      { label: 'Year Established', value: '1975', description: 'Engineering Analysis unit 1975; chartered 2000' },
+      { label: 'Active Membership', value: '427+', description: 'Excluding Direct Entry & 100 level scholars' },
+      { label: 'Chapter Motto', value: "Engineers' Hub", description: "The Hub of Engineers' Engineers" },
+      { label: 'Core Tracks', value: '3 Disciplines', description: 'Mechanics & Control, Management, AI & Mechatronics' },
     ],
     flagshipEvents: [
       {
-        name: 'Synergy Conference',
-        description: 'Flagship annual conference convening founders, AI researchers, and systems innovators.',
+        name: 'Systems Engineering Week',
+        description: 'Week-long flagship connecting systems thinkers with industry leaders through keynotes, student hardware/software exhibitions, the Renaissance Scholarship, medical check-ups, STEM outreach, and a color splash celebration.',
       },
       {
-        name: 'Acada Talks Series',
-        description: 'High-impact academic mentorship and peer tutoring workshops for engineering rigor.',
+        name: 'Systems Synergy Symposium',
+        description: 'Annual flagship symposium bridging academia and industry across AI & Mechatronics, Engineering Analysis, Mechanics & Control, and Industrial Optimization through keynotes, pitch battles, and interactive workshops.',
       },
       {
-        name: 'Impact Youth Outreach',
-        description: 'STEM community enablement program teaching robotics and automation in secondary schools.',
+        name: 'The HOD Games (Inter-Level Sports Festival)',
+        description: 'Eight-day inter-level sports and wellness tournament featuring over a dozen outdoor, track, indoor, board, and console/mobile gaming competitions promoting physical well-being, teamwork, and healthy rivalry.',
       },
       {
-        name: 'ASES / SEES Games',
-        description: 'Annual inter-departmental sports and networking tournament fostering faculty solidarity.',
+        name: 'ASES Movie Night',
+        description: 'Signature outdoor social gathering at the Engineering Quadrangle uniting 100L through 500L students for film screenings, refreshments, trivia games, and community bonding.',
+      },
+      {
+        name: 'ASES Ramadan Welfare Program',
+        description: 'Welfare-centered faith initiative during Ramadan supporting Muslim students with communal Iftar gatherings, welfare support packages, and networking sessions.',
+      },
+      {
+        name: 'Faaji Friday Social Mixer',
+        description: 'Departmental social mixer celebrating academic milestones and fostering cross-level camaraderie with music, refreshments, outdoor games, and relaxation.',
       },
     ],
     focusAreas: [
-      'Artificial Intelligence & Robotics',
-      'Control Systems & Cybernetics',
-      'Operations Research',
-      'Simulation & Mathematical Modeling',
-      'Industrial Systems Optimization',
+      'Artificial Intelligence & Mechatronics',
+      'Engineering Analysis, Mechanics & Control',
+      'Industrial & Management Engineering',
+      'Cybernetics & Autonomous Systems',
+      'Complex Systems Modeling & Operations Research',
     ],
     contactEmail: 'ases.unilagengineering@gmail.com',
+    contactPhone: '+234 903 155 6891 / +234 704 043 2716',
     socials: {
       instagram: 'https://instagram.com/ases_unilag',
       twitter: 'https://x.com/ases_unilag',
       linkedin: 'https://linkedin.com/company/ases-unilag',
     },
+    aliases: ['ases', 'ases-unilag', 'systems-engineering', 'systems'],
     body:
-      'Originally founded as the Engineering Analysis unit in 1973 and chartered as a full department in 2000, Systems Engineering is an inherently interdisciplinary field synthesizing AI, robotics, control systems, and operations research. The department houses the renowned Artificial Intelligence and Robotics Laboratory (AIRLAB), where students routinely build autonomous systems that win national design awards.\n\n' +
-      'The Association of Systems Engineering Students (ASES) is a hyper-organized student body currently led (2025/2026) by President Eva Chiku Isani. ASES runs a massive portfolio of events: the "Acada Talks" series for mentorship, the Impact Youth Outreach, the inter-departmental ASES/SEES Games, and its flagship "Synergy" conference. Systems Engineering demands extreme academic rigor, famously producing legends like Omotuyi Oyindamola, who graduated with a flawless 5.00 CGPA in 2016. By mastering both cybernetics and industrial management, ASES members are uniquely poised to optimize national logistics and lead the AI revolution.',
+      'Systems Engineering evolved from an Engineering Analysis Unit established in 1975 into a full university department chartered in 2000 to address the challenge of managing large, complex systems by breaking them down into intelligible components and analysing their dynamic interactions as an organised whole. As a hybrid discipline integrating Mechanical Engineering, Electrical Engineering, and Computer Science, it bridges technical engineering disciplines with managerial and societal needs.\n\n' +
+      'Cybernetics and Artificial Intelligence are core hallmarks of the discipline, shaping modern applications across engineering modelling, manufacturing, energy, and robotics through three specialised tracks: Engineering Analysis, Mechanics, and Control; Industrial and Management Engineering; and AI and Mechatronics. Rallying under the motto "The Hub of Engineers\' Engineers", the Association of Systems Engineering Students (ASES) coordinates an active student body of over 427 scholars through signature programmes including Systems Engineering Week, Systems Synergy, the eight-day HOD Games sports festival, the Renaissance Scholarship award, ASES Movie Night, and Faaji Friday.',
   },
   {
     id: 1,
@@ -953,14 +963,6 @@ export const SUB_BODIES: AssociationBody[] = [
       {
         name: 'The Annual PIDEC Grand Showcase',
         description: 'Exhibition where departmental teams demonstrate physical operating machines under faculty scrutiny.',
-      },
-      {
-        name: 'Fabrication & Machine Shop Clinics',
-        description: 'Practical training sessions covering lathe machining, welding, PCB routing, and composite forming.',
-      },
-      {
-        name: 'Faculty Technical Review Board',
-        description: 'Critique sessions with university professors and senior engineers assessing commercial viability.',
       },
     ],
     focusAreas: [
