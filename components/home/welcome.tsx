@@ -47,7 +47,7 @@ const Welcome = () => {
         <div className="flex justify-center lg:justify-end lg:pt-2">
           <div className="relative aspect-[533.71/667.09] w-full max-w-89.5 rotate-[0.99deg] border-12 border-white shadow-xl sm:border-15 lg:max-w-[460px] xl:max-w-[490px]">
             <Image
-              src="/home/dree.jpg"
+              src="/home/drey.jpeg"
               alt="Damilare Aribisala, President of ULES"
               fill
               sizes="(min-width: 1024px) 490px, 80vw"

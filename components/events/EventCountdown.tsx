@@ -80,72 +80,52 @@ export function EventCountdown({ targetDate, className = '', variant = 'hero' }:
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-[#1B0F4C] via-[#140A3C] to-[#0A0420] p-6 sm:p-8 text-white shadow-2xl ${className}`}
+      className={`rounded-2xl border border-white/10 bg-[#170A51] px-6 py-4 text-white shadow-lg ${className}`}
     >
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-center sm:text-left">
+        <h3 className="font-heading text-lg sm:text-xl font-bold uppercase tracking-wider text-white shrink-0">
+          Commencing In
+        </h3>
 
-      <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-[#C85B15]/15 blur-3xl pointer-events-none" />
-      <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-[#106333]/15 blur-3xl pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-300 backdrop-blur-sm">
-            <Clock className="h-3.5 w-3.5 text-[#F97316]" />
-            <span>Live Countdown</span>
-          </div>
-          <h3 className="font-heading text-2xl sm:text-3xl uppercase tracking-wider text-white">
-            Commencing In
-          </h3>
-        </div>
-
-
-        <div className="flex items-center justify-center gap-1.5 sm:gap-3">
-
-          <div className="relative flex flex-col items-center justify-center rounded-2xl bg-white/[0.07] border border-white/15 px-3 py-3 sm:px-5 sm:py-4 min-w-[66px] sm:min-w-[88px] backdrop-blur-md shadow-lg text-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-            <span className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal text-white tabular-nums leading-none drop-shadow-sm">
+        <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
+          <div className="flex min-w-[56px] sm:min-w-[66px] flex-col items-center justify-center rounded-xl bg-white/[0.08] border border-white/15 px-2.5 py-1.5 sm:px-3 sm:py-2 text-center">
+            <span className="font-heading text-2xl sm:text-3xl font-bold text-white tabular-nums leading-none">
               {String(days).padStart(2, '0')}
             </span>
-            <span className="mt-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#E5A93C]">
+            <span className="mt-1 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-white/70">
               Days
             </span>
           </div>
 
-          <span className="font-heading text-2xl sm:text-3xl text-white/25 -mt-3 select-none">:</span>
+          <span className="font-heading text-lg sm:text-xl text-white/30 select-none -mt-2">:</span>
 
-
-          <div className="relative flex flex-col items-center justify-center rounded-2xl bg-white/[0.07] border border-white/15 px-3 py-3 sm:px-5 sm:py-4 min-w-[66px] sm:min-w-[88px] backdrop-blur-md shadow-lg text-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-            <span className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal text-white tabular-nums leading-none drop-shadow-sm">
+          <div className="flex min-w-[56px] sm:min-w-[66px] flex-col items-center justify-center rounded-xl bg-white/[0.08] border border-white/15 px-2.5 py-1.5 sm:px-3 sm:py-2 text-center">
+            <span className="font-heading text-2xl sm:text-3xl font-bold text-white tabular-nums leading-none">
               {String(hours).padStart(2, '0')}
             </span>
-            <span className="mt-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#E5A93C]">
+            <span className="mt-1 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-white/70">
               Hours
             </span>
           </div>
 
-          <span className="font-heading text-2xl sm:text-3xl text-white/25 -mt-3 select-none">:</span>
+          <span className="font-heading text-lg sm:text-xl text-white/30 select-none -mt-2">:</span>
 
-
-          <div className="relative flex flex-col items-center justify-center rounded-2xl bg-white/[0.07] border border-white/15 px-3 py-3 sm:px-5 sm:py-4 min-w-[66px] sm:min-w-[88px] backdrop-blur-md shadow-lg text-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-            <span className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal text-white tabular-nums leading-none drop-shadow-sm">
+          <div className="flex min-w-[56px] sm:min-w-[66px] flex-col items-center justify-center rounded-xl bg-white/[0.08] border border-white/15 px-2.5 py-1.5 sm:px-3 sm:py-2 text-center">
+            <span className="font-heading text-2xl sm:text-3xl font-bold text-white tabular-nums leading-none">
               {String(minutes).padStart(2, '0')}
             </span>
-            <span className="mt-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#E5A93C]">
+            <span className="mt-1 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-white/70">
               Mins
             </span>
           </div>
 
-          <span className="font-heading text-2xl sm:text-3xl text-white/25 -mt-3 select-none">:</span>
+          <span className="font-heading text-lg sm:text-xl text-white/30 select-none -mt-2">:</span>
 
-
-          <div className="relative flex flex-col items-center justify-center rounded-2xl bg-[#C85B15]/15 border border-[#C85B15]/40 px-3 py-3 sm:px-5 sm:py-4 min-w-[66px] sm:min-w-[88px] backdrop-blur-md shadow-lg text-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-            <span className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal text-white tabular-nums leading-none drop-shadow-sm">
+          <div className="flex min-w-[56px] sm:min-w-[66px] flex-col items-center justify-center rounded-xl bg-white/[0.08] border border-white/15 px-2.5 py-1.5 sm:px-3 sm:py-2 text-center">
+            <span className="font-heading text-2xl sm:text-3xl font-bold text-white tabular-nums leading-none">
               {String(seconds).padStart(2, '0')}
             </span>
-            <span className="mt-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#F97316]">
+            <span className="mt-1 text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-white/70">
               Secs
             </span>
           </div>

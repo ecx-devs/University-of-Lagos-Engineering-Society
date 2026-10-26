@@ -551,7 +551,7 @@ export default async function AssociationDetailPage({ params }: AssociationDetai
                             <div className="flex items-center gap-2.5 min-w-0">
                               <Phone className="size-4 text-primary shrink-0" aria-hidden="true" />
                               <a
-                                href={`tel:${body.contactPhone.replace(/[^+\d]/g, '')}`}
+                                href={`tel:${body.contactPhone.split('/')[0].trim().replace(/[^+\d]/g, '')}`}
                                 className="hover:text-primary transition-colors text-xs sm:text-sm font-medium text-foreground truncate"
                                 title={`Call ${body.name} secretariat hotline`}
                               >
