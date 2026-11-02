@@ -430,6 +430,44 @@ export function associationsCollectionJsonLd(
   };
 }
 
+export function videoObjectJsonLd({
+  name,
+  description,
+  thumbnailUrl,
+  uploadDate = '2026-01-01T00:00:00Z',
+  contentUrl,
+  embedUrl,
+  duration,
+}: {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate?: string;
+  contentUrl?: string;
+  embedUrl?: string;
+  duration?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name,
+    description,
+    thumbnailUrl: [thumbnailUrl],
+    uploadDate,
+    ...(duration ? { duration } : {}),
+    ...(contentUrl ? { contentUrl } : {}),
+    ...(embedUrl ? { embedUrl } : {}),
+    publisher: {
+      '@type': 'EducationalOrganization',
+      name: SITE.fullName,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE.url}/ules-logo.png`,
+      },
+    },
+  };
+}
+
 export function leadershipJsonLd(
   leaders: Array<{
     name: string;

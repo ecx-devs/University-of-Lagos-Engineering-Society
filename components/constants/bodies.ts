@@ -954,7 +954,7 @@ export const SUB_BODIES: AssociationBody[] = [
       academicYear: CURRENT_ACADEMIC_SESSION,
     },
     keyHighlights: [
-      { label: 'Year Established', value: '2021', description: 'Faculty-wide practical hardware competition' },
+      { label: 'Year Established', value: '2026', description: 'Faculty-wide practical hardware competition' },
       { label: 'Departmental Scope', value: '10 Departments', description: 'Multidisciplinary engineering teams' },
       { label: 'Project Lead', value: 'Segun Adebisi', description: '2025/2026 Academic Session' },
       { label: 'Hardware Focus', value: '100% Practical', description: 'Working prototypes tested live' },
