@@ -393,6 +393,21 @@ export async function deleteBlogPost(id: string) {
       );
     }
 
+    // Clean up any inline Cloudinary images stored in the article body
+    if (item?.body) {
+      const inlineImageMatches = item.body.match(/!\[.*?\]\((https?:\/\/res\.cloudinary\.com\/[^\s\)"']+)\)/g);
+      if (inlineImageMatches) {
+        for (const match of inlineImageMatches) {
+          const urlMatch = match.match(/\((https?:\/\/res\.cloudinary\.com\/[^\s\)"']+)\)/);
+          if (urlMatch && urlMatch[1]) {
+            deleteFromCloudinary(urlMatch[1]).catch((err) =>
+              console.error('Failed to cleanup inline blog image from Cloudinary:', err)
+            );
+          }
+        }
+      }
+    }
+
     revalidatePath('/admin/blog');
     revalidatePath('/admin');
     revalidatePath('/stories/blog');

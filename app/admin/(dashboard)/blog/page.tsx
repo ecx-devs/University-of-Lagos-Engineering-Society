@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useTransition, useRef, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Image from 'next/image';
@@ -15,6 +15,7 @@ import {
 } from '@/app/actions/blogs';
 import { uploadToCloudinary } from '@/app/actions/upload';
 import { compressImageFile } from '@/lib/image-compression';
+import { BlogMarkdownEditor } from '@/components/blog/BlogMarkdownEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -274,7 +275,7 @@ export default function BlogAdminPage() {
         </div>
         <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
           <Link
-            href="/activities/blog"
+            href="/stories/blog"
             target="_blank"
             className="inline-flex items-center justify-center gap-1.5 text-xs text-gray-600 hover:text-[#C85B15] transition-colors border border-gray-200 rounded-lg px-3 py-2 bg-white shadow-2xs"
           >
@@ -398,7 +399,7 @@ export default function BlogAdminPage() {
                   <TableCell className="py-3 min-w-[220px]">
                     <div className="min-w-0">
                       <p className="font-semibold text-gray-900 text-sm line-clamp-1">{item.title}</p>
-                      <p className="text-xs text-gray-400 font-mono truncate">/activities/blog/{item.slug}</p>
+                      <p className="text-xs text-gray-400 font-mono truncate">/stories/blog/{item.slug}</p>
                     </div>
                   </TableCell>
 
@@ -468,7 +469,7 @@ export default function BlogAdminPage() {
                   <TableCell className="py-3 text-right pr-4">
                     <div className="flex items-center justify-end gap-1">
                       <Link
-                        href={`/activities/blog/${item.slug}`}
+                        href={`/stories/blog/${item.slug}`}
                         target="_blank"
                         className="p-1.5 text-gray-400 hover:text-[#C85B15] hover:bg-gray-100 rounded-md transition-colors"
                         title="View Live Article"
@@ -706,23 +707,25 @@ export default function BlogAdminPage() {
 
               {/* Full Article Content */}
               <div>
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs font-semibold uppercase tracking-wider text-gray-700">
                     Full Article Content *
                   </label>
-                  <span className="text-[11px] text-muted-foreground">Markdown supported</span>
+                  <span className="text-[11px] text-muted-foreground">Markdown &amp; Inline Images supported</span>
                 </div>
-                <p className="text-[11px] text-gray-500 mb-1.5 leading-relaxed">
-                  Tip: Use <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-gray-700">##</code> for Section Headings, <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-gray-700">&gt;</code> for Quotes, <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-gray-700">*</code> for Bullet points, and <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-gray-700">--</code> for Author attributions.
-                </p>
-                <Textarea
-                  placeholder="Write the full blog article here...&#10;&#10;## Introduction&#10;Starting your engineering journey...&#10;&#10;> 'Engineering teaches resilience above all.'&#10;&#10;## Key Takeaways&#10;* Master your time blocking&#10;* Form study circles&#10;&#10;-- Author Name"
-                  className="min-h-[240px] resize-y font-sans text-sm leading-relaxed bg-white"
-                  {...form.register('body')}
+                <Controller
+                  control={form.control}
+                  name="body"
+                  render={({ field, fieldState }) => (
+                    <BlogMarkdownEditor
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      error={fieldState.error?.message}
+                      placeholder="Write your article here... You can type markdown manually or use the toolbar to format headings, quotes, lists, and insert images between paragraphs!"
+                      minHeight="280px"
+                    />
+                  )}
                 />
-                {form.formState.errors.body && (
-                  <p className="mt-1 text-xs text-red-500">{form.formState.errors.body.message}</p>
-                )}
               </div>
 
               {/* Publish Toggle */}

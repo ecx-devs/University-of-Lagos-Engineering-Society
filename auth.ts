@@ -55,8 +55,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // 2. Check if the user's email exists in the Admin table
       if (user.email) {
         try {
-          // Dynamic import of Prisma to avoid edge-runtime issues with NextAuth if applicable,
-          // but since this is Node runtime by default it's fine.
           const { default: prisma } = await import('@/lib/prisma');
           const dbAdmin = await prisma.admin.findUnique({
             where: { email: user.email }

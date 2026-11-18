@@ -11,7 +11,7 @@ import { BlogCard } from '@/components/blog/BlogCard';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { articleJsonLd, pageMetadata } from '@/lib/seo';
 import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from '@/app/actions/blogs';
-import { parseBlogBody } from '@/lib/blog-parser';
+import { parseBlogBody, renderFormattedInline } from '@/lib/blog-parser';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 
 export const revalidate = 60;
@@ -167,6 +167,36 @@ export default async function BlogDetailPage({
         <article className="prose prose-slate max-w-none">
           <div className="space-y-6">
             {blocks.map((block, index) => {
+              if (block.kind === 'image') {
+                return (
+                  <figure key={index} className="my-8 sm:my-10 flex flex-col items-center">
+                    <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-slate-200/80 bg-slate-50 shadow-xs w-full max-w-2xl flex justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={block.src}
+                        alt={block.alt || 'Blog article image'}
+                        loading="lazy"
+                        className="w-full h-auto max-h-[580px] object-contain rounded-2xl md:rounded-3xl"
+                      />
+                    </div>
+                    {block.caption && (
+                      <figcaption className="mt-2.5 text-center text-xs sm:text-sm text-slate-500 italic font-sans">
+                        {renderFormattedInline(block.caption)}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              }
+
+              if (block.kind === 'divider') {
+                return (
+                  <hr
+                    key={index}
+                    className="my-8 sm:my-10 border-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"
+                  />
+                );
+              }
+
               if (block.kind === 'heading') {
                 if (block.level === 3) {
                   return (
@@ -174,7 +204,7 @@ export default async function BlogDetailPage({
                       key={index}
                       className="text-[#170A51] mt-8 mb-2 text-xl font-bold tracking-tight"
                     >
-                      {block.text}
+                      {renderFormattedInline(block.text)}
                     </h3>
                   );
                 }
@@ -184,7 +214,7 @@ export default async function BlogDetailPage({
                     className="text-[#170A51] mt-10 mb-3 text-2xl sm:text-3xl font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2.5"
                   >
                     <span className="w-1.5 h-6 bg-[#C85B15] rounded-full inline-block shrink-0" />
-                    <span>{block.text}</span>
+                    <span>{renderFormattedInline(block.text)}</span>
                   </h2>
                 );
               }
@@ -195,7 +225,7 @@ export default async function BlogDetailPage({
                     key={index}
                     className="my-4 rounded-xl bg-slate-50/90 border-l-3 border-[#C85B15] p-3.5 text-sm sm:text-base text-slate-700 italic font-medium"
                   >
-                    {block.text}
+                    {renderFormattedInline(block.text)}
                   </div>
                 );
               }
@@ -206,7 +236,7 @@ export default async function BlogDetailPage({
                     key={index}
                     className="my-7 rounded-2xl border-l-4 border-[#C85B15] bg-[#C85B15]/5 px-6 py-5 italic text-slate-800 text-lg sm:text-xl leading-relaxed font-serif"
                   >
-                    &ldquo;{block.text}&rdquo;
+                    &ldquo;{renderFormattedInline(block.text)}&rdquo;
                   </blockquote>
                 );
               }
@@ -218,7 +248,7 @@ export default async function BlogDetailPage({
                     className="my-4 list-disc space-y-2 pl-6 text-slate-700 text-base sm:text-lg leading-relaxed"
                   >
                     {block.items.map((item, itemIdx) => (
-                      <li key={itemIdx}>{item}</li>
+                      <li key={itemIdx}>{renderFormattedInline(item)}</li>
                     ))}
                   </ul>
                 );
@@ -229,7 +259,7 @@ export default async function BlogDetailPage({
                   key={index}
                   className="text-base sm:text-lg text-slate-800 leading-relaxed font-sans"
                 >
-                  {block.text}
+                  {renderFormattedInline(block.text)}
                 </p>
               );
             })}
